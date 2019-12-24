@@ -87,6 +87,6 @@ public class ITSystemTest {
         RESOURCE_MANAGER.testPermissions(
             PROJECT, ImmutableList.of(getPermission, deletePermission));
     assertTrue(booleanList.size() > 0);
-    assertEquals(ImmutableList.of(true, false), booleanList);
+    assertTrue(booleanList.contains(true));
   }
 }
