@@ -16,7 +16,6 @@
 package com.google.cloud.resourcemanager.it;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -58,7 +57,6 @@ public class ITSystemTest {
 
     /* policy bindings */
     Map<Role, Set<Identity>> policyBindings = policy.getBindings();
-    assertFalse(policy.getBindings().isEmpty());
     assertTrue(policyBindings.size() > 0);
   }
 
@@ -78,7 +76,6 @@ public class ITSystemTest {
 
     /* policy bindings */
     Map<Role, Set<Identity>> policyBindings = policy.getBindings();
-    assertFalse(policy.getBindings().isEmpty());
     assertTrue(policyBindings.size() > 0);
   }
 
@@ -89,7 +86,6 @@ public class ITSystemTest {
     List<Boolean> booleanList =
         RESOURCE_MANAGER.testPermissions(
             PROJECT, ImmutableList.of(getPermission, deletePermission));
-    assertFalse(booleanList.isEmpty());
     assertTrue(booleanList.size() > 0);
     assertEquals(ImmutableList.of(true, false), booleanList);
   }
