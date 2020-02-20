@@ -4,7 +4,7 @@
   <groupId>com.google.cloud</groupId>
   <artifactId>google-cloud-resourcemanager</artifactId>
   <packaging>jar</packaging>
-  <version>0.117.1-alpha-SNAPSHOT</version><!-- {x-version-update:google-cloud-resourcemanager:current} -->
+  <version>0.117.1-alpha</version><!-- {x-version-update:google-cloud-resourcemanager:current} -->
   <name>Google Cloud Resource Manager</name>
   <url>https://github.com/googleapis/java-resourcemanager</url>
   <description>
@@ -63,19 +63,19 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <github.global.server>github</github.global.server>
     <site.installationModule>google-cloud-resourcemanager-parent</site.installationModule>
-    <google.core.version>1.92.3</google.core.version>
+    <google.core.version>1.92.4</google.core.version>
     <google.api-common.version>1.8.1</google.api-common.version>
-    <gax.version>1.53.0</gax.version>
+    <gax.version>1.53.1</gax.version>
     <junit.version>4.13</junit.version>
     <guava.version>28.2-android</guava.version>
     <threeten.version>1.4.1</threeten.version>
-    <google.core-http.version>1.92.3</google.core-http.version>
-    <api-client.version>1.30.7</api-client.version>
+    <google.core-http.version>1.92.4</google.core-http.version>
+    <api-client.version>1.30.8</api-client.version>
     <easymock.version>3.6</easymock.version>
     <objenesis.version>2.6</objenesis.version>
     <google.auth.version>0.20.0</google.auth.version>
     <http-client-bom.version>1.34.1</http-client-bom.version>
-    <protobuf.version>3.11.1</protobuf.version>
+    <protobuf.version>3.11.3</protobuf.version>
     <errorprone.version>2.3.4</errorprone.version>
   </properties>
 
@@ -84,7 +84,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>google-cloud-resourcemanager</artifactId>
-        <version>0.117.1-alpha-SNAPSHOT</version><!-- {x-version-update:google-cloud-resourcemanager:current} -->
+        <version>0.117.1-alpha</version><!-- {x-version-update:google-cloud-resourcemanager:current} -->
       </dependency>
       <dependency>
         <groupId>com.google.api</groupId>
@@ -197,6 +197,7 @@
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
       <version>${easymock.version}</version>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.objenesis</groupId>
@@ -208,11 +209,13 @@
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis</artifactId>
       <version>${objenesis.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-core</artifactId>
       <version>${google.core-http.version}</version>
+      <scope>test</scope>
       <type>test-jar</type>
     </dependency>
   </dependencies>
