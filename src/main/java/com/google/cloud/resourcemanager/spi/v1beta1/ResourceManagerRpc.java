@@ -166,5 +166,5 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  Tuple<String, Iterable<Lien>> listLien(String parent, Map<Option, ?> options);
+  Tuple<String, Iterable<Lien>> listLiens(String parent, Map<Option, ?> options);
 }

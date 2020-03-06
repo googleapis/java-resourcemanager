@@ -147,7 +147,7 @@ public class LienTest {
             new Lien(serviceMockReturnsOptions, new Lien.BuilderImpl(LIEN_INFO2)));
     PageImpl<Lien> expectedPage = new PageImpl<>(null, "c", results);
     expect(resourceManager.getOptions()).andReturn(mockOptions);
-    expect(resourceManager.listLien(LIEN_PARENT)).andReturn(expectedPage);
+    expect(resourceManager.listLiens(LIEN_PARENT)).andReturn(expectedPage);
     replay(resourceManager);
     initializeLien();
     Page<Lien> tablePage = lien.list();

@@ -151,12 +151,12 @@ public class Lien extends LienInfo {
    *     Resource Manager list</a>
    */
   public Page<Lien> list(LienListOption... options) {
-    return resourceManager.listLien(getParent(), options);
+    return resourceManager.listLiens(getParent(), options);
   }
 
   @Override
-  public Lien.Builder toBuilder() {
-    return new Lien.Builder(this);
+  public Builder toBuilder() {
+    return new Builder(this);
   }
 
   @Override

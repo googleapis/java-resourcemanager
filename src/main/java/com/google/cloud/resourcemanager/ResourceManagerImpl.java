@@ -373,16 +373,16 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
 
     @Override
     public Page<Lien> getNextPage() {
-      return listLien(parent, serviceOptions, requestOptions);
+      return listLiens(parent, serviceOptions, requestOptions);
     }
   }
 
   @Override
-  public Page<Lien> listLien(String parent, LienListOption... options) {
-    return listLien(parent, getOptions(), optionMap(options));
+  public Page<Lien> listLiens(String parent, LienListOption... options) {
+    return listLiens(parent, getOptions(), optionMap(options));
   }
 
-  private static Page<Lien> listLien(
+  private static Page<Lien> listLiens(
       final String parent,
       final ResourceManagerOptions serviceOptions,
       final Map<ResourceManagerRpc.Option, ?> optionsMap) {
@@ -397,7 +397,9 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
                 public Tuple<
                         String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>>
                     call() {
-                  return serviceOptions.getResourceManagerRpcV1Beta1().listLien(parent, optionsMap);
+                  return serviceOptions
+                      .getResourceManagerRpcV1Beta1()
+                      .listLiens(parent, optionsMap);
                 }
               },
               serviceOptions.getRetrySettings(),

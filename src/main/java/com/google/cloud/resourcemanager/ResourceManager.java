@@ -414,5 +414,5 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *
    * @throws ResourceManagerException upon failure
    */
-  Page<Lien> listLien(String parent, LienListOption... options);
+  Page<Lien> listLiens(String parent, LienListOption... options);
 }

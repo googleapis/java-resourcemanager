@@ -366,14 +366,13 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Tuple<String, Iterable<Lien>> listLien(String parent, Map<Option, ?> options) {
+  public Tuple<String, Iterable<Lien>> listLiens(String parent, Map<Option, ?> options) {
     try {
       ListLiensResponse response =
           resourceManager
               .liens()
               .list()
               .setParent(parent)
-              .setFields(Option.FIELDS.getString(options))
               .setPageSize(Option.PAGE_SIZE.getInt(options))
               .setPageToken(Option.PAGE_TOKEN.getString(options))
               .execute();
