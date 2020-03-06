@@ -16,6 +16,7 @@
 
 package com.google.cloud.resourcemanager;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -32,6 +33,7 @@ import com.google.api.gax.paging.Page;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
+import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.ProjectInfo.ResourceId;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectField;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectGetOption;
@@ -41,7 +43,9 @@ import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
 import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +86,24 @@ public class ResourceManagerImplTest {
           .addIdentity(Role.owner(), Identity.user("me@gmail.com"))
           .addIdentity(Role.editor(), Identity.serviceAccount("serviceaccount@gmail.com"))
           .build();
+  // Lien
+  private static final String LIEN_NAME = "liens/1234abcd";
+  private static final String LIEN_PARENT = "projects/1234";
+  private static final List<String> LIEN_RESTRICTIONS =
+      Arrays.asList("resourcemanager.projects.get", "resourcemanager.projects.delete");
+  private static final String LIEN_REASON = "Holds production API key";
+  private static final String LIEN_ORIGIN = "compute.googleapis.com";
+  private static final String LIEN_CREATE_TIME = "2014-10-02T15:01:23.045123456Z";
+  private static final String CURSOR = "cursor";
+  private static final LienInfo COMPLETE_LIEN_INFO =
+      LienInfo.newBuilder(LIEN_PARENT)
+          .setName(LIEN_NAME)
+          .setCreateTime(LIEN_CREATE_TIME)
+          .setOrigin(LIEN_ORIGIN)
+          .setReason(LIEN_REASON)
+          .setRestrictions(LIEN_RESTRICTIONS)
+          .build();
+  private static final LienInfo PARTIAL_LIEN_INFO = LienInfo.newBuilder(LIEN_PARENT).build();
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
@@ -516,5 +538,112 @@ public class ResourceManagerImplTest {
       assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
+  }
+
+  @Test
+  public void testCreateLien() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    EasyMock.expect(resourceManagerRpcMock.createLien(COMPLETE_LIEN_INFO.toPb()))
+        .andReturn(COMPLETE_LIEN_INFO.toPb());
+    EasyMock.replay(resourceManagerRpcMock);
+    Lien lien = resourceManagerMock.createLien(COMPLETE_LIEN_INFO);
+    assertEquals(LIEN_NAME, lien.getName());
+    assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+    assertEquals(LIEN_ORIGIN, lien.getOrigin());
+    assertEquals(LIEN_PARENT, lien.getParent());
+    assertEquals(LIEN_REASON, lien.getReason());
+    assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+  }
+
+  @Test
+  public void testDeleteLien() {
+    try {
+      RESOURCE_MANAGER.deleteLien(LIEN_NAME);
+      fail("Should fail because the lien doesn't exist.");
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+    }
+  }
+
+  @Test
+  public void testGetLien() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    EasyMock.expect(resourceManagerRpcMock.getLien(LIEN_NAME)).andReturn(COMPLETE_LIEN_INFO.toPb());
+    EasyMock.replay(resourceManagerRpcMock);
+    Lien lien = resourceManagerMock.getLien(LIEN_NAME);
+    assertEquals(LIEN_NAME, lien.getName());
+    assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+    assertEquals(LIEN_ORIGIN, lien.getOrigin());
+    assertEquals(LIEN_PARENT, lien.getParent());
+    assertEquals(LIEN_REASON, lien.getReason());
+    assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+  }
+
+  @Test
+  public void testListLien() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    ImmutableList<Lien> lienList =
+        ImmutableList.of(new Lien(resourceManagerMock, new LienInfo.BuilderImpl(LIEN_PARENT)));
+    Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>> result =
+        Tuple.of(CURSOR, Iterables.transform(lienList, LienInfo.TO_PB_FUNCTION));
+    EasyMock.expect(resourceManagerRpcMock.listLien(LIEN_PARENT, EMPTY_RPC_OPTIONS))
+        .andReturn(result);
+    EasyMock.replay(resourceManagerRpcMock);
+    Page<Lien> page = resourceManagerMock.listLien(LIEN_PARENT);
+    assertEquals(CURSOR, page.getNextPageToken());
+    assertArrayEquals(lienList.toArray(), Iterables.toArray(page.getValues(), Lien.class));
+  }
+
+  @Test
+  public void testListLienPaging() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    ImmutableList<Lien> lienList =
+        ImmutableList.of(new Lien(resourceManagerMock, new LienInfo.BuilderImpl(LIEN_PARENT)));
+    Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>> result =
+        Tuple.of(CURSOR, Iterables.transform(lienList, LienInfo.TO_PB_FUNCTION));
+    Map<ResourceManagerRpc.Option, ?> RPC_OPTIONS =
+        ImmutableMap.of(ResourceManagerRpc.Option.PAGE_SIZE, 1);
+    EasyMock.expect(resourceManagerRpcMock.listLien(LIEN_PARENT, RPC_OPTIONS)).andReturn(result);
+    EasyMock.replay(resourceManagerRpcMock);
+    Page<Lien> page =
+        resourceManagerMock.listLien(LIEN_PARENT, ResourceManager.LienListOption.pageSize(1));
+    assertEquals(CURSOR, page.getNextPageToken());
+    assertArrayEquals(lienList.toArray(), Iterables.toArray(page.getValues(), Lien.class));
   }
 }

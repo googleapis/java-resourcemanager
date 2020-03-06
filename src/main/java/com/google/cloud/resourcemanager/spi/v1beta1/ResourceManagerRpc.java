@@ -16,6 +16,7 @@
 
 package com.google.cloud.resourcemanager.spi.v1beta1;
 
+import com.google.api.services.cloudresourcemanager.model.Lien;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.cloud.ServiceRpc;
@@ -133,4 +134,37 @@ public interface ResourceManagerRpc extends ServiceRpc {
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions)
       throws IOException;
+
+  // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
+
+  /**
+   * Creates a new lien which applies to the resource denoted by the parent field.
+   *
+   * @param lien
+   * @throws ResourceManagerException upon failure
+   */
+  Lien createLien(Lien lien);
+
+  /**
+   * Delete a Lien by `name`.
+   *
+   * @param name The name/identifier of the Lien to delete.
+   * @throws ResourceManagerException upon failure
+   */
+  void deleteLien(String name);
+
+  /**
+   * Get a Lien by `name`.
+   *
+   * @param name
+   * @throws ResourceManagerException upon failure
+   */
+  Lien getLien(String name);
+
+  /**
+   * List all Liens applied to the parent resource.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  Tuple<String, Iterable<Lien>> listLien(String parent, Map<Option, ?> options);
 }

@@ -293,6 +293,139 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
   }
 
+  @Override
+  public Lien createLien(final LienInfo lienInfo) {
+    final com.google.api.services.cloudresourcemanager.model.Lien lien = lienInfo.toPb();
+    try {
+      return Lien.fromPb(
+          this,
+          runWithRetries(
+              new Callable<com.google.api.services.cloudresourcemanager.model.Lien>() {
+                @Override
+                public com.google.api.services.cloudresourcemanager.model.Lien call() {
+                  return resourceManagerRpc.createLien(lien);
+                }
+              },
+              getOptions().getRetrySettings(),
+              EXCEPTION_HANDLER,
+              getOptions().getClock()));
+    } catch (RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public void deleteLien(final String name) {
+    try {
+      runWithRetries(
+          new Callable<Void>() {
+            @Override
+            public Void call() {
+              resourceManagerRpc.deleteLien(name);
+              return null;
+            }
+          },
+          getOptions().getRetrySettings(),
+          EXCEPTION_HANDLER,
+          getOptions().getClock());
+    } catch (RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public Lien getLien(final String name) {
+    try {
+      com.google.api.services.cloudresourcemanager.model.Lien answer =
+          runWithRetries(
+              new Callable<com.google.api.services.cloudresourcemanager.model.Lien>() {
+                @Override
+                public com.google.api.services.cloudresourcemanager.model.Lien call() {
+                  return resourceManagerRpc.getLien(name);
+                }
+              },
+              getOptions().getRetrySettings(),
+              EXCEPTION_HANDLER,
+              getOptions().getClock());
+      return answer == null ? null : Lien.fromPb(this, answer);
+    } catch (RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  private static class LienPageFetcher implements NextPageFetcher<Lien> {
+
+    private static final long serialVersionUID = 2158209410430566961L;
+    private final Map<ResourceManagerRpc.Option, ?> requestOptions;
+    private final ResourceManagerOptions serviceOptions;
+    private final String parent;
+
+    LienPageFetcher(
+        String parent,
+        ResourceManagerOptions serviceOptions,
+        String cursor,
+        Map<ResourceManagerRpc.Option, ?> optionMap) {
+      this.requestOptions =
+          PageImpl.nextRequestOptions(ResourceManagerRpc.Option.PAGE_TOKEN, cursor, optionMap);
+      this.serviceOptions = serviceOptions;
+      this.parent = parent;
+    }
+
+    @Override
+    public Page<Lien> getNextPage() {
+      return listLien(parent, serviceOptions, requestOptions);
+    }
+  }
+
+  @Override
+  public Page<Lien> listLien(String parent, LienListOption... options) {
+    return listLien(parent, getOptions(), optionMap(options));
+  }
+
+  private static Page<Lien> listLien(
+      final String parent,
+      final ResourceManagerOptions serviceOptions,
+      final Map<ResourceManagerRpc.Option, ?> optionsMap) {
+    try {
+      Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>> result =
+          runWithRetries(
+              new Callable<
+                  Tuple<
+                      String,
+                      Iterable<com.google.api.services.cloudresourcemanager.model.Lien>>>() {
+                @Override
+                public Tuple<
+                        String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>>
+                    call() {
+                  return serviceOptions.getResourceManagerRpcV1Beta1().listLien(parent, optionsMap);
+                }
+              },
+              serviceOptions.getRetrySettings(),
+              EXCEPTION_HANDLER,
+              serviceOptions.getClock());
+      String cursor = result.x();
+
+      Iterable<Lien> liens =
+          result.y() == null
+              ? ImmutableList.<Lien>of()
+              : Iterables.transform(
+                  result.y(),
+                  new Function<com.google.api.services.cloudresourcemanager.model.Lien, Lien>() {
+                    @Override
+                    public Lien apply(
+                        com.google.api.services.cloudresourcemanager.model.Lien lienPb) {
+                      return new com.google.cloud.resourcemanager.Lien(
+                          serviceOptions.getService(),
+                          new LienInfo.BuilderImpl(LienInfo.fromPb(lienPb)));
+                    }
+                  });
+      return new PageImpl<>(
+          new LienPageFetcher(parent, serviceOptions, cursor, optionsMap), cursor, liens);
+    } catch (RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
   private Map<ResourceManagerRpc.Option, ?> optionMap(Option... options) {
     Map<ResourceManagerRpc.Option, Object> temp = Maps.newEnumMap(ResourceManagerRpc.Option.class);
     for (Option option : options) {

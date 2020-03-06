@@ -162,6 +162,36 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
     }
   }
 
+  /** Class for specifying Lien list options. */
+  class LienListOption extends Option {
+
+    private static final long serialVersionUID = 7888768979702012328L;
+
+    private LienListOption(ResourceManagerRpc.Option option, Object value) {
+      super(option, value);
+    }
+
+    /**
+     * Returns an option to specify a page token.
+     *
+     * <p>The page token (returned from a previous call to list) indicates from where listing should
+     * continue.
+     */
+    public static LienListOption pageToken(String pageToken) {
+      return new LienListOption(ResourceManagerRpc.Option.PAGE_TOKEN, pageToken);
+    }
+
+    /**
+     * The maximum number of lien to return per RPC.
+     *
+     * <p>The server can return fewer liens than requested. When there are more results than the
+     * page size, the server will return a page token that can be used to fetch other results.
+     */
+    public static LienListOption pageSize(int pageSize) {
+      return new LienListOption(ResourceManagerRpc.Option.PAGE_SIZE, pageSize);
+    }
+  }
+
   /**
    * Creates a new project.
    *
@@ -354,4 +384,35 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     Resource Manager testIamPermissions</a>
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions);
+
+  /**
+   * Creates a new lien which applies to the resource denoted by the parent field.
+   *
+   * @param lienInfo
+   * @throws ResourceManagerException upon failure
+   */
+  Lien createLien(LienInfo lienInfo);
+
+  /**
+   * Delete a Lien by `name`.
+   *
+   * @param name The name/identifier of the Lien to delete.
+   * @throws ResourceManagerException upon failure
+   */
+  void deleteLien(String name);
+
+  /**
+   * Get a Lien by `name`.
+   *
+   * @param name
+   * @throws ResourceManagerException upon failure
+   */
+  Lien getLien(String name);
+
+  /**
+   * List all Liens applied to the parent resource.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  Page<Lien> listLien(String parent, LienListOption... options);
 }

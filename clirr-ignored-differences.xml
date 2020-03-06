@@ -7,8 +7,49 @@
         <differenceType>7012</differenceType>
     </difference>
     <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.cloud.resourcemanager.Lien createLien(com.google.cloud.resourcemanager.LienInfo)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>void deleteLien(java.lang.String)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.cloud.resourcemanager.Lien getLien(java.lang.String)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.api.gax.paging.Page listLien(java.lang.String, com.google.cloud.resourcemanager.ResourceManager$LienListOption[])</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
         <method>java.util.Map testOrgPermissions(java.lang.String, java.util.List)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.Lien createLien(com.google.api.services.cloudresourcemanager.model.Lien)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>void deleteLien(java.lang.String)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.Lien getLien(java.lang.String)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.cloud.Tuple listLien(java.lang.String, java.util.Map)</method>
         <differenceType>7012</differenceType>
     </difference>
 </differences>

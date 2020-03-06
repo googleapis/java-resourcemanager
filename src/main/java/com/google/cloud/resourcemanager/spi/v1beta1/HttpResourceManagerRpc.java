@@ -31,6 +31,8 @@ import com.google.api.gax.retrying.RetrySettings;
 import com.google.api.gax.retrying.TimedAttemptSettings;
 import com.google.api.services.cloudresourcemanager.CloudResourceManager;
 import com.google.api.services.cloudresourcemanager.model.GetIamPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.Lien;
+import com.google.api.services.cloudresourcemanager.model.ListLiensResponse;
 import com.google.api.services.cloudresourcemanager.model.ListProjectsResponse;
 import com.google.api.services.cloudresourcemanager.model.Operation;
 import com.google.api.services.cloudresourcemanager.model.Policy;
@@ -322,6 +324,62 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       return answer.build();
     } catch (RetryHelper.RetryHelperException ex) {
       throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public Lien createLien(Lien lien) {
+    try {
+      return resourceManager.liens().create(lien).execute();
+    } catch (IOException ex) {
+      ResourceManagerException translated = translate(ex);
+      if (translated.getCode() == HTTP_FORBIDDEN) {
+        return null;
+      } else {
+        throw translated;
+      }
+    }
+  }
+
+  @Override
+  public void deleteLien(String name) {
+    try {
+      resourceManager.liens().delete(name).execute();
+    } catch (IOException ex) {
+      throw translate(ex);
+    }
+  }
+
+  @Override
+  public Lien getLien(String name) {
+    try {
+      return resourceManager.liens().get(name).execute();
+    } catch (IOException ex) {
+      ResourceManagerException translated = translate(ex);
+      if (translated.getCode() == HTTP_FORBIDDEN || translated.getCode() == HTTP_NOT_FOUND) {
+        // Service can return either 403 or 404 to signify that the lien doesn't exist.
+        return null;
+      } else {
+        throw translated;
+      }
+    }
+  }
+
+  @Override
+  public Tuple<String, Iterable<Lien>> listLien(String parent, Map<Option, ?> options) {
+    try {
+      ListLiensResponse response =
+          resourceManager
+              .liens()
+              .list()
+              .setParent(parent)
+              .setFields(Option.FIELDS.getString(options))
+              .setPageSize(Option.PAGE_SIZE.getInt(options))
+              .setPageToken(Option.PAGE_TOKEN.getString(options))
+              .execute();
+      return Tuple.<String, Iterable<Lien>>of(response.getNextPageToken(), response.getLiens());
+    } catch (IOException ex) {
+      throw translate(ex);
     }
   }
 }
