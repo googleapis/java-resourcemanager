@@ -27,10 +27,9 @@ import java.util.Objects;
 /**
  * A Google Cloud Resource Manager lien object.
  *
- * <p>A Lien represents an encumbrance on the actions that can be performed on a resource. This
- * class' member variables are immutable. Methods that change or update the underlying Lien
- * information return a new Lien instance. {@code Lien} adds a layer of service-related
- * functionality over {@link LienInfo}.
+ * <p>A Lien represents an encumbrance on the actions that can be performed on a resource. This is
+ * an immutable class. Methods that change or update the underlying Lien information return a new
+ * Lien instance. {@code Lien} adds a layer of service-related functionality over {@link LienInfo}.
  */
 public class Lien extends LienInfo {
   private static final long serialVersionUID = 6767630161335155133L;
