@@ -22,6 +22,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A Google Cloud Resource Manager lien metadata object.A Lien represents an encumbrance on the
+ * actions that can be performed on a resource.
+ */
 public class LienInfo implements Serializable {
 
   static final Function<com.google.api.services.cloudresourcemanager.model.Lien, LienInfo>

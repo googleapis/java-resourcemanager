@@ -24,6 +24,14 @@ import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A Google Cloud Resource Manager lien object.
+ *
+ * <p>A Lien represents an encumbrance on the actions that can be performed on a resource. This
+ * class' member variables are immutable. Methods that change or update the underlying Lien
+ * information return a new Lien instance. {@code Lien} adds a layer of service-related
+ * functionality over {@link LienInfo}.
+ */
 public class Lien extends LienInfo {
   private static final long serialVersionUID = 6767630161335155133L;
 
@@ -94,14 +102,13 @@ public class Lien extends LienInfo {
   }
 
   /**
-   * Create a Lien which applies to the resource denoted by the parent field.
+   * Creates the Lien which applies to the resource denoted by the parent field.
    *
    * <p>Callers of this method will require permission on the parent resource. For example, applying
    * to projects/1234 requires permission resourcemanager.projects.updateLiens.
    *
    * <p>NOTE: Some resources may limit the number of Liens which may be applied.
    *
-   * @param lienInfo
    * @throws ResourceManagerException upon fuiler.
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/create">Cloud
    *     Resource Manager create</a>
@@ -111,7 +118,7 @@ public class Lien extends LienInfo {
   }
 
   /**
-   * Delete a Lien by name.
+   * Deletes the lien by name.
    *
    * <p>Callers of this method will require permission on the parent resource. For example, a Lien
    * with a parent of projects/1234 requires permission resourcemanager.projects.updateLiens.
@@ -125,7 +132,7 @@ public class Lien extends LienInfo {
   }
 
   /**
-   * Retrieve a Lien by name.
+   * Retrieves the lien by name.
    *
    * <p>Callers of this method will require permission on the parent resource. For example, a Lien
    * with a parent of projects/1234 requires permission requires permission
@@ -140,12 +147,11 @@ public class Lien extends LienInfo {
   }
 
   /**
-   * List all Liens applied to the parent resource.
+   * Lists all the liens applied to the parent resource.
    *
    * <p>Callers of this method will require permission on the parent resource. For example, a Lien
    * with a parent of projects/1234 requires permission resourcemanager.projects.get.
    *
-   * @param options
    * @throws ResourceManagerException upon failre.
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/list">Cloud
    *     Resource Manager list</a>

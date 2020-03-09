@@ -138,31 +138,28 @@ public interface ResourceManagerRpc extends ServiceRpc {
   // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
 
   /**
-   * Creates a new lien which applies to the resource denoted by the parent field.
+   * Creates the new lien which applies to the resource denoted by the parent field.
    *
-   * @param lien
    * @throws ResourceManagerException upon failure
    */
   Lien createLien(Lien lien);
 
   /**
-   * Delete a Lien by `name`.
+   * Deletes the Lien by `name`.
    *
-   * @param name The name/identifier of the Lien to delete.
    * @throws ResourceManagerException upon failure
    */
   void deleteLien(String name);
 
   /**
-   * Get a Lien by `name`.
+   * Gets the Lien by `name`.
    *
-   * @param name
    * @throws ResourceManagerException upon failure
    */
   Lien getLien(String name);
 
   /**
-   * List all Liens applied to the parent resource.
+   * Lists all the Liens applied to the parent resource.
    *
    * @throws ResourceManagerException upon failure
    */

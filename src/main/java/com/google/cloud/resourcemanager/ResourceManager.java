@@ -182,7 +182,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
     }
 
     /**
-     * The maximum number of lien to return per RPC.
+     * Returns the maximum number of lien per RPC.
      *
      * <p>The server can return fewer liens than requested. When there are more results than the
      * page size, the server will return a page token that can be used to fetch other results.
@@ -386,33 +386,38 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions);
 
   /**
-   * Creates a new lien which applies to the resource denoted by the parent field.
+   * Creates the new lien which applies to the resource denoted by the parent field.
    *
-   * @param lienInfo
    * @throws ResourceManagerException upon failure
+   * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/create">
+   *     Resource Manager create</a>
    */
   Lien createLien(LienInfo lienInfo);
 
   /**
-   * Delete a Lien by `name`.
+   * Deletes the lien by `name`.
    *
-   * @param name The name/identifier of the Lien to delete.
    * @throws ResourceManagerException upon failure
+   * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/delete">
+   *     Resource Manager delete</a>
    */
   void deleteLien(String name);
 
   /**
-   * Get a Lien by `name`.
+   * Retrieves the lien by `name`.
    *
-   * @param name
    * @throws ResourceManagerException upon failure
+   * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/get"> Resource
+   *     Manager get</a>
    */
   Lien getLien(String name);
 
   /**
-   * List all Liens applied to the parent resource.
+   * Lists all the liens applied to the parent resource.
    *
    * @throws ResourceManagerException upon failure
+   * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/list">
+   *     Resource Manager list</a>
    */
   Page<Lien> listLiens(String parent, LienListOption... options);
 }

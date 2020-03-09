@@ -32,7 +32,10 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
+@RunWith(JUnit4.class)
 public class LienTest {
 
   private static final String LIEN_NAME = "liens/1234abcd";
@@ -119,12 +122,6 @@ public class LienTest {
     initializeLien();
     Lien actualLien = lien.create(LIEN_INFO);
     compareLiens(LIEN_INFO, actualLien);
-    assertEquals(LIEN_NAME, actualLien.getName());
-    assertEquals(LIEN_CREATE_TIME, actualLien.getCreateTime());
-    assertEquals(LIEN_ORIGIN, actualLien.getOrigin());
-    assertEquals(LIEN_REASON, actualLien.getReason());
-    assertEquals(LIEN_RESTRICTIONS, actualLien.getRestrictions());
-    assertEquals(LIEN_PARENT, actualLien.getParent());
   }
 
   @Test
