@@ -24,6 +24,9 @@ import java.util.Objects;
 
 /** A Google Cloud Resource Manager constraint metadata object. */
 public class ConstraintInfo implements Serializable {
+
+  private static final long serialVersionUID = 9148970963697734236L;
+
   static final Function<
           com.google.api.services.cloudresourcemanager.model.Constraint, ConstraintInfo>
       FROM_PB_FUNCTION =
@@ -46,8 +49,6 @@ public class ConstraintInfo implements Serializable {
               return constraintInfo.toPb();
             }
           };
-
-  private static final long serialVersionUID = 9148970963697734236L;
 
   private BooleanConstraint booleanConstraint;
   private String constraintDefault;
