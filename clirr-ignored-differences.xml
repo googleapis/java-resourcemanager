@@ -7,8 +7,69 @@
         <differenceType>7012</differenceType>
     </difference>
     <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>void clearOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.cloud.resourcemanager.OrgPolicy getEffectiveOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.cloud.resourcemanager.OrgPolicy getOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.api.gax.paging.Page listAvailableOrgPolicyConstraints(java.lang.String, com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.api.gax.paging.Page listOrgPolicies(java.lang.String, com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.cloud.resourcemanager.OrgPolicy setOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
         <method>java.util.Map testOrgPermissions(java.lang.String, java.util.List)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>void clearOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.OrgPolicy getEffectiveOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.OrgPolicy getOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.cloud.Tuple listAvailableOrgPolicyConstraints(java.lang.String, com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.cloud.Tuple listOrgPolicies(java.lang.String, com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.OrgPolicy setOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest)</method>
         <differenceType>7012</differenceType>
     </difference>
 </differences>

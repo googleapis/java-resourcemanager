@@ -30,12 +30,22 @@ import com.google.api.gax.retrying.ResultRetryAlgorithm;
 import com.google.api.gax.retrying.RetrySettings;
 import com.google.api.gax.retrying.TimedAttemptSettings;
 import com.google.api.services.cloudresourcemanager.CloudResourceManager;
+import com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.Constraint;
+import com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest;
 import com.google.api.services.cloudresourcemanager.model.GetIamPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest;
+import com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsResponse;
+import com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest;
+import com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesResponse;
 import com.google.api.services.cloudresourcemanager.model.ListProjectsResponse;
 import com.google.api.services.cloudresourcemanager.model.Operation;
+import com.google.api.services.cloudresourcemanager.model.OrgPolicy;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.api.services.cloudresourcemanager.model.SetIamPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest;
 import com.google.api.services.cloudresourcemanager.model.Status;
 import com.google.api.services.cloudresourcemanager.model.TestIamPermissionsRequest;
 import com.google.api.services.cloudresourcemanager.model.TestIamPermissionsResponse;
@@ -322,6 +332,86 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       return answer.build();
     } catch (RetryHelper.RetryHelperException ex) {
       throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public void clearOrgPolicy(String resource, ClearOrgPolicyRequest request) {
+    try {
+      resourceManager.folders().clearOrgPolicy(resource, request).execute();
+    } catch (IOException ex) {
+      throw translate(ex);
+    }
+  }
+
+  @Override
+  public OrgPolicy getEffectiveOrgPolicy(String resource, GetEffectiveOrgPolicyRequest request) {
+    try {
+      return resourceManager.folders().getEffectiveOrgPolicy(resource, request).execute();
+    } catch (IOException ex) {
+      ResourceManagerException translated = translate(ex);
+      if (translated.getCode() == HTTP_FORBIDDEN) {
+        // Service returns permission denied if policy doesn't exist.
+        return null;
+      } else {
+        throw translated;
+      }
+    }
+  }
+
+  @Override
+  public OrgPolicy getOrgPolicy(String resource, GetOrgPolicyRequest request) {
+    try {
+      return resourceManager.folders().getOrgPolicy(resource, request).execute();
+    } catch (IOException ex) {
+      ResourceManagerException translated = translate(ex);
+      if (translated.getCode() == HTTP_FORBIDDEN) {
+        // Service returns permission denied if policy doesn't exist.
+        return null;
+      } else {
+        throw translated;
+      }
+    }
+  }
+
+  @Override
+  public Tuple<String, Iterable<Constraint>> listAvailableOrgPolicyConstraints(
+      String resource, ListAvailableOrgPolicyConstraintsRequest request) {
+    try {
+      ListAvailableOrgPolicyConstraintsResponse response =
+          resourceManager.folders().listAvailableOrgPolicyConstraints(resource, request).execute();
+      return Tuple.<String, Iterable<Constraint>>of(
+          response.getNextPageToken(), response.getConstraints());
+    } catch (IOException ex) {
+      throw translate(ex);
+    }
+  }
+
+  @Override
+  public Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(
+      String resource, ListOrgPoliciesRequest request) {
+    try {
+      ListOrgPoliciesResponse response =
+          resourceManager.folders().listOrgPolicies(resource, request).execute();
+      return Tuple.<String, Iterable<OrgPolicy>>of(
+          response.getNextPageToken(), response.getPolicies());
+    } catch (IOException ex) {
+      throw translate(ex);
+    }
+  }
+
+  @Override
+  public OrgPolicy setOrgPolicy(String resource, SetOrgPolicyRequest request) {
+    try {
+      return resourceManager.folders().setOrgPolicy(resource, request).execute();
+    } catch (IOException ex) {
+      ResourceManagerException translated = translate(ex);
+      if (translated.getCode() == HTTP_FORBIDDEN) {
+        // Service returns permission denied if policy doesn't exist.
+        return null;
+      } else {
+        throw translated;
+      }
     }
   }
 }

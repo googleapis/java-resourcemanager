@@ -16,8 +16,16 @@
 
 package com.google.cloud.resourcemanager.spi.v1beta1;
 
+import com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.Constraint;
+import com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest;
+import com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest;
+import com.google.api.services.cloudresourcemanager.model.OrgPolicy;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
+import com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest;
 import com.google.cloud.ServiceRpc;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.ResourceManagerException;
@@ -133,4 +141,57 @@ public interface ResourceManagerRpc extends ServiceRpc {
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions)
       throws IOException;
+
+  // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
+
+  /** Clears a Policy from a resource. */
+  void clearOrgPolicy(String resource, ClearOrgPolicyRequest request);
+
+  /**
+   * Gets the effective Policy on a resource
+   *
+   * <p>This is the result of merging Policies in the resource hierarchy. The returned Policy will
+   * not have an etagset because it is a computed Policy across multiple resources. Subtrees of
+   * Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  OrgPolicy getEffectiveOrgPolicy(String resource, GetEffectiveOrgPolicyRequest request);
+
+  /**
+   * Gets a Policy on a resource.
+   *
+   * <p>If no Policy is set on the resource, a Policy is returned with default values including
+   * POLICY_TYPE_NOT_SET for the policy_type oneof. The etag value can be used with
+   * projects.setOrgPolicy() to create or update a Policy during read-modify-write.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  OrgPolicy getOrgPolicy(String resource, GetOrgPolicyRequest request);
+
+  /**
+   * Lists Constraints that could be applied on the specified resource.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  Tuple<String, Iterable<Constraint>> listAvailableOrgPolicyConstraints(
+      String resource, ListAvailableOrgPolicyConstraintsRequest request);
+
+  /**
+   * Lists all the Policies set for a particular resource.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(
+      String resource, ListOrgPoliciesRequest request);
+
+  /**
+   * Updates the specified Policy on the resource. Creates a new Policy for that Constraint on the
+   * resource if one does not exist.
+   *
+   * <p>Not supplying an etag on the request Policy results in an unconditional write of the Policy.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  OrgPolicy setOrgPolicy(String resource, SetOrgPolicyRequest request);
 }

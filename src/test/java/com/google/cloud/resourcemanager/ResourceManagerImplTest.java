@@ -16,6 +16,7 @@
 
 package com.google.cloud.resourcemanager;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -29,9 +30,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest;
+import com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest;
+import com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest;
+import com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
+import com.google.cloud.Tuple;
+import com.google.cloud.resourcemanager.OrgPolicyInfo.BooleanPolicy;
+import com.google.cloud.resourcemanager.OrgPolicyInfo.ListPolicy;
 import com.google.cloud.resourcemanager.ProjectInfo.ResourceId;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectField;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectGetOption;
@@ -41,7 +51,9 @@ import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
 import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +93,29 @@ public class ResourceManagerImplTest {
       Policy.newBuilder()
           .addIdentity(Role.owner(), Identity.user("me@gmail.com"))
           .addIdentity(Role.editor(), Identity.serviceAccount("serviceaccount@gmail.com"))
+          .build();
+  private static final String CURSOR = "cursor";
+  private static final String RESOURCE = "folders/my-folder";
+  private static final String CONSTRAINTS = "constraints/serviceuser.services";
+  private static final String ETAG = "abcd12";
+  private static final String UPDATE_TIME = "014-10-02T15:01:23.045123456Z";
+  private static final Integer VERSION = 1;
+  private static final BooleanPolicy BOOLEAN_POLICY = new BooleanPolicy(true);
+  private static final ListPolicy LIST_POLICY =
+      new ListPolicy(
+          "allvaluse",
+          Arrays.asList("allowedValues"),
+          Arrays.asList("deniedValues"),
+          true,
+          "suggestedValue");
+  private static final OrgPolicyInfo ORG_POLICY_INFO =
+      OrgPolicy.newBuilder()
+          .setBooleanPolicy(BOOLEAN_POLICY)
+          .setConstraint(CONSTRAINTS)
+          .setListPolicy(LIST_POLICY)
+          .setEtag(ETAG)
+          .setUpdateTime(UPDATE_TIME)
+          .setVersion(VERSION)
           .build();
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
@@ -494,6 +529,72 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testClearOrgPolicy() {
+    try {
+      ClearOrgPolicyRequest requestBody = new ClearOrgPolicyRequest();
+      requestBody.setConstraint(CONSTRAINTS);
+      requestBody.setEtag(ETAG);
+      RESOURCE_MANAGER.clearOrgPolicy(RESOURCE, requestBody);
+      fail("Should fail because the organization policy doesn't exist.");
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
+    }
+  }
+
+  @Test
+  public void testGetEffectiveOrgPolicy() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    GetEffectiveOrgPolicyRequest request = new GetEffectiveOrgPolicyRequest();
+    request.setConstraint(CONSTRAINTS);
+    EasyMock.expect(resourceManagerRpcMock.getEffectiveOrgPolicy(RESOURCE, request))
+        .andReturn(ORG_POLICY_INFO.toPb())
+        .times(2);
+    EasyMock.replay(resourceManagerRpcMock);
+    OrgPolicy orgPolicy = resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, request);
+    assertEquals(CONSTRAINTS, orgPolicy.getConstraint());
+    assertEquals(BOOLEAN_POLICY, orgPolicy.getBooleanPolicy());
+    assertEquals(LIST_POLICY, orgPolicy.getListPolicy());
+    assertEquals(UPDATE_TIME, orgPolicy.getUpdateTime());
+    assertEquals(VERSION, orgPolicy.getVersion());
+  }
+
+  @Test
+  public void testGetOrgPolicy() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    GetOrgPolicyRequest request = new GetOrgPolicyRequest();
+    request.setConstraint(CONSTRAINTS);
+    EasyMock.expect(resourceManagerRpcMock.getOrgPolicy(RESOURCE, request))
+        .andReturn(ORG_POLICY_INFO.toPb())
+        .times(2);
+    EasyMock.replay(resourceManagerRpcMock);
+    OrgPolicy orgPolicy = resourceManagerMock.getOrgPolicy(RESOURCE, request);
+    assertEquals(CONSTRAINTS, orgPolicy.getConstraint());
+    assertEquals(BOOLEAN_POLICY, orgPolicy.getBooleanPolicy());
+    assertEquals(LIST_POLICY, orgPolicy.getListPolicy());
+    assertEquals(UPDATE_TIME, orgPolicy.getUpdateTime());
+    assertEquals(VERSION, orgPolicy.getVersion());
+  }
+
+  @Test
   public void testTestOrgPermissionsWithResourceManagerException() throws IOException {
     String organization = "organizations/12345";
     String exceptionMessage = "Not Found";
@@ -516,5 +617,94 @@ public class ResourceManagerImplTest {
       assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
+  }
+
+  @Test
+  public void testListAvailableOrgPolicyConstraints() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    ConstraintInfo.ListConstraint LIST_CONSTRAINT = new ConstraintInfo.ListConstraint(null, true);
+    ImmutableList<Constraint> constraints =
+        ImmutableList.of(
+            new Constraint(
+                resourceManagerMock,
+                new ConstraintInfo.BuilderImpl(ConstraintInfo.newBuilder(CONSTRAINTS).build())));
+    Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Constraint>> result =
+        Tuple.of(CURSOR, Iterables.transform(constraints, ConstraintInfo.TO_PB_FUNCTION));
+    ListAvailableOrgPolicyConstraintsRequest policyConstraintsRequest =
+        new ListAvailableOrgPolicyConstraintsRequest();
+    policyConstraintsRequest.setPageSize(1);
+    policyConstraintsRequest.setPageToken("page-token");
+    EasyMock.expect(
+            resourceManagerRpcMock.listAvailableOrgPolicyConstraints(
+                RESOURCE, policyConstraintsRequest))
+        .andReturn(result);
+    EasyMock.replay(resourceManagerRpcMock);
+    Page<Constraint> page =
+        resourceManagerMock.listAvailableOrgPolicyConstraints(RESOURCE, policyConstraintsRequest);
+    assertEquals(CURSOR, page.getNextPageToken());
+    assertArrayEquals(constraints.toArray(), Iterables.toArray(page.getValues(), Constraint.class));
+  }
+
+  @Test
+  public void testListOrgPolicies() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    ImmutableList<OrgPolicy> orgPolicies =
+        ImmutableList.of(
+            new OrgPolicy(resourceManagerMock, new OrgPolicyInfo.BuilderImpl(ORG_POLICY_INFO)));
+    Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>> result =
+        Tuple.of(CURSOR, Iterables.transform(orgPolicies, OrgPolicyInfo.TO_PB_FUNCTION));
+    ListOrgPoliciesRequest orgPoliciesRequest = new ListOrgPoliciesRequest();
+    orgPoliciesRequest.setPageSize(1);
+    orgPoliciesRequest.setPageToken("page-token");
+    EasyMock.expect(resourceManagerRpcMock.listOrgPolicies(RESOURCE, orgPoliciesRequest))
+        .andReturn(result);
+    EasyMock.replay(resourceManagerRpcMock);
+    Page<OrgPolicy> page = resourceManagerMock.listOrgPolicies(RESOURCE, orgPoliciesRequest);
+    assertEquals(CURSOR, page.getNextPageToken());
+    assertArrayEquals(orgPolicies.toArray(), Iterables.toArray(page.getValues(), OrgPolicy.class));
+  }
+
+  @Test
+  public void testSetOrgPolicy() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    SetOrgPolicyRequest request = new SetOrgPolicyRequest();
+    request.setPolicy(ORG_POLICY_INFO.toPb());
+    EasyMock.expect(resourceManagerRpcMock.setOrgPolicy(RESOURCE, request))
+        .andReturn(ORG_POLICY_INFO.toPb())
+        .times(2);
+    EasyMock.replay(resourceManagerRpcMock);
+    OrgPolicy orgPolicy = resourceManagerMock.setOrgPolicy(RESOURCE, request);
+    assertEquals(CONSTRAINTS, orgPolicy.getConstraint());
+    assertEquals(BOOLEAN_POLICY, orgPolicy.getBooleanPolicy());
+    assertEquals(LIST_POLICY, orgPolicy.getListPolicy());
+    assertEquals(UPDATE_TIME, orgPolicy.getUpdateTime());
+    assertEquals(VERSION, orgPolicy.getVersion());
   }
 }
