@@ -308,13 +308,13 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       throws IOException {
     try {
       TestIamPermissionsResponse response =
-          resourceManager
-              .organizations()
-              .testIamPermissions(
-                  resource, new TestIamPermissionsRequest().setPermissions(permissions))
-              .execute();
+              resourceManager
+                      .organizations()
+                      .testIamPermissions(
+                              resource, new TestIamPermissionsRequest().setPermissions(permissions))
+                      .execute();
       Set<String> permissionsOwned =
-          ImmutableSet.copyOf(firstNonNull(response.getPermissions(), ImmutableList.<String>of()));
+              ImmutableSet.copyOf(firstNonNull(response.getPermissions(), ImmutableList.<String>of()));
       ImmutableMap.Builder<String, Boolean> answer = ImmutableMap.builder();
       for (String permission : permissions) {
         answer.put(permission, permissionsOwned.contains(permission));
@@ -322,6 +322,21 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       return answer.build();
     } catch (RetryHelper.RetryHelperException ex) {
       throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public Operation getOperations(String name) {
+    try {
+      return resourceManager.operations().get(name).execute();
+    } catch (IOException ex) {
+      ResourceManagerException translated = translate(ex);
+      if (translated.getCode() == HTTP_FORBIDDEN || translated.getCode() == HTTP_NOT_FOUND) {
+        // Service can return either 403 or 404 to signify that the operation doesn't exist.
+        return null;
+      } else {
+        throw translated;
+      }
     }
   }
 }

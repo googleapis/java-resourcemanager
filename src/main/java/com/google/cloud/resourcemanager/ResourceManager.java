@@ -17,6 +17,7 @@
 package com.google.cloud.resourcemanager;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.Operation;
 import com.google.cloud.FieldSelector;
 import com.google.cloud.FieldSelector.Helper;
 import com.google.cloud.Policy;
@@ -354,4 +355,19 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     Resource Manager testIamPermissions</a>
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions);
+
+  /** Gets the latest state of a long-running operation.
+   *
+   * <p>Clients can use this method to poll the operation result at intervals as recommended by the
+   * API service.
+   *
+   * @param name The name of the operation resource.
+   * @return This resource represents a long-running operation that is the result of a network API
+   *     call.
+   * @throws ResourceManagerException upon failure
+   * @see <a href=
+   *     "https://cloud.google.com/resource-manager/reference/rest/v1/operations/get">Resource
+   *     Manager get</a>
+   */
+  Operation getOperations(String name);
 }

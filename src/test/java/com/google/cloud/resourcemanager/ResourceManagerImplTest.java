@@ -29,6 +29,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.Operation;
+import com.google.api.services.cloudresourcemanager.model.Status;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
@@ -42,6 +44,8 @@ import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +86,13 @@ public class ResourceManagerImplTest {
           .addIdentity(Role.owner(), Identity.user("me@gmail.com"))
           .addIdentity(Role.editor(), Identity.serviceAccount("serviceaccount@gmail.com"))
           .build();
+
+  // operations
+  private static final Integer ID = 1234;
+  private static final Integer CODE = 400;
+  private static final String NAME = "operations/{unique_id}";
+  private static final String TYPE = "types.example.com/standard/id";
+  private static final String MESSAGE = "INVALID_ARGUMENT";
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
@@ -472,18 +483,17 @@ public class ResourceManagerImplTest {
   public void testTestOrgPermissions() throws IOException {
     String organization = "organization/12345";
     List<String> permissions =
-        ImmutableList.of(
-            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+            ImmutableList.of(
+                    "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
     Map<String, Boolean> expected =
-        ImmutableMap.of(
-            "resourcemanager.organizations.get",
-            true,
-            "resourcemanager.organizations.getIamPolicy",
-            false);
+            ImmutableMap.of(
+                    "resourcemanager.organizations.get",
+                    true,
+                    "resourcemanager.organizations.getIamPolicy",
+                    false);
     when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
-        .thenReturn(resourceManagerRpcMock);
-    ResourceManager resourceManager =
-        ResourceManagerOptions.newBuilder()
+            .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager = ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
@@ -498,23 +508,101 @@ public class ResourceManagerImplTest {
     String organization = "organizations/12345";
     String exceptionMessage = "Not Found";
     List<String> permissions =
-        ImmutableList.of(
-            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+            ImmutableList.of(
+                    "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
     when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
-        .thenReturn(resourceManagerRpcMock);
-    ResourceManager resourceManager =
-        ResourceManagerOptions.newBuilder()
+            .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager = ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
     doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerRpcMock)
-        .testOrgPermissions(organization, permissions);
+            .when(resourceManagerRpcMock)
+            .testOrgPermissions(organization, permissions);
     try {
       resourceManager.testOrgPermissions(organization, permissions);
     } catch (ResourceManagerException expected) {
       assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
+  }
+
+  @Test
+  public void testGetOperationsWithResponse() {
+    Map<String, Object> metadata = new HashMap<>();
+    metadata.put("id", ID);
+    metadata.put("@type", TYPE);
+    Map<String, Object> response = new HashMap<>();
+    response.put("id", ID);
+    response.put("@type", TYPE);
+
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    // This resource represents a long-running operation that is the result of a network API call.
+    Operation operation = new Operation();
+    operation.setName(NAME);
+    operation.setMetadata(metadata);
+    operation.setDone(Boolean.TRUE);
+    operation.setResponse(response);
+    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operation);
+    EasyMock.replay(resourceManagerRpcMock);
+    Operation actualOperation = resourceManagerMock.getOperations(NAME);
+    assertEquals(NAME, actualOperation.getName());
+    assertEquals(metadata, actualOperation.getMetadata());
+    assertEquals(true, actualOperation.getDone());
+    assertEquals(response, actualOperation.getResponse());
+  }
+
+  @Test
+  public void testGetOperationsWithError() {
+    Map<String, Object> metadata = new HashMap<>();
+    metadata.put("id", ID);
+    metadata.put("@type", TYPE);
+
+    Map<String, Object> detailMaps = new HashMap<>();
+    detailMaps.put("id", ID);
+    detailMaps.put("@type", TYPE);
+
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    /**
+     * The Status type defines a logical error model that is suitable for different programming
+     * environments, including REST APIs and RPC APIs. It is used by gRPC. Each Status message
+     * contains three pieces of data: error code, error message, and error details.
+     */
+    Status status = new Status();
+    status.setCode(CODE);
+    status.setMessage(MESSAGE);
+    status.setDetails(Arrays.asList(detailMaps));
+
+    // This resource represents a long-running operation that is the result of a network API call.
+    Operation operation = new Operation();
+    operation.setName(NAME);
+    operation.setMetadata(metadata);
+    operation.setDone(Boolean.TRUE);
+    operation.setError(status);
+    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operation);
+    EasyMock.replay(resourceManagerRpcMock);
+    Operation actualOperation = resourceManagerMock.getOperations(NAME);
+    assertEquals(NAME, actualOperation.getName());
+    assertEquals(metadata, actualOperation.getMetadata());
+    assertEquals(true, actualOperation.getDone());
+    assertEquals(status, actualOperation.getError());
   }
 }

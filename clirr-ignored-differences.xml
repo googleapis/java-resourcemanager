@@ -11,4 +11,14 @@
         <method>java.util.Map testOrgPermissions(java.lang.String, java.util.List)</method>
         <differenceType>7012</differenceType>
     </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.api.services.cloudresourcemanager.model.Operation getOperations(java.lang.String)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.Operation getOperations(java.lang.String)</method>
+        <differenceType>7012</differenceType>
+    </difference>
 </differences>

@@ -20,6 +20,7 @@ import static com.google.cloud.RetryHelper.runWithRetries;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.Operation;
 import com.google.cloud.BaseService;
 import com.google.cloud.PageImpl;
 import com.google.cloud.PageImpl.NextPageFetcher;
@@ -288,6 +289,26 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
           getOptions().getRetrySettings(),
           EXCEPTION_HANDLER,
           getOptions().getClock());
+    } catch (RetryHelperException ex) {
+        throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public Operation getOperations(final String name) {
+    try {
+      com.google.api.services.cloudresourcemanager.model.Operation answer =
+          runWithRetries(
+              new Callable<com.google.api.services.cloudresourcemanager.model.Operation>() {
+                @Override
+                public com.google.api.services.cloudresourcemanager.model.Operation call() {
+                  return resourceManagerRpc.getOperations(name);
+                }
+              },
+              getOptions().getRetrySettings(),
+              EXCEPTION_HANDLER,
+              getOptions().getClock());
+      return answer == null ? null : answer;
     } catch (RetryHelperException ex) {
       throw ResourceManagerException.translateAndThrow(ex);
     }
