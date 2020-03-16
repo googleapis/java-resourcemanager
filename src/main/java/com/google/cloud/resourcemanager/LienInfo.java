@@ -41,8 +41,8 @@ public class LienInfo implements Serializable {
           new Function<LienInfo, com.google.api.services.cloudresourcemanager.model.Lien>() {
             @Override
             public com.google.api.services.cloudresourcemanager.model.Lien apply(
-                LienInfo tableInfo) {
-              return tableInfo.toPb();
+                LienInfo lienInfo) {
+              return lienInfo.toPb();
             }
           };
 

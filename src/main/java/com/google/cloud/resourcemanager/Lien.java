@@ -19,8 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.resourcemanager.ResourceManager.LienListOption;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -179,11 +177,6 @@ public class Lien extends LienInfo {
   @Override
   public final int hashCode() {
     return Objects.hash(super.hashCode(), options);
-  }
-
-  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-    in.defaultReadObject();
-    this.resourceManager = options.getService();
   }
 
   static Lien fromPb(

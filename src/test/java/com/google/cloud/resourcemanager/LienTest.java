@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.PageImpl;
@@ -114,14 +115,33 @@ public class LienTest {
   }
 
   @Test
+  public void testFromPb() {
+    expect(resourceManager.getOptions()).andReturn(mockOptions).times(3);
+    replay(resourceManager);
+    Lien lien = Lien.fromPb(resourceManager, LIEN_INFO.toPb());
+    assertEquals(LIEN_NAME, lien.getName());
+    assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+    assertEquals(LIEN_ORIGIN, lien.getOrigin());
+    assertEquals(LIEN_REASON, lien.getReason());
+    assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+    assertEquals(LIEN_PARENT, lien.getParent());
+    assertEquals(resourceManager.getOptions(), lien.getResourceManager().getOptions());
+  }
+
+  @Test
   public void testCreate() {
     initializeExpectedLien(1);
     expect(resourceManager.getOptions()).andReturn(mockOptions);
     expect(resourceManager.createLien(LIEN_INFO)).andReturn(expectedLien);
     replay(resourceManager);
     initializeLien();
-    Lien actualLien = lien.create(LIEN_INFO);
-    compareLiens(LIEN_INFO, actualLien);
+    Lien value = lien.create(LIEN_INFO);
+    assertEquals(LIEN_NAME, value.getName());
+    assertEquals(LIEN_PARENT, value.getParent());
+    assertEquals(LIEN_RESTRICTIONS, value.getRestrictions());
+    assertEquals(LIEN_REASON, value.getReason());
+    assertEquals(LIEN_ORIGIN, value.getOrigin());
+    assertEquals(LIEN_CREATE_TIME, value.getCreateTime());
   }
 
   @Test
@@ -162,6 +182,8 @@ public class LienTest {
   }
 
   private void compareLiens(LienInfo expected, LienInfo value) {
+    assertTrue(expected.equals(value));
+    assertEquals(expected.hashCode(), value.hashCode());
     assertEquals(expected.getName(), value.getName());
     assertEquals(expected.getParent(), value.getParent());
     assertEquals(expected.getRestrictions(), value.getRestrictions());
