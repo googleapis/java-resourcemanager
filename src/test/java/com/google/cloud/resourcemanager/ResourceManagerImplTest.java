@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
 import com.google.api.services.cloudresourcemanager.model.Operation;
-import com.google.api.services.cloudresourcemanager.model.Status;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
@@ -546,18 +545,19 @@ public class ResourceManagerImplTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    // This resource represents a long-running operation that is the result of a network API call.
-    Operation operation = new Operation();
-    operation.setName(NAME);
-    operation.setMetadata(metadata);
-    operation.setDone(Boolean.TRUE);
-    operation.setResponse(response);
+    OperationInfo operationInfo =
+        OperationInfo.newBuilder(NAME)
+            .setDone(Boolean.TRUE)
+            .setMetadata(metadata)
+            .setResponse(response)
+            .build();
+    Operation operation = operationInfo.toPb();
     EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operation);
     EasyMock.replay(resourceManagerRpcMock);
-    Operation actualOperation = resourceManagerMock.getOperations(NAME);
+    OperationInfo actualOperation = resourceManagerMock.getOperations(NAME);
     assertEquals(NAME, actualOperation.getName());
     assertEquals(metadata, actualOperation.getMetadata());
-    assertEquals(true, actualOperation.getDone());
+    assertEquals(Boolean.TRUE, actualOperation.getDone());
     assertEquals(response, actualOperation.getResponse());
   }
 
@@ -566,7 +566,6 @@ public class ResourceManagerImplTest {
     Map<String, Object> metadata = new HashMap<>();
     metadata.put("id", ID);
     metadata.put("@type", TYPE);
-
     Map<String, Object> detailMaps = new HashMap<>();
     detailMaps.put("id", ID);
     detailMaps.put("@type", TYPE);
@@ -581,28 +580,20 @@ public class ResourceManagerImplTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    /**
-     * The Status type defines a logical error model that is suitable for different programming
-     * environments, including REST APIs and RPC APIs. It is used by gRPC. Each Status message
-     * contains three pieces of data: error code, error message, and error details.
-     */
-    Status status = new Status();
-    status.setCode(CODE);
-    status.setMessage(MESSAGE);
-    status.setDetails(Arrays.asList(detailMaps));
-
-    // This resource represents a long-running operation that is the result of a network API call.
-    Operation operation = new Operation();
-    operation.setName(NAME);
-    operation.setMetadata(metadata);
-    operation.setDone(Boolean.TRUE);
-    operation.setError(status);
-    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operation);
+    OperationInfo.Status status =
+        new OperationInfo.Status(CODE, MESSAGE, Arrays.asList(detailMaps));
+    OperationInfo operationInfo =
+        OperationInfo.newBuilder(NAME)
+            .setDone(Boolean.TRUE)
+            .setMetadata(metadata)
+            .setError(status)
+            .build();
+    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operationInfo.toPb());
     EasyMock.replay(resourceManagerRpcMock);
-    Operation actualOperation = resourceManagerMock.getOperations(NAME);
+    OperationInfo actualOperation = resourceManagerMock.getOperations(NAME);
     assertEquals(NAME, actualOperation.getName());
     assertEquals(metadata, actualOperation.getMetadata());
-    assertEquals(true, actualOperation.getDone());
+    assertEquals(Boolean.TRUE, actualOperation.getDone());
     assertEquals(status, actualOperation.getError());
   }
 }

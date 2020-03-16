@@ -17,7 +17,6 @@
 package com.google.cloud.resourcemanager;
 
 import com.google.api.gax.paging.Page;
-import com.google.api.services.cloudresourcemanager.model.Operation;
 import com.google.cloud.FieldSelector;
 import com.google.cloud.FieldSelector.Helper;
 import com.google.cloud.Policy;
@@ -362,12 +361,11 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * API service.
    *
    * @param name The name of the operation resource.
-   * @return This resource represents a long-running operation that is the result of a network API
-   *     call.
+   * @return The result of a long-running operation.
    * @throws ResourceManagerException upon failure
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1/operations/get">Resource
    *     Manager get</a>
    */
-  Operation getOperations(String name);
+  OperationInfo getOperations(String name);
 }

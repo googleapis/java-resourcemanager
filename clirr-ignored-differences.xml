@@ -13,7 +13,7 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>com.google.api.services.cloudresourcemanager.model.Operation getOperations(java.lang.String)</method>
+        <method>com.google.cloud.resourcemanager.OperationInfo getOperations(java.lang.String)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
