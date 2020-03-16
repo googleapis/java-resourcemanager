@@ -16,6 +16,7 @@
 package com.google.cloud.resourcemanager;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -99,23 +100,50 @@ public class OperationInfoTest {
   }
 
   @Test
+  public void testToString() {
+    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("name=" + NAME));
+    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("done=" + Boolean.TRUE));
+    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("metadata=" + operationMap));
+    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("response=" + operationMap));
+    assertTrue(OPERATION_INFO_WITH_ERROR.toString().contains("error=" + STATUS));
+  }
+
+  @Test
   public void testStatus() {
-    assertEquals(CODE, STATUS.getCode());
-    assertEquals(MESSAGE, STATUS.getMessage());
-    assertEquals(DETAILS, STATUS.getDetails());
+    OperationInfo.Status status = new OperationInfo.Status(CODE, MESSAGE, DETAILS);
+    compareStatus(status, STATUS);
   }
 
   @Test
   public void testStatusToPbAndFromPb() {
     OperationInfo.Status status = new OperationInfo.Status(CODE, MESSAGE, DETAILS);
     assertEquals(status, OperationInfo.Status.fromPb(status.toPb()));
+    compareStatus(status, STATUS);
+  }
+
+  @Test
+  public void testStatusToString() {
+    assertTrue(STATUS.toString().contains("code=" + CODE));
+    assertTrue(STATUS.toString().contains("message=" + MESSAGE));
+    assertTrue(STATUS.toString().contains("details=" + DETAILS));
   }
 
   private void compareOperations(OperationInfo expected, OperationInfo value) {
+    assertTrue(expected.equals(value));
+    assertEquals(expected.hashCode(), value.hashCode());
     assertEquals(expected.getName(), value.getName());
     assertEquals(expected.getDone(), value.getDone());
     assertEquals(expected.getMetadata(), value.getMetadata());
     assertEquals(expected.getResponse(), value.getResponse());
     assertEquals(expected.getError(), value.getError());
+  }
+
+  private void compareStatus(OperationInfo.Status expected, OperationInfo.Status value) {
+    assertTrue(expected.equals(value));
+    assertEquals(expected.toString(), value.toString());
+    assertEquals(expected.hashCode(), value.hashCode());
+    assertEquals(expected.getCode(), value.getCode());
+    assertEquals(expected.getMessage(), value.getMessage());
+    assertEquals(expected.getDetails(), value.getDetails());
   }
 }

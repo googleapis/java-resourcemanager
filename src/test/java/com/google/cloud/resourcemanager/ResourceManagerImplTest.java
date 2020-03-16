@@ -620,4 +620,15 @@ public class ResourceManagerImplTest {
       assertEquals(exceptionMessage, exception.getCause().getMessage());
     }
   }
+
+  @Test
+  public void testGetOperationsWithException() {
+    try {
+      OperationInfo operationInfo = RESOURCE_MANAGER.getOperations(NAME);
+      assertNull(operationInfo);
+      assertEquals(NAME, operationInfo.getName());
+      fail();
+    } catch (NullPointerException expected) {
+    }
+  }
 }

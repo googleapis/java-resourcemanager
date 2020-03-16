@@ -72,9 +72,9 @@ public class OperationInfo implements Serializable {
     @Override
     public String toString() {
       return MoreObjects.toStringHelper(this)
-          .add("code", getCode())
-          .add("message", getMessage())
-          .add("details", getDetails())
+          .add("code", code)
+          .add("message", message)
+          .add("details", details)
           .toString();
     }
 
