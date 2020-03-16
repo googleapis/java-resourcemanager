@@ -596,4 +596,28 @@ public class ResourceManagerImplTest {
     assertEquals(Boolean.TRUE, actualOperation.getDone());
     assertEquals(status, actualOperation.getError());
   }
+
+  @Test
+  public void testGetOperationsWithRuntimeException() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    String exceptionMessage = "Artificial runtime exception";
+    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME))
+        .andThrow(new RuntimeException(exceptionMessage));
+    EasyMock.replay(resourceManagerRpcMock);
+    try {
+      resourceManagerMock.getOperations(NAME);
+      fail();
+    } catch (ResourceManagerException exception) {
+      assertEquals(exceptionMessage, exception.getCause().getMessage());
+    }
+  }
 }

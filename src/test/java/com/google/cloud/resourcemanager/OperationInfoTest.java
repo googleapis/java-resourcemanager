@@ -98,6 +98,19 @@ public class OperationInfoTest {
     compareOperations(operationInfoWithError, OperationInfo.fromPb(operationInfoWithError.toPb()));
   }
 
+  @Test
+  public void testStatus() {
+    assertEquals(CODE, STATUS.getCode());
+    assertEquals(MESSAGE, STATUS.getMessage());
+    assertEquals(DETAILS, STATUS.getDetails());
+  }
+
+  @Test
+  public void testStatusToPbAndFromPb() {
+    OperationInfo.Status status = new OperationInfo.Status(CODE, MESSAGE, DETAILS);
+    assertEquals(status, OperationInfo.Status.fromPb(status.toPb()));
+  }
+
   private void compareOperations(OperationInfo expected, OperationInfo value) {
     assertEquals(expected.getName(), value.getName());
     assertEquals(expected.getDone(), value.getDone());
