@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.api.gax.paging.Page;
@@ -112,6 +113,10 @@ public class LienTest {
     assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
     assertEquals(LIEN_PARENT, lien.getParent());
     assertEquals(resourceManager.getOptions(), lien.getResourceManager().getOptions());
+    com.google.api.services.cloudresourcemanager.model.Lien lienModel =
+        LienInfo.TO_PB_FUNCTION.apply(LIEN_INFO);
+    assertNotNull(lienModel);
+    assertNotNull(LienInfo.FROM_PB_FUNCTION.apply(lienModel));
   }
 
   @Test
@@ -182,7 +187,7 @@ public class LienTest {
   }
 
   private void compareLiens(LienInfo expected, LienInfo value) {
-    assertTrue(expected.equals(value));
+    assertEquals(expected, value);
     assertEquals(expected.hashCode(), value.hashCode());
     assertEquals(expected.getName(), value.getName());
     assertEquals(expected.getParent(), value.getParent());

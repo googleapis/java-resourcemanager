@@ -16,6 +16,7 @@
 package com.google.cloud.resourcemanager;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -26,7 +27,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class LionInfoTest {
+public class LienInfoTest {
 
   private static final String LIEN_NAME = "liens/1234abcd";
   private static final String LIEN_PARENT = " projects/1234";
@@ -57,7 +58,8 @@ public class LionInfoTest {
 
   @Test
   public void testToBuilder() {
-    compareLiens(FULL_LIEN_INFO, FULL_LIEN_INFO.toBuilder().build());
+    LienInfo lienInfo = FULL_LIEN_INFO.toBuilder().setName(LIEN_NAME).build();
+    compareLiens(FULL_LIEN_INFO, lienInfo);
   }
 
   @Test
@@ -79,9 +81,11 @@ public class LionInfoTest {
             .build());
     compareLiens(FULL_LIEN_INFO, new LienInfo.BuilderImpl(FULL_LIEN_INFO).build());
     assertNotEquals(FULL_LIEN_INFO, PARTIAL_LIEN_INFO);
+    assertFalse(FULL_LIEN_INFO == null);
   }
 
   private void compareLiens(LienInfo expected, LienInfo value) {
+    assertEquals(expected, value);
     assertEquals(expected.getName(), value.getName());
     assertEquals(expected.getParent(), value.getParent());
     assertEquals(expected.getRestrictions(), value.getRestrictions());

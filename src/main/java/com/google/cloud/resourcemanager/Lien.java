@@ -19,6 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.resourcemanager.ResourceManager.LienListOption;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -163,15 +166,11 @@ public class Lien extends LienInfo {
   }
 
   @Override
-  public final boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (obj == null || !obj.getClass().equals(Lien.class)) {
-      return false;
-    }
-    Lien other = (Lien) obj;
-    return Objects.equals(toPb(), other.toPb()) && Objects.equals(options, other.options);
+  public boolean equals(Object obj) {
+    return obj == this
+        || obj != null
+            && obj.getClass().equals(Lien.class)
+            && Objects.equals(toPb(), ((Lien) obj).toPb());
   }
 
   @Override
