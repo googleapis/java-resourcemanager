@@ -565,7 +565,39 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testCreateLienWithResourceManagerException() {
+    try {
+      Lien lien = RESOURCE_MANAGER.createLien(COMPLETE_LIEN_INFO);
+      assertEquals(LIEN_NAME, lien.getName());
+      assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+      assertEquals(LIEN_ORIGIN, lien.getOrigin());
+      assertEquals(LIEN_PARENT, lien.getParent());
+      assertEquals(LIEN_REASON, lien.getReason());
+      assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+      fail();
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertTrue(expected.getMessage().contains("404 Not Found"));
+    }
+  }
+
+  @Test
   public void testDeleteLien() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    resourceManagerMock.deleteLien(LIEN_NAME);
+  }
+
+  @Test
+  public void testDeleteLienWithResourceManagerException() {
     try {
       RESOURCE_MANAGER.deleteLien(LIEN_NAME);
       fail("Should fail because the lien doesn't exist.");
