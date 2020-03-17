@@ -598,6 +598,21 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testGetLienWithException() {
+    try {
+      Lien lien = RESOURCE_MANAGER.getLien(LIEN_NAME);
+      assertEquals(LIEN_NAME, lien.getName());
+      assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+      assertEquals(LIEN_ORIGIN, lien.getOrigin());
+      assertEquals(LIEN_PARENT, lien.getParent());
+      assertEquals(LIEN_REASON, lien.getReason());
+      assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+      fail();
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
   public void testListLien() {
     ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
     ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
@@ -619,6 +634,17 @@ public class ResourceManagerImplTest {
     Page<Lien> page = resourceManagerMock.listLiens(LIEN_PARENT);
     assertEquals(CURSOR, page.getNextPageToken());
     assertArrayEquals(lienList.toArray(), Iterables.toArray(page.getValues(), Lien.class));
+  }
+
+  @Test
+  public void testListLienWithResourceManagerException() {
+    try {
+      Page<Lien> page = RESOURCE_MANAGER.listLiens(LIEN_PARENT);
+      assertEquals(CURSOR, page.getNextPageToken());
+      fail();
+    } catch (ResourceManagerException expected) {
+      assertTrue(expected.getMessage().contains("404 Not Found"));
+    }
   }
 
   @Test
