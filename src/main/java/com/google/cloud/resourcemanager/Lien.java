@@ -30,7 +30,6 @@ import java.util.Objects;
  * Lien instance. {@code Lien} adds a layer of service-related functionality over {@link LienInfo}.
  */
 public class Lien extends LienInfo {
-  private static final long serialVersionUID = 6767630161335155133L;
 
   private final ResourceManagerOptions options;
   private transient ResourceManager resourceManager;
@@ -101,12 +100,12 @@ public class Lien extends LienInfo {
   /**
    * Creates the Lien which applies to the resource denoted by the parent field.
    *
-   * <p>Callers of this method will require permission on the parent resource. For example, applying
-   * to projects/1234 requires permission resourcemanager.projects.updateLiens.
+   * <p>Callers of this method require permission on the parent resource. For example, applying to
+   * projects/1234 requires permission resourcemanager.projects.updateLiens.
    *
-   * <p>NOTE: Some resources may limit the number of Liens which may be applied.
+   * <p>Some resources may limit the number of Liens which may be applied.
    *
-   * @throws ResourceManagerException upon fuiler.
+   * @throws ResourceManagerException upon failure
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/create">Cloud
    *     Resource Manager create</a>
    */
@@ -117,10 +116,10 @@ public class Lien extends LienInfo {
   /**
    * Deletes the lien by name.
    *
-   * <p>Callers of this method will require permission on the parent resource. For example, a Lien
-   * with a parent of projects/1234 requires permission resourcemanager.projects.updateLiens.
+   * <p>Callers of this method require permission on the parent resource. For example, a Lien with a
+   * parent of projects/1234 requires permission resourcemanager.projects.updateLiens.
    *
-   * @throws ResourceManagerException upon failre.
+   * @throws ResourceManagerException upon failure
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/delete">Cloud
    *     Resource Manager delete</a>
    */
@@ -131,11 +130,11 @@ public class Lien extends LienInfo {
   /**
    * Retrieves the lien by name.
    *
-   * <p>Callers of this method will require permission on the parent resource. For example, a Lien
-   * with a parent of projects/1234 requires permission requires permission
-   * resourcemanager.projects.get or resourcemanager.projects.updateLiens.
+   * <p>Callers of this method require permission on the parent resource. For example, a Lien with a
+   * parent of projects/1234 requires permission requires permission resourcemanager.projects.get or
+   * resourcemanager.projects.updateLiens.
    *
-   * @throws ResourceManagerException upon failre.
+   * @throws ResourceManagerException upon failure
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/list">Cloud
    *     Resource Manager get</a>
    */
@@ -146,10 +145,10 @@ public class Lien extends LienInfo {
   /**
    * Lists all the liens applied to the parent resource.
    *
-   * <p>Callers of this method will require permission on the parent resource. For example, a Lien
-   * with a parent of projects/1234 requires permission resourcemanager.projects.get.
+   * <p>Callers of this method require permission on the parent resource. For example, a Lien with a
+   * parent of projects/1234 requires permission resourcemanager.projects.get.
    *
-   * @throws ResourceManagerException upon failre.
+   * @throws ResourceManagerException upon failure
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/list">Cloud
    *     Resource Manager list</a>
    */

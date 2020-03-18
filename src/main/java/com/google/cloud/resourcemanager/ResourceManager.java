@@ -182,10 +182,10 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
     }
 
     /**
-     * Returns the maximum number of lien per RPC.
+     * Returns the maximum number of liens per RPC.
      *
      * <p>The server can return fewer liens than requested. When there are more results than the
-     * page size, the server will return a page token that can be used to fetch other results.
+     * page size, the server returns a page token that can be used to fetch other results.
      */
     public static LienListOption pageSize(int pageSize) {
       return new LienListOption(ResourceManagerRpc.Option.PAGE_SIZE, pageSize);

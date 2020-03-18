@@ -20,6 +20,7 @@ import static com.google.cloud.RetryHelper.runWithRetries;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.ListLiensResponse;
 import com.google.cloud.BaseService;
 import com.google.cloud.PageImpl;
 import com.google.cloud.PageImpl.NextPageFetcher;
@@ -355,7 +356,6 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
 
   private static class LienPageFetcher implements NextPageFetcher<Lien> {
 
-    private static final long serialVersionUID = 2158209410430566961L;
     private final Map<ResourceManagerRpc.Option, ?> requestOptions;
     private final ResourceManagerOptions serviceOptions;
     private final String parent;
@@ -387,16 +387,11 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
       final ResourceManagerOptions serviceOptions,
       final Map<ResourceManagerRpc.Option, ?> optionsMap) {
     try {
-      Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>> result =
+      ListLiensResponse result =
           runWithRetries(
-              new Callable<
-                  Tuple<
-                      String,
-                      Iterable<com.google.api.services.cloudresourcemanager.model.Lien>>>() {
+              new Callable<ListLiensResponse>() {
                 @Override
-                public Tuple<
-                        String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>>
-                    call() {
+                public ListLiensResponse call() {
                   return serviceOptions
                       .getResourceManagerRpcV1Beta1()
                       .listLiens(parent, optionsMap);
@@ -405,13 +400,13 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
               serviceOptions.getRetrySettings(),
               EXCEPTION_HANDLER,
               serviceOptions.getClock());
-      String cursor = result.x();
+      String cursor = result.getNextPageToken();
 
       Iterable<Lien> liens =
-          result.y() == null
+          result.getLiens() == null
               ? ImmutableList.<Lien>of()
               : Iterables.transform(
-                  result.y(),
+                  result.getLiens(),
                   new Function<com.google.api.services.cloudresourcemanager.model.Lien, Lien>() {
                     @Override
                     public Lien apply(

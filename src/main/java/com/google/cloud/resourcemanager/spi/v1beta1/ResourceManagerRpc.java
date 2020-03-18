@@ -17,6 +17,7 @@
 package com.google.cloud.resourcemanager.spi.v1beta1;
 
 import com.google.api.services.cloudresourcemanager.model.Lien;
+import com.google.api.services.cloudresourcemanager.model.ListLiensResponse;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.cloud.ServiceRpc;
@@ -163,5 +164,5 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  Tuple<String, Iterable<Lien>> listLiens(String parent, Map<Option, ?> options);
+  ListLiensResponse listLiens(String parent, Map<Option, ?> options);
 }

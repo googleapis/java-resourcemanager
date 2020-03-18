@@ -332,12 +332,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
     try {
       return resourceManager.liens().create(lien).execute();
     } catch (IOException ex) {
-      ResourceManagerException translated = translate(ex);
-      if (translated.getCode() == HTTP_FORBIDDEN) {
-        return null;
-      } else {
-        throw translated;
-      }
+      throw translate(ex);
     }
   }
 
@@ -366,17 +361,15 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Tuple<String, Iterable<Lien>> listLiens(String parent, Map<Option, ?> options) {
+  public ListLiensResponse listLiens(String parent, Map<Option, ?> options) {
     try {
-      ListLiensResponse response =
-          resourceManager
-              .liens()
-              .list()
-              .setParent(parent)
-              .setPageSize(Option.PAGE_SIZE.getInt(options))
-              .setPageToken(Option.PAGE_TOKEN.getString(options))
-              .execute();
-      return Tuple.<String, Iterable<Lien>>of(response.getNextPageToken(), response.getLiens());
+      return resourceManager
+          .liens()
+          .list()
+          .setParent(parent)
+          .setPageSize(Option.PAGE_SIZE.getInt(options))
+          .setPageToken(Option.PAGE_TOKEN.getString(options))
+          .execute();
     } catch (IOException ex) {
       throw translate(ex);
     }

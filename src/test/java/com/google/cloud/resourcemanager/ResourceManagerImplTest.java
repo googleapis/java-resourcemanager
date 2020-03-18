@@ -16,7 +16,6 @@
 
 package com.google.cloud.resourcemanager;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -30,10 +29,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.ListLiensResponse;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
-import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.ProjectInfo.ResourceId;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectField;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectGetOption;
@@ -568,12 +567,6 @@ public class ResourceManagerImplTest {
   public void testCreateLienWithResourceManagerException() {
     try {
       Lien lien = RESOURCE_MANAGER.createLien(COMPLETE_LIEN_INFO);
-      assertEquals(LIEN_NAME, lien.getName());
-      assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
-      assertEquals(LIEN_ORIGIN, lien.getOrigin());
-      assertEquals(LIEN_PARENT, lien.getParent());
-      assertEquals(LIEN_REASON, lien.getReason());
-      assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
       fail();
     } catch (ResourceManagerException expected) {
       assertEquals(404, expected.getCode());
@@ -630,17 +623,12 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testGetLienWithException() {
+  public void testGetLienWithResourceManagerException() {
     try {
-      Lien lien = RESOURCE_MANAGER.getLien(LIEN_NAME);
-      assertEquals(LIEN_NAME, lien.getName());
-      assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
-      assertEquals(LIEN_ORIGIN, lien.getOrigin());
-      assertEquals(LIEN_PARENT, lien.getParent());
-      assertEquals(LIEN_REASON, lien.getReason());
-      assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+      Lien lien = RESOURCE_MANAGER.getLien("invalid-lien-name");
       fail();
-    } catch (NullPointerException expected) {
+    } catch (ResourceManagerException expected) {
+      assertTrue(expected.getMessage().contains("Parameter name must conform to the pattern"));
     }
   }
 
@@ -656,25 +644,33 @@ public class ResourceManagerImplTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    ImmutableList<Lien> lienList =
-        ImmutableList.of(new Lien(resourceManagerMock, new LienInfo.BuilderImpl(LIEN_PARENT)));
-    Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>> result =
-        Tuple.of(CURSOR, Iterables.transform(lienList, LienInfo.TO_PB_FUNCTION));
+    List<com.google.api.services.cloudresourcemanager.model.Lien> lienList =
+        Arrays.asList(COMPLETE_LIEN_INFO.toPb());
+    ListLiensResponse listLiensResponse = new ListLiensResponse();
+    listLiensResponse.setLiens(lienList);
+    listLiensResponse.setNextPageToken(CURSOR);
     EasyMock.expect(resourceManagerRpcMock.listLiens(LIEN_PARENT, EMPTY_RPC_OPTIONS))
-        .andReturn(result);
+        .andReturn(listLiensResponse);
     EasyMock.replay(resourceManagerRpcMock);
     Page<Lien> page = resourceManagerMock.listLiens(LIEN_PARENT);
     assertEquals(CURSOR, page.getNextPageToken());
-    assertArrayEquals(lienList.toArray(), Iterables.toArray(page.getValues(), Lien.class));
+    for (Lien lien : page.getValues()) {
+      assertEquals(LIEN_NAME, lien.getName());
+      assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+      assertEquals(LIEN_ORIGIN, lien.getOrigin());
+      assertEquals(LIEN_PARENT, lien.getParent());
+      assertEquals(LIEN_REASON, lien.getReason());
+      assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+    }
   }
 
   @Test
   public void testListLienWithResourceManagerException() {
     try {
       Page<Lien> page = RESOURCE_MANAGER.listLiens(LIEN_PARENT);
-      assertEquals(CURSOR, page.getNextPageToken());
       fail();
     } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertTrue(expected.getMessage().contains("404 Not Found"));
     }
   }
@@ -691,17 +687,26 @@ public class ResourceManagerImplTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    ImmutableList<Lien> lienList =
-        ImmutableList.of(new Lien(resourceManagerMock, new LienInfo.BuilderImpl(LIEN_PARENT)));
-    Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Lien>> result =
-        Tuple.of(CURSOR, Iterables.transform(lienList, LienInfo.TO_PB_FUNCTION));
-    Map<ResourceManagerRpc.Option, ?> RPC_OPTIONS =
+    List<com.google.api.services.cloudresourcemanager.model.Lien> lienList =
+        Arrays.asList(COMPLETE_LIEN_INFO.toPb());
+    ListLiensResponse listLiensResponse = new ListLiensResponse();
+    listLiensResponse.setLiens(lienList);
+    listLiensResponse.setNextPageToken(CURSOR);
+    Map<ResourceManagerRpc.Option, ?> rpcOptions =
         ImmutableMap.of(ResourceManagerRpc.Option.PAGE_SIZE, 1);
-    EasyMock.expect(resourceManagerRpcMock.listLiens(LIEN_PARENT, RPC_OPTIONS)).andReturn(result);
+    EasyMock.expect(resourceManagerRpcMock.listLiens(LIEN_PARENT, rpcOptions))
+        .andReturn(listLiensResponse);
     EasyMock.replay(resourceManagerRpcMock);
     Page<Lien> page =
         resourceManagerMock.listLiens(LIEN_PARENT, ResourceManager.LienListOption.pageSize(1));
     assertEquals(CURSOR, page.getNextPageToken());
-    assertArrayEquals(lienList.toArray(), Iterables.toArray(page.getValues(), Lien.class));
+    for (Lien lien : page.getValues()) {
+      assertEquals(LIEN_NAME, lien.getName());
+      assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
+      assertEquals(LIEN_ORIGIN, lien.getOrigin());
+      assertEquals(LIEN_PARENT, lien.getParent());
+      assertEquals(LIEN_REASON, lien.getReason());
+      assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+    }
   }
 }
