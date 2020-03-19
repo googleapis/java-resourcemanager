@@ -149,16 +149,6 @@ public class LienTest {
   }
 
   @Test
-  public void testGet() {
-    expect(resourceManager.getOptions()).andReturn(mockOptions);
-    expect(resourceManager.getLien(LIEN_NAME)).andReturn(expectedLien).times(1);
-    replay(resourceManager);
-    initializeLien();
-    Lien actualLien = lien.get();
-    assertEquals(expectedLien, actualLien);
-  }
-
-  @Test
   public void testList() {
     initializeExpectedLien(4);
     List<Lien> results =

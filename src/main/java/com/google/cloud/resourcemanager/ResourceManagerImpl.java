@@ -411,7 +411,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
                     @Override
                     public Lien apply(
                         com.google.api.services.cloudresourcemanager.model.Lien lienPb) {
-                      return new com.google.cloud.resourcemanager.Lien(
+                      return new Lien(
                           serviceOptions.getService(),
                           new LienInfo.BuilderImpl(LienInfo.fromPb(lienPb)));
                     }

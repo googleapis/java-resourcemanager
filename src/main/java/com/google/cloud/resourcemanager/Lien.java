@@ -23,11 +23,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A Google Cloud Resource Manager lien object.
+ * A Google Cloud Resource Manager lien.
  *
- * <p>A Lien represents an encumbrance on the actions that can be performed on a resource. This is
- * an immutable class. Methods that change or update the underlying Lien information return a new
- * Lien instance. {@code Lien} adds a layer of service-related functionality over {@link LienInfo}.
+ * <p>A Lien represents an encumbrance on the actions that can be performed on a resource. Objects
+ * of this class are immutable. Use {@link #get} for to get a {@code Lien} object with the most
+ * recent information. Use {@link #delete} for to remove an existing {@code Lien} object. Use {@link
+ * #list} for to list all the {@code Lien} objects applied to the parent resource.{@code Lien} adds
+ * a layer of service-related functionality over {@link LienInfo}.
  */
 public class Lien extends LienInfo {
 
@@ -125,21 +127,6 @@ public class Lien extends LienInfo {
    */
   public void delete() {
     resourceManager.deleteLien(getName());
-  }
-
-  /**
-   * Retrieves the lien by name.
-   *
-   * <p>Callers of this method require permission on the parent resource. For example, a Lien with a
-   * parent of projects/1234 requires permission requires permission resourcemanager.projects.get or
-   * resourcemanager.projects.updateLiens.
-   *
-   * @throws ResourceManagerException upon failure
-   * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/list">Cloud
-   *     Resource Manager get</a>
-   */
-  public Lien get() {
-    return resourceManager.getLien(getName());
   }
 
   /**
