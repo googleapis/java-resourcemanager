@@ -395,7 +395,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   Lien createLien(LienInfo lienInfo);
 
   /**
-   * Deletes the lien by `name`.
+   * Deletes the lien by name.
    *
    * @throws ResourceManagerException upon failure
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/delete">
@@ -404,7 +404,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   void deleteLien(String name);
 
   /**
-   * Retrieves the lien by `name`.
+   * Retrieves the lien by name.
    *
    * @throws ResourceManagerException upon failure
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/get"> Resource

@@ -146,14 +146,14 @@ public interface ResourceManagerRpc extends ServiceRpc {
   Lien createLien(Lien lien);
 
   /**
-   * Deletes the Lien by `name`.
+   * Deletes the Lien by name.
    *
    * @throws ResourceManagerException upon failure
    */
   void deleteLien(String name);
 
   /**
-   * Gets the Lien by `name`.
+   * Gets the Lien by name.
    *
    * @throws ResourceManagerException upon failure
    */
