@@ -349,13 +349,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
     try {
       return resourceManager.folders().getEffectiveOrgPolicy(resource, request).execute();
     } catch (IOException ex) {
-      ResourceManagerException translated = translate(ex);
-      if (translated.getCode() == HTTP_FORBIDDEN) {
-        // Service returns permission denied if policy doesn't exist.
-        return null;
-      } else {
-        throw translated;
-      }
+      throw translate(ex);
     }
   }
 
@@ -364,13 +358,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
     try {
       return resourceManager.folders().getOrgPolicy(resource, request).execute();
     } catch (IOException ex) {
-      ResourceManagerException translated = translate(ex);
-      if (translated.getCode() == HTTP_FORBIDDEN) {
-        // Service returns permission denied if policy doesn't exist.
-        return null;
-      } else {
-        throw translated;
-      }
+      throw translate(ex);
     }
   }
 
@@ -405,13 +393,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
     try {
       return resourceManager.folders().setOrgPolicy(resource, request).execute();
     } catch (IOException ex) {
-      ResourceManagerException translated = translate(ex);
-      if (translated.getCode() == HTTP_FORBIDDEN) {
-        // Service returns permission denied if policy doesn't exist.
-        return null;
-      } else {
-        throw translated;
-      }
+      throw translate(ex);
     }
   }
 }

@@ -529,6 +529,31 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testTestOrgPermissionsWithResourceManagerException() throws IOException {
+    String organization = "organizations/12345";
+    String exceptionMessage = "Not Found";
+    List<String> permissions =
+        ImmutableList.of(
+            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .testOrgPermissions(organization, permissions);
+    try {
+      resourceManager.testOrgPermissions(organization, permissions);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
+    }
+  }
+
+  @Test
   public void testClearOrgPolicy() {
     try {
       ClearOrgPolicyRequest requestBody = new ClearOrgPolicyRequest();
@@ -569,6 +594,19 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testGetEffectiveOrgPolicyWithException() {
+    try {
+      GetEffectiveOrgPolicyRequest request = new GetEffectiveOrgPolicyRequest();
+      request.setConstraint(CONSTRAINTS);
+      RESOURCE_MANAGER.getEffectiveOrgPolicy(RESOURCE, request);
+      fail();
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
+    }
+  }
+
+  @Test
   public void testGetOrgPolicy() {
     ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
     ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
@@ -595,27 +633,15 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testTestOrgPermissionsWithResourceManagerException() throws IOException {
-    String organization = "organizations/12345";
-    String exceptionMessage = "Not Found";
-    List<String> permissions =
-        ImmutableList.of(
-            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
-    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
-        .thenReturn(resourceManagerRpcMock);
-    ResourceManager resourceManager =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerRpcMock)
-        .testOrgPermissions(organization, permissions);
+  public void testGetOrgPolicyWithException() {
     try {
-      resourceManager.testOrgPermissions(organization, permissions);
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertEquals(exceptionMessage, expected.getMessage());
+      GetOrgPolicyRequest request = new GetOrgPolicyRequest();
+      request.setConstraint(CONSTRAINTS);
+      RESOURCE_MANAGER.getOrgPolicy(RESOURCE, request);
+      fail();
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
     }
   }
 
@@ -631,7 +657,6 @@ public class ResourceManagerImplTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    ConstraintInfo.ListConstraint LIST_CONSTRAINT = new ConstraintInfo.ListConstraint(null, true);
     ImmutableList<Constraint> constraints =
         ImmutableList.of(
             new Constraint(
@@ -652,6 +677,21 @@ public class ResourceManagerImplTest {
         resourceManagerMock.listAvailableOrgPolicyConstraints(RESOURCE, policyConstraintsRequest);
     assertEquals(CURSOR, page.getNextPageToken());
     assertArrayEquals(constraints.toArray(), Iterables.toArray(page.getValues(), Constraint.class));
+  }
+
+  @Test
+  public void listAvailableOrgPolicyConstraintsWithException() {
+    try {
+      ListAvailableOrgPolicyConstraintsRequest request =
+          new ListAvailableOrgPolicyConstraintsRequest();
+      request.setPageSize(1);
+      request.setPageToken("page-token");
+      RESOURCE_MANAGER.listAvailableOrgPolicyConstraints(RESOURCE, request);
+      fail();
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
+    }
   }
 
   @Test
@@ -683,6 +723,20 @@ public class ResourceManagerImplTest {
   }
 
   @Test
+  public void testListOrgPoliciesWithException() {
+    try {
+      ListOrgPoliciesRequest request = new ListOrgPoliciesRequest();
+      request.setPageSize(1);
+      request.setPageToken("page-token");
+      RESOURCE_MANAGER.listOrgPolicies(RESOURCE, request);
+      fail();
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
+    }
+  }
+
+  @Test
   public void testSetOrgPolicy() {
     ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
     ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
@@ -706,5 +760,18 @@ public class ResourceManagerImplTest {
     assertEquals(LIST_POLICY, orgPolicy.getListPolicy());
     assertEquals(UPDATE_TIME, orgPolicy.getUpdateTime());
     assertEquals(VERSION, orgPolicy.getVersion());
+  }
+
+  @Test
+  public void testSetOrgPolicyWithException() {
+    try {
+      SetOrgPolicyRequest request = new SetOrgPolicyRequest();
+      request.setPolicy(ORG_POLICY_INFO.toPb());
+      RESOURCE_MANAGER.setOrgPolicy(RESOURCE, request);
+      fail();
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
+    }
   }
 }
