@@ -375,7 +375,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * Gets the effective Policy on a resource
    *
    * <p>This is the result of merging Policies in the resource hierarchy. The returned Policy will
-   * not have an etagset because it is a computed Policy across multiple resources. Subtrees of
+   * not have an etag set because it is a computed Policy across multiple resources. Subtrees of
    * Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
    *
    * @throws ResourceManagerException upon failure
@@ -386,10 +386,10 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   OrgPolicy getEffectiveOrgPolicy(String resource, GetEffectiveOrgPolicyRequest request);
 
   /**
-   * Gets a Policy on a resource.
+   * Gets the Policy on a resource.
    *
    * <p>If no Policy is set on the resource, a Policy is returned with default values including
-   * POLICY_TYPE_NOT_SET for the policy_type oneof. The etag value can be used with
+   * POLICY_TYPE_NOT_SET for the policy_type one of. The etag value can be used with
    * projects.setOrgPolicy() to create or update a Policy during read-modify-write.
    *
    * @throws ResourceManagerException upon failure
@@ -400,7 +400,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   OrgPolicy getOrgPolicy(String resource, GetOrgPolicyRequest request);
 
   /**
-   * Lists Constraints that could be applied on the specified resource.
+   * Lists all the Constraints that could be applied on the specified resource.
    *
    * @throws ResourceManagerException upon failure
    * @see <a

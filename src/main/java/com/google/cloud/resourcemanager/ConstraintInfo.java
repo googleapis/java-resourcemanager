@@ -18,7 +18,6 @@ package com.google.cloud.resourcemanager;
 import com.google.api.services.cloudresourcemanager.model.BooleanConstraint;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -66,15 +65,15 @@ public class ConstraintInfo implements Serializable {
 
     private static final long serialVersionUID = -2133042982786959352L;
 
-    private final Optional<String> suggestedValue;
+    private final String suggestedValue;
     private final Boolean supportsUnder;
 
     ListConstraint(String suggestedValue, Boolean supportsUnder) {
-      this.suggestedValue = Optional.fromNullable(suggestedValue);
+      this.suggestedValue = suggestedValue;
       this.supportsUnder = supportsUnder;
     }
 
-    public Optional<String> getSuggestedValue() {
+    public String getSuggestedValue() {
       return suggestedValue;
     }
 
@@ -105,7 +104,7 @@ public class ConstraintInfo implements Serializable {
 
     com.google.api.services.cloudresourcemanager.model.ListConstraint toPb() {
       return new com.google.api.services.cloudresourcemanager.model.ListConstraint()
-          .setSuggestedValue(String.valueOf(Optional.fromNullable(suggestedValue)))
+          .setSuggestedValue(suggestedValue)
           .setSupportsUnder(supportsUnder);
     }
 
@@ -293,16 +292,17 @@ public class ConstraintInfo implements Serializable {
       builder.setBooleanConstraint(constraintPb.getBooleanConstraint());
     }
     if (constraintPb.getConstraintDefault() != null) {
-      constraintPb.setConstraintDefault(constraintPb.getConstraintDefault());
+      builder.setConstraintDefault(constraintPb.getConstraintDefault());
     }
     if (constraintPb.getDescription() != null) {
-      constraintPb.setDescription(constraintPb.getDescription());
+      builder.setDescription(constraintPb.getDescription());
     }
     if (constraintPb.getDisplayName() != null) {
-      constraintPb.setDisplayName(constraintPb.getDisplayName());
+      builder.setDisplayName(constraintPb.getDisplayName());
     }
     if (constraintPb.getListConstraint() != null) {
-      constraintPb.setListConstraint(constraintPb.getListConstraint());
+      builder.setListConstraint(
+          ConstraintInfo.ListConstraint.fromPb(constraintPb.getListConstraint()));
     }
     if (constraintPb.getName() != null && !constraintPb.getName().equals("Unnamed")) {
       builder.setName(constraintPb.getName());

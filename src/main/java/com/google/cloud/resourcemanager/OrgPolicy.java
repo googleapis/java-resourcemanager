@@ -18,14 +18,12 @@ package com.google.cloud.resourcemanager;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.services.cloudresourcemanager.model.RestoreDefault;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Objects;
 
 /**
  * A Google Cloud Resource Manager organization policy object.
  *
- * <p>Defines a Cloud Organization Policy which is used to specify Constraints for configurations of
+ * <p>Defines a Cloud Organization Policy which is used to specify constraints for configurations of
  * Cloud Platform resources.
  */
 public class OrgPolicy extends OrgPolicyInfo {
@@ -88,7 +86,7 @@ public class OrgPolicy extends OrgPolicyInfo {
     }
 
     @Override
-    public OrgPolicyInfo build() {
+    public OrgPolicy build() {
       return new OrgPolicy(resourceManager, infoBuilder);
     }
   }
@@ -111,24 +109,15 @@ public class OrgPolicy extends OrgPolicyInfo {
 
   @Override
   public final boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (obj == null || !obj.getClass().equals(OrgPolicy.class)) {
-      return false;
-    }
-    OrgPolicy other = (OrgPolicy) obj;
-    return Objects.equals(toPb(), other.toPb()) && Objects.equals(options, other.options);
+    return obj == this
+        || obj != null
+            && obj.getClass().equals(OrgPolicy.class)
+            && Objects.equals(toPb(), ((OrgPolicy) obj).toPb());
   }
 
   @Override
   public final int hashCode() {
     return Objects.hash(super.hashCode(), options);
-  }
-
-  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-    in.defaultReadObject();
-    this.resourceManager = options.getService();
   }
 
   static OrgPolicy fromPb(

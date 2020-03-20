@@ -435,7 +435,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
                     public Constraint apply(
                         com.google.api.services.cloudresourcemanager.model.Constraint
                             constraintPb) {
-                      return new com.google.cloud.resourcemanager.Constraint(
+                      return new Constraint(
                           serviceOptions.getService(),
                           new ConstraintInfo.BuilderImpl(ConstraintInfo.fromPb(constraintPb)));
                     }

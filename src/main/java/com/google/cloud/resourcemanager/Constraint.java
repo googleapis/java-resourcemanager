@@ -18,8 +18,6 @@ package com.google.cloud.resourcemanager;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.services.cloudresourcemanager.model.BooleanConstraint;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Objects;
 
 /**
@@ -28,7 +26,7 @@ import java.util.Objects;
  * <p>A Constraint describes a way in which a resource's configuration can be restricted. For
  * example, it controls which cloud services can be activated across an organization, or whether a
  * Compute Engine instance can have serial port connections established. Constraints can be
- * configured by the organization's policy adminstrator to fit the needs of the organzation by
+ * configured by the organization's policy administrator to fit the needs of the organization by
  * setting Policies for Constraints at different locations in the organization's resource hierarchy.
  * Policies are inherited down the resource hierarchy from higher levels, but can also be
  * overridden. For details about the inheritance rules please read about
@@ -93,7 +91,7 @@ public class Constraint extends ConstraintInfo {
     }
 
     @Override
-    public ConstraintInfo build() {
+    public Constraint build() {
       return new Constraint(resourceManager, infoBuilder);
     }
   }
@@ -116,24 +114,15 @@ public class Constraint extends ConstraintInfo {
 
   @Override
   public final boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (obj == null || !obj.getClass().equals(Constraint.class)) {
-      return false;
-    }
-    Constraint other = (Constraint) obj;
-    return Objects.equals(toPb(), other.toPb()) && Objects.equals(options, other.options);
+    return obj == this
+        || obj != null
+            && obj.getClass().equals(Constraint.class)
+            && Objects.equals(toPb(), ((Constraint) obj).toPb());
   }
 
   @Override
   public final int hashCode() {
     return Objects.hash(super.hashCode(), options);
-  }
-
-  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-    in.defaultReadObject();
-    this.resourceManager = options.getService();
   }
 
   static Constraint fromPb(
