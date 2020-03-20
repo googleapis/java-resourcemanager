@@ -17,12 +17,6 @@
 package com.google.cloud.resourcemanager;
 
 import com.google.api.gax.paging.Page;
-import com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest;
-import com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest;
-import com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest;
-import com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest;
-import com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest;
-import com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest;
 import com.google.cloud.FieldSelector;
 import com.google.cloud.FieldSelector.Helper;
 import com.google.cloud.Policy;
@@ -345,6 +339,33 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    */
   List<Boolean> testPermissions(String projectId, List<String> permissions);
 
+  /** Class for specifying project list options. */
+  class ListOption extends Option {
+
+    private ListOption(ResourceManagerRpc.Option option, Object value) {
+      super(option, value);
+    }
+
+    /**
+     * Returns an option to specify a page token.
+     *
+     * <p>The page token (returned from a previous call to list) indicates from where listing should
+     * continue.
+     */
+    public static ListOption pageToken(String pageToken) {
+      return new ListOption(ResourceManagerRpc.Option.PAGE_TOKEN, pageToken);
+    }
+
+    /**
+     * The maximum number of records to return per RPC.
+     *
+     * <p>The server can return fewer records than requested. When there are more results than the
+     * page size, the server will return a page token that can be used to fetch other results.
+     */
+    public static ListOption pageSize(int pageSize) {
+      return new ListOption(ResourceManagerRpc.Option.PAGE_SIZE, pageSize);
+    }
+  }
   /**
    * Returns the permissions and their results representing whether the caller has the permissions
    * on the specified Organization.
@@ -369,7 +390,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     "https://cloud.google.com/resource-manager/reference/rest/v1/folders/clearOrgPolicy">Resource
    *     Manager clearOrgPolicy</a>
    */
-  void clearOrgPolicy(String resource, ClearOrgPolicyRequest request);
+  void clearOrgPolicy(String resource, OrgPolicyInfo orgPolicy);
 
   /**
    * Gets the effective Policy on a resource
@@ -383,7 +404,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/getEffectiveOrgPolicy">Resource
    *     Manager getEffectiveOrgPolicy</a>
    */
-  OrgPolicy getEffectiveOrgPolicy(String resource, GetEffectiveOrgPolicyRequest request);
+  OrgPolicy getEffectiveOrgPolicy(String resource, String constraint);
 
   /**
    * Gets the Policy on a resource.
@@ -397,7 +418,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/getOrgPolicy">Resource
    *     Manager getOrgPolicy</a>
    */
-  OrgPolicy getOrgPolicy(String resource, GetOrgPolicyRequest request);
+  OrgPolicy getOrgPolicy(String resource, String constraint);
 
   /**
    * Lists all the Constraints that could be applied on the specified resource.
@@ -407,8 +428,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/listAvailableOrgPolicyConstraints">Resource
    *     Manager listAvailableOrgPolicyConstraints</a>
    */
-  Page<Constraint> listAvailableOrgPolicyConstraints(
-      String resource, ListAvailableOrgPolicyConstraintsRequest request);
+  Page<Constraint> listAvailableOrgPolicyConstraints(String resource, ListOption... options);
 
   /**
    * Lists all the Policies set for a particular resource.
@@ -418,7 +438,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/listOrgPolicies">Resource
    *     Manager listOrgPolicies</a>
    */
-  Page<OrgPolicy> listOrgPolicies(String resource, ListOrgPoliciesRequest request);
+  Page<OrgPolicy> listOrgPolicies(String resource, ListOption... options);
 
   /**
    * Updates the specified Policy on the resource. Creates a new Policy for that Constraint on the
@@ -431,5 +451,5 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/setOrgPolicy">Resource
    *     Manager setOrgPolicy</a>
    */
-  OrgPolicy setOrgPolicy(String resource, SetOrgPolicyRequest request);
+  OrgPolicy replaceOrgPolicy(String resource, OrgPolicyInfo orgPolicy);
 }

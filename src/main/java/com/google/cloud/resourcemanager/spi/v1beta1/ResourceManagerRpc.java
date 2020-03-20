@@ -16,16 +16,10 @@
 
 package com.google.cloud.resourcemanager.spi.v1beta1;
 
-import com.google.api.services.cloudresourcemanager.model.ClearOrgPolicyRequest;
 import com.google.api.services.cloudresourcemanager.model.Constraint;
-import com.google.api.services.cloudresourcemanager.model.GetEffectiveOrgPolicyRequest;
-import com.google.api.services.cloudresourcemanager.model.GetOrgPolicyRequest;
-import com.google.api.services.cloudresourcemanager.model.ListAvailableOrgPolicyConstraintsRequest;
-import com.google.api.services.cloudresourcemanager.model.ListOrgPoliciesRequest;
 import com.google.api.services.cloudresourcemanager.model.OrgPolicy;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
-import com.google.api.services.cloudresourcemanager.model.SetOrgPolicyRequest;
 import com.google.cloud.ServiceRpc;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.ResourceManagerException;
@@ -145,7 +139,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
   // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
 
   /** Clears the Policy from a resource. */
-  void clearOrgPolicy(String resource, ClearOrgPolicyRequest request);
+  void clearOrgPolicy(String resource, OrgPolicy orgPolicy);
 
   /**
    * Gets the effective Policy on a resource
@@ -156,7 +150,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  OrgPolicy getEffectiveOrgPolicy(String resource, GetEffectiveOrgPolicyRequest request);
+  OrgPolicy getEffectiveOrgPolicy(String resource, String constraint);
 
   /**
    * Gets the Policy on a resource.
@@ -167,7 +161,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  OrgPolicy getOrgPolicy(String resource, GetOrgPolicyRequest request);
+  OrgPolicy getOrgPolicy(String resource, String constraint);
 
   /**
    * Lists all the Constraints that could be applied on the specified resource.
@@ -175,15 +169,14 @@ public interface ResourceManagerRpc extends ServiceRpc {
    * @throws ResourceManagerException upon failure
    */
   Tuple<String, Iterable<Constraint>> listAvailableOrgPolicyConstraints(
-      String resource, ListAvailableOrgPolicyConstraintsRequest request);
+      String resource, Map<Option, ?> options);
 
   /**
    * Lists all the Policies set for a particular resource.
    *
    * @throws ResourceManagerException upon failure
    */
-  Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(
-      String resource, ListOrgPoliciesRequest request);
+  Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(String resource, Map<Option, ?> options);
 
   /**
    * Updates the specified Policy on the resource. Creates a new Policy for that Constraint on the
@@ -193,5 +186,5 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  OrgPolicy setOrgPolicy(String resource, SetOrgPolicyRequest request);
+  OrgPolicy replaceOrgPolicy(String resource, OrgPolicy orgPolicy);
 }

@@ -336,27 +336,41 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public void clearOrgPolicy(String resource, ClearOrgPolicyRequest request) {
+  public void clearOrgPolicy(String resource, OrgPolicy orgPolicy) {
     try {
-      resourceManager.folders().clearOrgPolicy(resource, request).execute();
+      resourceManager
+          .folders()
+          .clearOrgPolicy(
+              resource,
+              new ClearOrgPolicyRequest()
+                  .setConstraint(orgPolicy.getConstraint())
+                  .setEtag(orgPolicy.getEtag()))
+          .execute();
     } catch (IOException ex) {
       throw translate(ex);
     }
   }
 
   @Override
-  public OrgPolicy getEffectiveOrgPolicy(String resource, GetEffectiveOrgPolicyRequest request) {
+  public OrgPolicy getEffectiveOrgPolicy(String resource, String constraint) {
     try {
-      return resourceManager.folders().getEffectiveOrgPolicy(resource, request).execute();
+      return resourceManager
+          .folders()
+          .getEffectiveOrgPolicy(
+              resource, new GetEffectiveOrgPolicyRequest().setConstraint(constraint))
+          .execute();
     } catch (IOException ex) {
       throw translate(ex);
     }
   }
 
   @Override
-  public OrgPolicy getOrgPolicy(String resource, GetOrgPolicyRequest request) {
+  public OrgPolicy getOrgPolicy(String resource, String constraint) {
     try {
-      return resourceManager.folders().getOrgPolicy(resource, request).execute();
+      return resourceManager
+          .folders()
+          .getOrgPolicy(resource, new GetOrgPolicyRequest().setConstraint(constraint))
+          .execute();
     } catch (IOException ex) {
       throw translate(ex);
     }
@@ -364,10 +378,17 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
 
   @Override
   public Tuple<String, Iterable<Constraint>> listAvailableOrgPolicyConstraints(
-      String resource, ListAvailableOrgPolicyConstraintsRequest request) {
+      String resource, Map<Option, ?> options) {
     try {
       ListAvailableOrgPolicyConstraintsResponse response =
-          resourceManager.folders().listAvailableOrgPolicyConstraints(resource, request).execute();
+          resourceManager
+              .folders()
+              .listAvailableOrgPolicyConstraints(
+                  resource,
+                  new ListAvailableOrgPolicyConstraintsRequest()
+                      .setPageSize(Option.PAGE_SIZE.getInt(options))
+                      .setPageToken(Option.PAGE_TOKEN.getString(options)))
+              .execute();
       return Tuple.<String, Iterable<Constraint>>of(
           response.getNextPageToken(), response.getConstraints());
     } catch (IOException ex) {
@@ -377,10 +398,17 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
 
   @Override
   public Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(
-      String resource, ListOrgPoliciesRequest request) {
+      String resource, Map<Option, ?> options) {
     try {
       ListOrgPoliciesResponse response =
-          resourceManager.folders().listOrgPolicies(resource, request).execute();
+          resourceManager
+              .folders()
+              .listOrgPolicies(
+                  resource,
+                  new ListOrgPoliciesRequest()
+                      .setPageSize(Option.PAGE_SIZE.getInt(options))
+                      .setPageToken(Option.PAGE_TOKEN.getString(options)))
+              .execute();
       return Tuple.<String, Iterable<OrgPolicy>>of(
           response.getNextPageToken(), response.getPolicies());
     } catch (IOException ex) {
@@ -389,9 +417,12 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public OrgPolicy setOrgPolicy(String resource, SetOrgPolicyRequest request) {
+  public OrgPolicy replaceOrgPolicy(String resource, OrgPolicy orgPolicy) {
     try {
-      return resourceManager.folders().setOrgPolicy(resource, request).execute();
+      return resourceManager
+          .folders()
+          .setOrgPolicy(resource, new SetOrgPolicyRequest().setPolicy(orgPolicy))
+          .execute();
     } catch (IOException ex) {
       throw translate(ex);
     }
