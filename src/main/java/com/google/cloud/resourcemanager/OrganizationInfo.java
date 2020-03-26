@@ -50,16 +50,15 @@ public class OrganizationInfo implements Serializable {
         };
     private static final StringEnumType<State> type = new StringEnumType(State.class, CONSTRUCTOR);
 
-    /** Only used/useful for distinguishing unset values. */
+    /** Useful for distinguishing unset values. */
     public static final State LIFECYCLE_STATE_UNSPECIFIED =
         type.createAndRegister("LIFECYCLE_STATE_UNSPECIFIED");
 
-    /** The normal and active state. */
     public static final State ACTIVE = type.createAndRegister("ACTIVE");
 
     /**
-     * The organization has been marked for deletion by the user or by the system (Google Cloud
-     * Platform).
+     * Represents the state of organization that has been marked for deletion from GCP by the user
+     * or by the system (Google Cloud Platform).
      */
     public static final State DELETE_REQUESTED = type.createAndRegister("DELETE_REQUESTED");
 
@@ -68,19 +67,19 @@ public class OrganizationInfo implements Serializable {
     }
 
     /**
-     * Get the State for the given String constant, and throw an exception if the constant is not
-     * recognized.
+     * Returns the State for the given String constant, and throw an exception if the constant is
+     * not recognized.
      */
     public static State valueOfStrict(String constant) {
       return type.valueOfStrict(constant);
     }
 
-    /** Get the State for the given String constant, and allow unrecognized values. */
+    /** Returns the State for the given String constant, and allow unrecognized values. */
     public static State valueOf(String constant) {
       return type.valueOf(constant);
     }
 
-    /** Return the known values for State. */
+    /** Returns the known values for State. */
     public static State[] values() {
       return type.values();
     }
@@ -108,6 +107,14 @@ public class OrganizationInfo implements Serializable {
       return MoreObjects.toStringHelper(this)
           .add("directoryCustomerId", directoryCustomerId)
           .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      OrganizationOwner that = (OrganizationOwner) o;
+      return Objects.equals(directoryCustomerId, that.directoryCustomerId);
     }
 
     @Override
@@ -185,7 +192,7 @@ public class OrganizationInfo implements Serializable {
   }
 
   /**
-   * Get the organization's creation time (in milliseconds).
+   * Returns the organization's creation time (in milliseconds).
    *
    * <p>This field is set by the server.
    */
@@ -194,7 +201,7 @@ public class OrganizationInfo implements Serializable {
   }
 
   /**
-   * Get the organization's display name.
+   * Returns the organization's display name.
    *
    * <p>This field is set by the server and is read-only.
    */
@@ -203,7 +210,7 @@ public class OrganizationInfo implements Serializable {
   }
 
   /**
-   * Get the organization's lifecycle state.
+   * Returns the organization's lifecycle state.
    *
    * <p>This field is set by the server.
    */
@@ -217,7 +224,7 @@ public class OrganizationInfo implements Serializable {
   }
 
   /**
-   * Get the owner of organization.
+   * Returns the owner of organization.
    *
    * <p>This field is specified on creation time. Once set, it cannot be changed.
    */
@@ -244,6 +251,18 @@ public class OrganizationInfo implements Serializable {
         .add("name", name)
         .add("owner", owner)
         .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    OrganizationInfo that = (OrganizationInfo) o;
+    return Objects.equals(creationTime, that.creationTime)
+        && Objects.equals(displayName, that.displayName)
+        && Objects.equals(lifecycleState, that.lifecycleState)
+        && Objects.equals(name, that.name)
+        && Objects.equals(owner, that.owner);
   }
 
   @Override
