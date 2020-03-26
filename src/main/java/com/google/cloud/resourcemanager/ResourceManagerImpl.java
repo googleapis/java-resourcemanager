@@ -293,6 +293,26 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
   }
 
+  @Override
+  public Policy getOrgPolicy(final String name) {
+    try {
+      com.google.api.services.cloudresourcemanager.model.Policy answer =
+          runWithRetries(
+              new Callable<com.google.api.services.cloudresourcemanager.model.Policy>() {
+                @Override
+                public com.google.api.services.cloudresourcemanager.model.Policy call() {
+                  return resourceManagerRpc.getOrgPolicy(name);
+                }
+              },
+              getOptions().getRetrySettings(),
+              EXCEPTION_HANDLER,
+              getOptions().getClock());
+      return answer == null ? null : PolicyMarshaller.INSTANCE.fromPb(answer);
+    } catch (RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
   private Map<ResourceManagerRpc.Option, ?> optionMap(Option... options) {
     Map<ResourceManagerRpc.Option, Object> temp = Maps.newEnumMap(ResourceManagerRpc.Option.class);
     for (Option option : options) {

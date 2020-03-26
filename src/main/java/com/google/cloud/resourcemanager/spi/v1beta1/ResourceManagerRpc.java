@@ -133,4 +133,11 @@ public interface ResourceManagerRpc extends ServiceRpc {
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions)
       throws IOException;
+
+  /**
+   * Returns the IAM policy associated with an organization.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  Policy getOrgPolicy(String name);
 }
