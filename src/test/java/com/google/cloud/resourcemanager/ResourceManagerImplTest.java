@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.Organization;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
@@ -53,6 +54,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.format.DateTimeFormatter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceManagerImplTest {
@@ -81,6 +85,22 @@ public class ResourceManagerImplTest {
       Policy.newBuilder()
           .addIdentity(Role.owner(), Identity.user("me@gmail.com"))
           .addIdentity(Role.editor(), Identity.serviceAccount("serviceaccount@gmail.com"))
+          .build();
+  private static final Long ORGANIZATION_CREATE_TIME = 123456789L;
+  private static final String ORGANIZATION_NAME = "organizations/1234";
+  private static final String ORGANIZATION_DISPLAY_NAME = "google.com";
+  private static final String ORGANIZATION_DIRECTORY_CUSTOMER_ID = "customer-id-123";
+  private static final OrganizationInfo.OrganizationOwner ORGANIZATION_OWNER =
+      OrganizationInfo.OrganizationOwner.of(ORGANIZATION_DIRECTORY_CUSTOMER_ID);
+  private static final OrganizationInfo.State ORGANIZATION_LIFECYCLE_STATE =
+      OrganizationInfo.State.LIFECYCLE_STATE_UNSPECIFIED;
+  private static final OrganizationInfo ORGANIZATION_INFO =
+      OrganizationInfo.newBuilder()
+          .setName(ORGANIZATION_NAME)
+          .setCreationTime(ORGANIZATION_CREATE_TIME)
+          .setDisplayName(ORGANIZATION_DISPLAY_NAME)
+          .setOwner(ORGANIZATION_OWNER)
+          .setLifecycleState(OrganizationInfo.State.LIFECYCLE_STATE_UNSPECIFIED)
           .build();
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
@@ -515,6 +535,45 @@ public class ResourceManagerImplTest {
     } catch (ResourceManagerException expected) {
       assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
+    }
+  }
+
+  @Test
+  public void testGetOrganization() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    EasyMock.expect(resourceManagerRpcMock.getOrganization(ORGANIZATION_NAME))
+        .andReturn(ORGANIZATION_INFO.toPb());
+    EasyMock.replay(resourceManagerRpcMock);
+    Organization organization = resourceManagerMock.getOrganization(ORGANIZATION_NAME);
+    assertEquals(ORGANIZATION_NAME, organization.getName());
+    assertEquals(
+        DateTimeFormatter.ISO_DATE_TIME
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.ofEpochMilli(ORGANIZATION_CREATE_TIME)),
+        organization.getCreationTime());
+    assertEquals(ORGANIZATION_DISPLAY_NAME, organization.getDisplayName());
+    assertEquals(
+        ORGANIZATION_DIRECTORY_CUSTOMER_ID, organization.getOwner().getDirectoryCustomerId());
+    assertEquals(ORGANIZATION_LIFECYCLE_STATE.toString(), organization.getLifecycleState());
+  }
+
+  @Test
+  public void testGetOrganizationWithException() {
+    try {
+      RESOURCE_MANAGER.getOrganization("organizations/12345");
+      fail("Should fail because the organization doesn't exist.");
+    } catch (ResourceManagerException e) {
+      assertEquals(404, e.getCode());
+      assertTrue(e.getMessage().contains("Not Found"));
     }
   }
 }

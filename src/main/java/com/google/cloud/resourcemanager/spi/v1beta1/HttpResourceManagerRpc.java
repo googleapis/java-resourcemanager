@@ -33,6 +33,7 @@ import com.google.api.services.cloudresourcemanager.CloudResourceManager;
 import com.google.api.services.cloudresourcemanager.model.GetIamPolicyRequest;
 import com.google.api.services.cloudresourcemanager.model.ListProjectsResponse;
 import com.google.api.services.cloudresourcemanager.model.Operation;
+import com.google.api.services.cloudresourcemanager.model.Organization;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.api.services.cloudresourcemanager.model.SetIamPolicyRequest;
@@ -322,6 +323,15 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       return answer.build();
     } catch (RetryHelper.RetryHelperException ex) {
       throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
+  @Override
+  public Organization getOrganization(String name) {
+    try {
+      return resourceManager.organizations().get(name).execute();
+    } catch (IOException ex) {
+      throw translate(ex);
     }
   }
 }

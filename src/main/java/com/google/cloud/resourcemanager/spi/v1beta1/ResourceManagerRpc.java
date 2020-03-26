@@ -16,6 +16,7 @@
 
 package com.google.cloud.resourcemanager.spi.v1beta1;
 
+import com.google.api.services.cloudresourcemanager.model.Organization;
 import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.cloud.ServiceRpc;
@@ -133,4 +134,11 @@ public interface ResourceManagerRpc extends ServiceRpc {
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions)
       throws IOException;
+
+  /**
+   * Fetches an Organization by the specified resource name.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  Organization getOrganization(String name);
 }
