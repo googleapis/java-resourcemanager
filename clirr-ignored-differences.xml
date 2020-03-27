@@ -7,8 +7,18 @@
         <differenceType>7012</differenceType>
     </difference>
     <difference>
+        <className>com/google/cloud/resourcemanager/ResourceManager</className>
+        <method>com.google.cloud.Policy replaceOrgPolicy(java.lang.String, com.google.cloud.Policy)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
         <method>java.util.Map testOrgPermissions(java.lang.String, java.util.List)</method>
+        <differenceType>7012</differenceType>
+    </difference>
+    <difference>
+        <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
+        <method>com.google.api.services.cloudresourcemanager.model.Policy replaceOrgPolicy(java.lang.String, com.google.api.services.cloudresourcemanager.model.Policy)</method>
         <differenceType>7012</differenceType>
     </difference>
 </differences>

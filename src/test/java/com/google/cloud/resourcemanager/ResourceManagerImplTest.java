@@ -517,4 +517,17 @@ public class ResourceManagerImplTest {
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
+
+  @Test
+  public void testReplaceOrgPolicy() {
+    try {
+      Policy policy = RESOURCE_MANAGER.replaceOrgPolicy("organizations/12345", POLICY);
+      assertEquals(POLICY.getBindings(), policy.getBindings());
+      assertNotNull(policy.getEtag());
+      fail();
+    } catch (ResourceManagerException exception) {
+      assertEquals(403, exception.getCode());
+      assertTrue(exception.getMessage().contains("not found."));
+    }
+  }
 }
