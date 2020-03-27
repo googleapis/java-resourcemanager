@@ -456,4 +456,42 @@ public class ResourceManagerImplTest {
       assertEquals(exceptionMessage, exception.getCause().getMessage());
     }
   }
+
+  @Test
+  public void testTestOrgPermissions() {
+    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
+    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
+    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
+        .andReturn(resourceManagerRpcMock);
+    EasyMock.replay(rpcFactoryMock);
+    ResourceManager resourceManagerMock =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    String organization = "organization/12345";
+    List<String> permissions =
+        ImmutableList.of(
+            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+    List<Boolean> booleans = ImmutableList.of(true, false);
+    EasyMock.expect(resourceManagerRpcMock.testOrgPermissions(organization, permissions))
+        .andReturn(booleans);
+    EasyMock.replay(resourceManagerRpcMock);
+    List<Boolean> values = resourceManagerMock.testOrgPermissions(organization, permissions);
+    assertEquals(booleans, values);
+  }
+
+  @Test
+  public void testTestOrgPermissionsWithException() {
+    List<String> permissions =
+        ImmutableList.of(
+            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+    try {
+      RESOURCE_MANAGER.testOrgPermissions("organizations/12345", permissions);
+      fail();
+    } catch (ResourceManagerException exception) {
+      assertEquals(404, exception.getCode());
+      assertTrue(exception.getMessage().contains("Not Found"));
+    }
+  }
 }

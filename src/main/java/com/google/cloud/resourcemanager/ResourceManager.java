@@ -337,4 +337,14 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     Platform Services</a>
    */
   List<Boolean> testPermissions(String projectId, List<String> permissions);
+
+  /**
+   * Returns permissions that the caller has on the specified Organization.
+   *
+   * @throws ResourceManagerException upon failure
+   * @see <a href=
+   *     "https://cloud.google.com/resource-manager/reference/rest/v1/organizations/testIamPermissions">
+   *     Resource Manager testIamPermissions</a>
+   */
+  List<Boolean> testOrgPermissions(String resource, List<String> permissions);
 }

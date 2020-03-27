@@ -124,5 +124,10 @@ public interface ResourceManagerRpc extends ServiceRpc {
    */
   List<Boolean> testPermissions(String projectId, List<String> permissions);
 
-  // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
+  /**
+   * Returns permissions that the caller has on the specified Organization.
+   *
+   * @throws ResourceManagerException upon failure
+   */
+  List<Boolean> testOrgPermissions(String resource, List<String> permissions);
 }

@@ -273,6 +273,24 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
   }
 
+  @Override
+  public List<Boolean> testOrgPermissions(final String resource, final List<String> permissions) {
+    try {
+      return runWithRetries(
+          new Callable<List<Boolean>>() {
+            @Override
+            public List<Boolean> call() {
+              return resourceManagerRpc.testOrgPermissions(resource, permissions);
+            }
+          },
+          getOptions().getRetrySettings(),
+          EXCEPTION_HANDLER,
+          getOptions().getClock());
+    } catch (RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
+    }
+  }
+
   private Map<ResourceManagerRpc.Option, ?> optionMap(Option... options) {
     Map<ResourceManagerRpc.Option, Object> temp = Maps.newEnumMap(ResourceManagerRpc.Option.class);
     for (Option option : options) {

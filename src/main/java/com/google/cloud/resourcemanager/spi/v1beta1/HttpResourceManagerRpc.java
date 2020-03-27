@@ -301,4 +301,25 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       throw translate(ex);
     }
   }
+
+  @Override
+  public List<Boolean> testOrgPermissions(String resource, List<String> permissions) {
+    try {
+      TestIamPermissionsResponse response =
+          resourceManager
+              .organizations()
+              .testIamPermissions(
+                  resource, new TestIamPermissionsRequest().setPermissions(permissions))
+              .execute();
+      Set<String> permissionsOwned =
+          ImmutableSet.copyOf(firstNonNull(response.getPermissions(), ImmutableList.<String>of()));
+      ImmutableList.Builder<Boolean> answer = ImmutableList.builder();
+      for (String p : permissions) {
+        answer.add(permissionsOwned.contains(p));
+      }
+      return answer.build();
+    } catch (IOException ex) {
+      throw translate(ex);
+    }
+  }
 }
