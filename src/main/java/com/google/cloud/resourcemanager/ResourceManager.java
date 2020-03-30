@@ -343,7 +343,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * Organization.
    *
    * @param resource the organization's resource name, e.g. "organizations/123"
-   * @param permissions a list of permissions, e.g. "resourcemanager.organizations.get"
+   * @param permissions the set of permissions to check for the resource. Permissions with wildcards
+   *     (such as '*' or 'storage.*') are not allowed
    * @return A list of booleans representing whether the caller has the permissions specified (in
    *     the order of the given permissions)
    * @throws ResourceManagerException upon failure
