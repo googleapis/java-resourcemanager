@@ -314,8 +314,8 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
       Set<String> permissionsOwned =
           ImmutableSet.copyOf(firstNonNull(response.getPermissions(), ImmutableList.<String>of()));
       ImmutableList.Builder<Boolean> answer = ImmutableList.builder();
-      for (String p : permissions) {
-        answer.add(permissionsOwned.contains(p));
+      for (String permission : permissions) {
+        answer.add(permissionsOwned.contains(permission));
       }
       return answer.build();
     } catch (IOException ex) {

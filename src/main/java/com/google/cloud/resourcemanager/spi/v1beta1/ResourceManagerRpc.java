@@ -125,7 +125,9 @@ public interface ResourceManagerRpc extends ServiceRpc {
   List<Boolean> testPermissions(String projectId, List<String> permissions);
 
   /**
-   * Returns permissions that the caller has on the specified Organization.
+   * Tests whether the caller has the given permissions on the specified Organization. Returns a
+   * list of booleans corresponding to whether or not the user has the permission in the same
+   * position of input list.
    *
    * @throws ResourceManagerException upon failure
    */
