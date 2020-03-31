@@ -377,7 +377,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Tuple<String, Iterable<Constraint>> listAvailableOrgPolicyConstraints(
+  public ListResult<Constraint> listAvailableOrgPolicyConstraints(
       String resource, Map<Option, ?> options) {
     try {
       ListAvailableOrgPolicyConstraintsResponse response =
@@ -389,16 +389,14 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
                       .setPageSize(Option.PAGE_SIZE.getInt(options))
                       .setPageToken(Option.PAGE_TOKEN.getString(options)))
               .execute();
-      return Tuple.<String, Iterable<Constraint>>of(
-          response.getNextPageToken(), response.getConstraints());
+      return ListResult.of(response.getNextPageToken(), response.getConstraints());
     } catch (IOException ex) {
       throw translate(ex);
     }
   }
 
   @Override
-  public Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(
-      String resource, Map<Option, ?> options) {
+  public ListResult<OrgPolicy> listOrgPolicies(String resource, Map<Option, ?> options) {
     try {
       ListOrgPoliciesResponse response =
           resourceManager
@@ -409,8 +407,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
                       .setPageSize(Option.PAGE_SIZE.getInt(options))
                       .setPageToken(Option.PAGE_TOKEN.getString(options)))
               .execute();
-      return Tuple.<String, Iterable<OrgPolicy>>of(
-          response.getNextPageToken(), response.getPolicies());
+      return ListResult.of(response.getNextPageToken(), response.getPolicies());
     } catch (IOException ex) {
       throw translate(ex);
     }

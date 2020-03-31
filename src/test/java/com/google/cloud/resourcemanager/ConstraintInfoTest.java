@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.api.services.cloudresourcemanager.model.BooleanConstraint;
-import com.google.cloud.resourcemanager.ConstraintInfo.ListConstraint;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,70 +27,71 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class ConstraintInfoTest {
+
   private static final String NAME = "constraints/serviceuser.services";
   private static final String CONSTRAINT_DEFAULT = "ALLOW";
   private static final String DISPLAY_NAME = "constraints-display-name";
   private static final String DESCRIPTION =
       "Detailed description of what this Constraint controls as well as how and where it is enforced";
   private static final Integer VERSION = 1;
+  private static final ConstraintInfo.Constraints LIST_CONSTRAINT =
+      new ConstraintInfo.Constraints("suggested-value", true);
 
-  private static final ListConstraint LIST_CONSTRAINT = new ListConstraint("suggested-value", true);
-  private static ConstraintInfo CONSTRAINT_INFO;
-  private static BooleanConstraint BOOLEAN_CONSTRAINT;
+  private ConstraintInfo constraintInfo;
+  private BooleanConstraint booleanConstraint;
 
   @Before
   public void setUp() {
-    BOOLEAN_CONSTRAINT = new BooleanConstraint();
-    BOOLEAN_CONSTRAINT.set("boolean", Boolean.class);
-    CONSTRAINT_INFO =
+    booleanConstraint = new BooleanConstraint();
+    booleanConstraint.set("boolean", Boolean.class);
+    constraintInfo =
         ConstraintInfo.newBuilder(NAME)
             .setConstraintDefault(CONSTRAINT_DEFAULT)
             .setDisplayName(DISPLAY_NAME)
             .setDescription(DESCRIPTION)
-            .setListConstraint(LIST_CONSTRAINT)
-            .setBooleanConstraint(BOOLEAN_CONSTRAINT)
+            .setConstraints(LIST_CONSTRAINT)
+            .setBooleanConstraint(booleanConstraint)
             .setVersion(VERSION)
             .build();
   }
 
   @Test
   public void testBuilder() {
-    assertEquals(NAME, CONSTRAINT_INFO.getName());
-    assertEquals(CONSTRAINT_DEFAULT, CONSTRAINT_INFO.getConstraintDefault());
-    assertEquals(DISPLAY_NAME, CONSTRAINT_INFO.getDisplayName());
-    assertEquals(DESCRIPTION, CONSTRAINT_INFO.getDescription());
-    assertEquals(LIST_CONSTRAINT, CONSTRAINT_INFO.getListConstraint());
-    assertEquals(BOOLEAN_CONSTRAINT, CONSTRAINT_INFO.getBooleanConstraint());
-    assertEquals(VERSION, CONSTRAINT_INFO.getVersion());
+    assertEquals(NAME, constraintInfo.getName());
+    assertEquals(CONSTRAINT_DEFAULT, constraintInfo.getConstraintDefault());
+    assertEquals(DISPLAY_NAME, constraintInfo.getDisplayName());
+    assertEquals(DESCRIPTION, constraintInfo.getDescription());
+    assertEquals(LIST_CONSTRAINT, constraintInfo.getConstraints());
+    assertEquals(booleanConstraint, constraintInfo.getBooleanConstraint());
+    assertEquals(VERSION, constraintInfo.getVersion());
   }
 
   @Test
   public void testToBuilder() {
-    compareConstraints(CONSTRAINT_INFO, CONSTRAINT_INFO.toBuilder().build());
+    compareConstraints(constraintInfo, constraintInfo.toBuilder().build());
   }
 
   @Test
   public void testToAndFromPb() {
-    compareConstraints(CONSTRAINT_INFO, ConstraintInfo.fromPb(CONSTRAINT_INFO.toPb()));
-    assertNotNull(ConstraintInfo.TO_PB_FUNCTION.apply(CONSTRAINT_INFO));
+    compareConstraints(constraintInfo, ConstraintInfo.fromPb(constraintInfo.toPb()));
+    assertNotNull(ConstraintInfo.TO_PB_FUNCTION.apply(constraintInfo));
     assertNotNull(
-        ConstraintInfo.FROM_PB_FUNCTION.apply(
-            ConstraintInfo.TO_PB_FUNCTION.apply(CONSTRAINT_INFO)));
+        ConstraintInfo.FROM_PB_FUNCTION.apply(ConstraintInfo.TO_PB_FUNCTION.apply(constraintInfo)));
   }
 
   @Test
   public void testEquals() {
     compareConstraints(
-        CONSTRAINT_INFO,
+        constraintInfo,
         ConstraintInfo.newBuilder(NAME)
             .setConstraintDefault(CONSTRAINT_DEFAULT)
             .setDisplayName(DISPLAY_NAME)
             .setDescription(DESCRIPTION)
-            .setListConstraint(LIST_CONSTRAINT)
-            .setBooleanConstraint(BOOLEAN_CONSTRAINT)
+            .setConstraints(LIST_CONSTRAINT)
+            .setBooleanConstraint(booleanConstraint)
             .setVersion(VERSION)
             .build());
-    compareConstraints(CONSTRAINT_INFO, new ConstraintInfo.BuilderImpl(CONSTRAINT_INFO).build());
+    compareConstraints(constraintInfo, new ConstraintInfo.Builder(constraintInfo).build());
   }
 
   @Test
@@ -112,7 +112,7 @@ public class ConstraintInfoTest {
     assertEquals(expected.getConstraintDefault(), value.getConstraintDefault());
     assertEquals(expected.getDisplayName(), value.getDisplayName());
     assertEquals(expected.getDescription(), value.getDescription());
-    assertEquals(expected.getListConstraint(), value.getListConstraint());
+    assertEquals(expected.getConstraints(), value.getConstraints());
     assertEquals(expected.getVersion(), value.getVersion());
   }
 }

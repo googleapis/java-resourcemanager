@@ -23,6 +23,7 @@ import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.cloud.ServiceRpc;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.ResourceManagerException;
+import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,28 @@ public interface ResourceManagerRpc extends ServiceRpc {
     }
   }
 
+  class ListResult<T> {
+
+    private final Iterable<T> results;
+    private final String pageToken;
+
+    public ListResult(String pageToken, Iterable<T> results) {
+      this.results = ImmutableList.copyOf(results);
+      this.pageToken = pageToken;
+    }
+
+    public static <T> ListResult<T> of(String pageToken, Iterable<T> list) {
+      return new ListResult<>(pageToken, list);
+    }
+
+    public Iterable<T> results() {
+      return results;
+    }
+
+    public String pageToken() {
+      return pageToken;
+    }
+  }
   /**
    * Creates a new project.
    *
@@ -164,19 +187,18 @@ public interface ResourceManagerRpc extends ServiceRpc {
   OrgPolicy getOrgPolicy(String resource, String constraint);
 
   /**
-   * Lists all the Constraints that could be applied on the specified resource.
+   * Lists all the Constraints that can be applied on the specified resource.
    *
    * @throws ResourceManagerException upon failure
    */
-  Tuple<String, Iterable<Constraint>> listAvailableOrgPolicyConstraints(
-      String resource, Map<Option, ?> options);
+  ListResult<Constraint> listAvailableOrgPolicyConstraints(String resource, Map<Option, ?> options);
 
   /**
    * Lists all the Policies set for a particular resource.
    *
    * @throws ResourceManagerException upon failure
    */
-  Tuple<String, Iterable<OrgPolicy>> listOrgPolicies(String resource, Map<Option, ?> options);
+  ListResult<OrgPolicy> listOrgPolicies(String resource, Map<Option, ?> options);
 
   /**
    * Updates the specified Policy on the resource. Creates a new Policy for that Constraint on the

@@ -393,18 +393,18 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   void clearOrgPolicy(String resource, OrgPolicyInfo orgPolicy);
 
   /**
-   * Gets the effective Policy on a resource
+   * Gets the effective Policy on a resource.
    *
    * <p>This is the result of merging Policies in the resource hierarchy. The returned Policy will
    * not have an etag set because it is a computed Policy across multiple resources. Subtrees of
-   * Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
+   * Resource Manager resource hierarchy with 'under:' prefix are not expanded.
    *
    * @throws ResourceManagerException upon failure
    * @see <a
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/getEffectiveOrgPolicy">Resource
    *     Manager getEffectiveOrgPolicy</a>
    */
-  OrgPolicy getEffectiveOrgPolicy(String resource, String constraint);
+  OrgPolicyInfo getEffectiveOrgPolicy(String resource, String constraint);
 
   /**
    * Gets the Policy on a resource.
@@ -418,7 +418,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/getOrgPolicy">Resource
    *     Manager getOrgPolicy</a>
    */
-  OrgPolicy getOrgPolicy(String resource, String constraint);
+  OrgPolicyInfo getOrgPolicy(String resource, String constraint);
 
   /**
    * Lists all the Constraints that could be applied on the specified resource.
@@ -428,7 +428,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/listAvailableOrgPolicyConstraints">Resource
    *     Manager listAvailableOrgPolicyConstraints</a>
    */
-  Page<Constraint> listAvailableOrgPolicyConstraints(String resource, ListOption... options);
+  Page<ConstraintInfo> listAvailableOrgPolicyConstraints(String resource, ListOption... options);
 
   /**
    * Lists all the Policies set for a particular resource.
@@ -438,7 +438,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/listOrgPolicies">Resource
    *     Manager listOrgPolicies</a>
    */
-  Page<OrgPolicy> listOrgPolicies(String resource, ListOption... options);
+  Page<OrgPolicyInfo> listOrgPolicies(String resource, ListOption... options);
 
   /**
    * Updates the specified Policy on the resource. Creates a new Policy for that Constraint on the
@@ -451,5 +451,5 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *     href="https://cloud.google.com/resource-manager/reference/rest/v1/folders/setOrgPolicy">Resource
    *     Manager setOrgPolicy</a>
    */
-  OrgPolicy replaceOrgPolicy(String resource, OrgPolicyInfo orgPolicy);
+  OrgPolicyInfo replaceOrgPolicy(String resource, OrgPolicyInfo orgPolicy);
 }

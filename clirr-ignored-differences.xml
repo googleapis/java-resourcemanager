@@ -13,12 +13,12 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>com.google.cloud.resourcemanager.OrgPolicy getEffectiveOrgPolicy(java.lang.String, java.lang.String)</method>
+        <method>com.google.cloud.resourcemanager.OrgPolicyInfo getEffectiveOrgPolicy(java.lang.String, java.lang.String)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>com.google.cloud.resourcemanager.OrgPolicy getOrgPolicy(java.lang.String, java.lang.String)</method>
+        <method>com.google.cloud.resourcemanager.OrgPolicyInfo getOrgPolicy(java.lang.String, java.lang.String)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
@@ -33,7 +33,7 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>com.google.cloud.resourcemanager.OrgPolicy replaceOrgPolicy(java.lang.String, com.google.cloud.resourcemanager.OrgPolicyInfo)</method>
+        <method>com.google.cloud.resourcemanager.OrgPolicyInfo replaceOrgPolicy(java.lang.String, com.google.cloud.resourcemanager.OrgPolicyInfo)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
@@ -58,12 +58,12 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
-        <method>com.google.cloud.Tuple listAvailableOrgPolicyConstraints(java.lang.String, java.util.Map)</method>
+        <method>com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc$ListResult listAvailableOrgPolicyConstraints(java.lang.String, java.util.Map)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
-        <method>com.google.cloud.Tuple listOrgPolicies(java.lang.String, java.util.Map)</method>
+        <method>com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc$ListResult listOrgPolicies(java.lang.String, java.util.Map)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>

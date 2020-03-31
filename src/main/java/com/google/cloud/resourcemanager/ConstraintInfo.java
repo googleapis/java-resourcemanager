@@ -16,6 +16,8 @@
 package com.google.cloud.resourcemanager;
 
 import com.google.api.services.cloudresourcemanager.model.BooleanConstraint;
+import com.google.api.services.cloudresourcemanager.model.Constraint;
+import com.google.api.services.cloudresourcemanager.model.ListConstraint;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
@@ -26,34 +28,26 @@ public class ConstraintInfo implements Serializable {
 
   private static final long serialVersionUID = 9148970963697734236L;
 
-  static final Function<
-          com.google.api.services.cloudresourcemanager.model.Constraint, ConstraintInfo>
-      FROM_PB_FUNCTION =
-          new Function<
-              com.google.api.services.cloudresourcemanager.model.Constraint, ConstraintInfo>() {
-            @Override
-            public ConstraintInfo apply(
-                com.google.api.services.cloudresourcemanager.model.Constraint pb) {
-              return ConstraintInfo.fromPb(pb);
-            }
-          };
-  static final Function<
-          ConstraintInfo, com.google.api.services.cloudresourcemanager.model.Constraint>
-      TO_PB_FUNCTION =
-          new Function<
-              ConstraintInfo, com.google.api.services.cloudresourcemanager.model.Constraint>() {
-            @Override
-            public com.google.api.services.cloudresourcemanager.model.Constraint apply(
-                ConstraintInfo constraintInfo) {
-              return constraintInfo.toPb();
-            }
-          };
+  static final Function<Constraint, ConstraintInfo> FROM_PB_FUNCTION =
+      new Function<Constraint, ConstraintInfo>() {
+        @Override
+        public ConstraintInfo apply(Constraint pb) {
+          return ConstraintInfo.fromPb(pb);
+        }
+      };
+  static final Function<ConstraintInfo, Constraint> TO_PB_FUNCTION =
+      new Function<ConstraintInfo, Constraint>() {
+        @Override
+        public Constraint apply(ConstraintInfo constraintInfo) {
+          return constraintInfo.toPb();
+        }
+      };
 
   private BooleanConstraint booleanConstraint;
   private String constraintDefault;
   private String description;
   private String displayName;
-  private ListConstraint listConstraint;
+  private Constraints constraints;
   private String name;
   private Integer version;
 
@@ -61,14 +55,14 @@ public class ConstraintInfo implements Serializable {
    * A Constraint that allows or disallows a list of string values, which are configured by an
    * Organization's policy administrator with a Policy.
    */
-  public static class ListConstraint implements Serializable {
+  static class Constraints implements Serializable {
 
     private static final long serialVersionUID = -2133042982786959352L;
 
     private final String suggestedValue;
     private final Boolean supportsUnder;
 
-    ListConstraint(String suggestedValue, Boolean supportsUnder) {
+    Constraints(String suggestedValue, Boolean supportsUnder) {
       this.suggestedValue = suggestedValue;
       this.supportsUnder = supportsUnder;
     }
@@ -91,202 +85,181 @@ public class ConstraintInfo implements Serializable {
 
     @Override
     public int hashCode() {
-      return Objects.hash(getSuggestedValue(), getSupportsUnder());
+      return Objects.hash(suggestedValue, supportsUnder);
     }
 
     @Override
-    public final boolean equals(Object obj) {
-      return obj == this
-          || obj != null
-              && obj.getClass().equals(ListConstraint.class)
-              && Objects.equals(toPb(), ((ListConstraint) obj).toPb());
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Constraints that = (Constraints) o;
+      return Objects.equals(suggestedValue, that.suggestedValue)
+          && Objects.equals(supportsUnder, that.supportsUnder);
     }
 
-    com.google.api.services.cloudresourcemanager.model.ListConstraint toPb() {
-      return new com.google.api.services.cloudresourcemanager.model.ListConstraint()
-          .setSuggestedValue(suggestedValue)
-          .setSupportsUnder(supportsUnder);
+    ListConstraint toPb() {
+      return new ListConstraint().setSuggestedValue(suggestedValue).setSupportsUnder(supportsUnder);
     }
 
-    static ListConstraint fromPb(
-        com.google.api.services.cloudresourcemanager.model.ListConstraint listConstraint) {
-      return new ListConstraint(
-          listConstraint.getSuggestedValue(), listConstraint.getSupportsUnder());
+    static Constraints fromPb(ListConstraint listConstraint) {
+      return new Constraints(listConstraint.getSuggestedValue(), listConstraint.getSupportsUnder());
     }
   }
 
-  public abstract static class Builder {
-    public abstract Builder setBooleanConstraint(BooleanConstraint booleanConstraint);
-
-    public abstract Builder setConstraintDefault(String constraintDefault);
-
-    public abstract Builder setDescription(String description);
-
-    public abstract Builder setDisplayName(String displayName);
-
-    public abstract Builder setListConstraint(ListConstraint listConstraint);
-
-    public abstract Builder setName(String name);
-
-    public abstract Builder setVersion(Integer version);
-
-    public abstract ConstraintInfo build();
-  }
-
-  static class BuilderImpl extends Builder {
+  /** Builder for {@code ConstraintInfo}. */
+  static class Builder {
     private BooleanConstraint booleanConstraint;
     private String constraintDefault;
     private String description;
     private String displayName;
-    private ListConstraint listConstraint;
+    private Constraints constraints;
     private String name;
     private Integer version;
 
-    BuilderImpl(String name) {
+    Builder(String name) {
       this.name = name;
     }
 
-    BuilderImpl(ConstraintInfo info) {
+    Builder(ConstraintInfo info) {
       this.booleanConstraint = info.booleanConstraint;
       this.constraintDefault = info.constraintDefault;
       this.description = info.description;
       this.displayName = info.displayName;
-      this.listConstraint = info.listConstraint;
+      this.constraints = info.constraints;
       this.name = info.name;
       this.version = info.version;
     }
 
-    @Override
     public Builder setBooleanConstraint(BooleanConstraint booleanConstraint) {
       this.booleanConstraint = booleanConstraint;
       return this;
     }
 
-    @Override
     public Builder setConstraintDefault(String constraintDefault) {
       this.constraintDefault = constraintDefault;
       return this;
     }
 
-    @Override
     public Builder setDescription(String description) {
       this.description = description;
       return this;
     }
 
-    @Override
     public Builder setDisplayName(String displayName) {
       this.displayName = displayName;
       return this;
     }
 
-    @Override
-    public Builder setListConstraint(ListConstraint listConstraint) {
-      this.listConstraint = listConstraint;
+    public Builder setConstraints(Constraints constraints) {
+      this.constraints = constraints;
       return this;
     }
 
-    @Override
     public Builder setName(String name) {
       this.name = name;
       return this;
     }
 
-    @Override
     public Builder setVersion(Integer version) {
       this.version = version;
       return this;
     }
 
-    @Override
     public ConstraintInfo build() {
       return new ConstraintInfo(this);
     }
   }
 
-  ConstraintInfo(BuilderImpl builder) {
+  ConstraintInfo(Builder builder) {
     this.booleanConstraint = builder.booleanConstraint;
     this.constraintDefault = builder.constraintDefault;
     this.description = builder.description;
     this.displayName = builder.displayName;
-    this.listConstraint = builder.listConstraint;
+    this.constraints = builder.constraints;
     this.name = builder.name;
     this.version = builder.version;
   }
 
+  /** Returns the boolean constraint to check whether the constraint is enforced or not. */
   public BooleanConstraint getBooleanConstraint() {
     return booleanConstraint;
   }
 
+  /** Returns the default behavior of the constraint. */
   public String getConstraintDefault() {
     return constraintDefault;
   }
 
+  /** Returns the detailed description of the constraint. */
   public String getDescription() {
     return description;
   }
 
+  /** Returns the human readable name of the constraint. */
   public String getDisplayName() {
     return displayName;
   }
 
-  public ListConstraint getListConstraint() {
-    return listConstraint;
+  /** Returns the listConstraintInfo. */
+  public Constraints getConstraints() {
+    return constraints;
   }
 
+  /** Returns the globally unique name of the constraint. */
   public String getName() {
     return name;
   }
 
+  /** Returns the version of the Constraint. Default version is 0. */
   public Integer getVersion() {
     return version;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    return obj == this
-        || obj != null
-            && obj.getClass().equals(ConstraintInfo.class)
-            && Objects.equals(toPb(), ((ConstraintInfo) obj).toPb());
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ConstraintInfo that = (ConstraintInfo) o;
+    return Objects.equals(booleanConstraint, that.booleanConstraint)
+        && Objects.equals(constraintDefault, that.constraintDefault)
+        && Objects.equals(description, that.description)
+        && Objects.equals(displayName, that.displayName)
+        && Objects.equals(constraints, that.constraints)
+        && Objects.equals(name, that.name)
+        && Objects.equals(version, that.version);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        booleanConstraint,
-        constraintDefault,
-        description,
-        displayName,
-        listConstraint,
-        name,
-        version);
+        booleanConstraint, constraintDefault, description, displayName, constraints, name, version);
   }
 
+  /** Returns a builder for the {@link ConstraintInfo} object. */
   public static Builder newBuilder(String name) {
-    return new BuilderImpl(name);
+    return new Builder(name);
   }
 
+  /** Returns a builder for the {@link ConstraintInfo} object. */
   public Builder toBuilder() {
-    return new BuilderImpl(this);
+    return new Builder(this);
   }
 
-  com.google.api.services.cloudresourcemanager.model.Constraint toPb() {
-    com.google.api.services.cloudresourcemanager.model.Constraint constraintPb =
-        new com.google.api.services.cloudresourcemanager.model.Constraint();
+  Constraint toPb() {
+    Constraint constraintPb = new Constraint();
     constraintPb.setBooleanConstraint(booleanConstraint);
     constraintPb.setConstraintDefault(constraintDefault);
     constraintPb.setDescription(description);
     constraintPb.setDisplayName(displayName);
-    if (listConstraint != null) {
-      constraintPb.setListConstraint(listConstraint.toPb());
+    if (constraints != null) {
+      constraintPb.setListConstraint(constraints.toPb());
     }
     constraintPb.setName(name);
     constraintPb.setVersion(version);
     return constraintPb;
   }
 
-  static ConstraintInfo fromPb(
-      com.google.api.services.cloudresourcemanager.model.Constraint constraintPb) {
+  static ConstraintInfo fromPb(Constraint constraintPb) {
     Builder builder = newBuilder(constraintPb.getName());
     if (constraintPb.getBooleanConstraint() != null) {
       builder.setBooleanConstraint(constraintPb.getBooleanConstraint());
@@ -301,8 +274,7 @@ public class ConstraintInfo implements Serializable {
       builder.setDisplayName(constraintPb.getDisplayName());
     }
     if (constraintPb.getListConstraint() != null) {
-      builder.setListConstraint(
-          ConstraintInfo.ListConstraint.fromPb(constraintPb.getListConstraint()));
+      builder.setConstraints(Constraints.fromPb(constraintPb.getListConstraint()));
     }
     if (constraintPb.getName() != null && !constraintPb.getName().equals("Unnamed")) {
       builder.setName(constraintPb.getName());

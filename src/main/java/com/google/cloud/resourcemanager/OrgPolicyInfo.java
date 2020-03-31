@@ -15,6 +15,8 @@
  */
 package com.google.cloud.resourcemanager;
 
+import com.google.api.services.cloudresourcemanager.model.BooleanPolicy;
+import com.google.api.services.cloudresourcemanager.model.ListPolicy;
 import com.google.api.services.cloudresourcemanager.model.OrgPolicy;
 import com.google.api.services.cloudresourcemanager.model.RestoreDefault;
 import com.google.common.base.Function;
@@ -25,40 +27,39 @@ import java.util.Objects;
 
 /** A Google Cloud Resource Manager organization policy metadata object. */
 public class OrgPolicyInfo implements Serializable {
+
+  private static final long serialVersionUID = 9148970963697734236L;
+
   static final Function<OrgPolicy, OrgPolicyInfo> FROM_PB_FUNCTION =
-      new Function<com.google.api.services.cloudresourcemanager.model.OrgPolicy, OrgPolicyInfo>() {
+      new Function<OrgPolicy, OrgPolicyInfo>() {
         @Override
-        public OrgPolicyInfo apply(
-            com.google.api.services.cloudresourcemanager.model.OrgPolicy pb) {
+        public OrgPolicyInfo apply(OrgPolicy pb) {
           return OrgPolicyInfo.fromPb(pb);
         }
       };
-  static final Function<OrgPolicyInfo, com.google.api.services.cloudresourcemanager.model.OrgPolicy>
-      TO_PB_FUNCTION =
-          new Function<
-              OrgPolicyInfo, com.google.api.services.cloudresourcemanager.model.OrgPolicy>() {
-            @Override
-            public com.google.api.services.cloudresourcemanager.model.OrgPolicy apply(
-                OrgPolicyInfo orgPolicyInfo) {
-              return orgPolicyInfo.toPb();
-            }
-          };
-  private static final long serialVersionUID = 9148970963697734236L;
+  static final Function<OrgPolicyInfo, OrgPolicy> TO_PB_FUNCTION =
+      new Function<OrgPolicyInfo, OrgPolicy>() {
+        @Override
+        public OrgPolicy apply(OrgPolicyInfo orgPolicyInfo) {
+          return orgPolicyInfo.toPb();
+        }
+      };
 
-  private BooleanPolicy booleanPolicy;
+  private BoolPolicy boolPolicy;
   private String constraint;
   private String etag;
-  private ListPolicy listPolicy;
+  private Policies policies;
   private RestoreDefault restoreDefault;
   private String updateTime;
   private Integer version;
 
   /** Used in policy_type to specify how booleanPolicy will behave at this resource. */
-  public static class BooleanPolicy implements Serializable {
+  static class BoolPolicy implements Serializable {
+
     private static final long serialVersionUID = -2133042982786959351L;
     private final Boolean enforce;
 
-    BooleanPolicy(Boolean enforce) {
+    BoolPolicy(Boolean enforce) {
       this.enforce = enforce;
     }
 
@@ -72,46 +73,45 @@ public class OrgPolicyInfo implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-      return Objects.hash(getEnforce());
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      BoolPolicy that = (BoolPolicy) o;
+      return Objects.equals(enforce, that.enforce);
     }
 
     @Override
-    public final boolean equals(Object obj) {
-      return obj == this
-          || obj != null
-              && obj.getClass().equals(BooleanPolicy.class)
-              && Objects.equals(toPb(), ((BooleanPolicy) obj).toPb());
+    public int hashCode() {
+      return Objects.hash(enforce);
     }
 
-    com.google.api.services.cloudresourcemanager.model.BooleanPolicy toPb() {
-      return new com.google.api.services.cloudresourcemanager.model.BooleanPolicy()
-          .setEnforced(enforce);
+    BooleanPolicy toPb() {
+      return new BooleanPolicy().setEnforced(enforce);
     }
 
-    static BooleanPolicy fromPb(
-        com.google.api.services.cloudresourcemanager.model.BooleanPolicy booleanPolicy) {
-      return new BooleanPolicy(booleanPolicy.getEnforced());
+    static BoolPolicy fromPb(BooleanPolicy booleanPolicy) {
+      return new BoolPolicy(booleanPolicy.getEnforced());
     }
   }
 
   /**
-   * Used in policy_type to specify how listPolicy behaves at this resource.
+   * The organization ListPolicy object.
    *
    * <p>ListPolicy can define specific values and subtrees of Cloud Resource Manager resource
    * hierarchy (Organizations, Folders, Projects) that are allowed or denied by setting the
    * allowedValues and deniedValues fields. This is achieved by using the under: and optional is:
-   * prefixes. The under: prefix is used to denote resource subtree values. The is: prefix is used
-   * to denote specific values, and is required only if the value contains a ":". Values prefixed
-   * with "is:" are treated the same as values with no prefix. Ancestry subtrees must be in one of
-   * the following formats: - "projects/", e.g. "projects/tokyo-rain-123" - "folders/", e.g.
+   * prefixes. The under: prefix denotes resource subtree values. The is: prefix is used to denote
+   * specific values, and is required only if the value contains a ":". Values prefixed with "is:"
+   * are treated the same as values with no prefix. Ancestry subtrees must be in one of the
+   * following formats: - "projects/", e.g. "projects/tokyo-rain-123" - "folders/", e.g.
    * "folders/1234" - "organizations/", e.g. "organizations/1234" The supportsUnder field of the
    * associated Constraint defines whether ancestry prefixes can be used. You can set allowedValues
    * and deniedValues in the same Policy if allValues is ALL_VALUES_UNSPECIFIED. ALLOW or DENY are
    * used to allow or deny all values. If allValues is set to either ALLOW or DENY, allowedValues
    * and deniedValues must be unset.
    */
-  public static class ListPolicy implements Serializable {
+  static class Policies implements Serializable {
+
     private static final long serialVersionUID = -2133042982786959352L;
 
     private final String allValues;
@@ -120,7 +120,7 @@ public class OrgPolicyInfo implements Serializable {
     private final Boolean inheritFromParent;
     private final String suggestedValue;
 
-    public ListPolicy(
+    public Policies(
         String allValues,
         List<String> allowedValues,
         List<String> deniedValues,
@@ -133,22 +133,27 @@ public class OrgPolicyInfo implements Serializable {
       this.suggestedValue = suggestedValue;
     }
 
+    /** Returns all the Values state of this policy. */
     public String getAllValues() {
       return allValues;
     }
 
+    /** Returns the list of allowed values of this resource */
     public List<String> getAllowedValues() {
       return allowedValues;
     }
 
+    /** Returns the list of denied values of this resource. */
     public List<String> getDeniedValues() {
       return deniedValues;
     }
 
+    /** Returns the inheritance behavior for this Policy */
     public Boolean getInheritFromParent() {
       return inheritFromParent;
     }
 
+    /** Returns the suggested value of this policy. */
     public String getSuggestedValue() {
       return suggestedValue;
     }
@@ -165,21 +170,25 @@ public class OrgPolicyInfo implements Serializable {
     }
 
     @Override
-    public final boolean equals(Object obj) {
-      return obj == this
-          || obj != null
-              && obj.getClass().equals(ListPolicy.class)
-              && Objects.equals(toPb(), ((ListPolicy) obj).toPb());
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Policies policies = (Policies) o;
+      return Objects.equals(allValues, policies.allValues)
+          && Objects.equals(allowedValues, policies.allowedValues)
+          && Objects.equals(deniedValues, policies.deniedValues)
+          && Objects.equals(inheritFromParent, policies.inheritFromParent)
+          && Objects.equals(suggestedValue, policies.suggestedValue);
     }
 
     @Override
     public int hashCode() {
       return Objects.hash(
-          allowedValues, allowedValues, deniedValues, inheritFromParent, suggestedValue);
+          allValues, allowedValues, deniedValues, inheritFromParent, suggestedValue);
     }
 
-    com.google.api.services.cloudresourcemanager.model.ListPolicy toPb() {
-      return new com.google.api.services.cloudresourcemanager.model.ListPolicy()
+    ListPolicy toPb() {
+      return new ListPolicy()
           .setAllValues(allValues)
           .setAllowedValues(allowedValues)
           .setDeniedValues(deniedValues)
@@ -187,9 +196,8 @@ public class OrgPolicyInfo implements Serializable {
           .setSuggestedValue(suggestedValue);
     }
 
-    static ListPolicy fromPb(
-        com.google.api.services.cloudresourcemanager.model.ListPolicy listPolicy) {
-      return new ListPolicy(
+    static Policies fromPb(ListPolicy listPolicy) {
+      return new Policies(
           listPolicy.getAllValues(),
           listPolicy.getAllowedValues(),
           listPolicy.getDeniedValues(),
@@ -198,168 +206,145 @@ public class OrgPolicyInfo implements Serializable {
     }
   }
 
-  public abstract static class Builder {
-    public abstract Builder setBooleanPolicy(BooleanPolicy booleanPolicy);
-
-    public abstract Builder setConstraint(String constraint);
-
-    public abstract Builder setEtag(String etag);
-
-    public abstract Builder setListPolicy(ListPolicy listPolicy);
-
-    public abstract Builder setRestoreDefault(RestoreDefault restoreDefault);
-
-    public abstract Builder setUpdateTime(String updateTime);
-
-    public abstract Builder setVersion(Integer version);
-
-    public abstract OrgPolicyInfo build();
-  }
-
-  static class BuilderImpl extends Builder {
-    private BooleanPolicy booleanPolicy;
+  /** Builder for {@code OrganizationPolicyInfo}. */
+  static class Builder {
+    private BoolPolicy boolPolicy;
     private String constraint;
     private String etag;
-    private ListPolicy listPolicy;
+    private Policies policies;
     private RestoreDefault restoreDefault;
     private String updateTime;
     private Integer version;
 
-    BuilderImpl() {}
+    Builder() {}
 
-    BuilderImpl(OrgPolicyInfo info) {
-      this.booleanPolicy = info.booleanPolicy;
+    Builder(OrgPolicyInfo info) {
+      this.boolPolicy = info.boolPolicy;
       this.constraint = info.constraint;
       this.etag = info.etag;
-      this.listPolicy = info.listPolicy;
+      this.policies = info.policies;
       this.restoreDefault = info.restoreDefault;
       this.updateTime = info.updateTime;
       this.version = info.version;
     }
 
-    @Override
-    public Builder setBooleanPolicy(BooleanPolicy booleanPolicy) {
-      this.booleanPolicy = booleanPolicy;
+    public Builder setBoolPolicy(BoolPolicy boolPolicy) {
+      this.boolPolicy = boolPolicy;
       return this;
     }
 
-    @Override
     public Builder setConstraint(String constraint) {
       this.constraint = constraint;
       return this;
     }
 
-    @Override
     public Builder setEtag(String etag) {
       this.etag = etag;
       return this;
     }
 
-    @Override
-    public Builder setListPolicy(ListPolicy listPolicy) {
-      this.listPolicy = listPolicy;
+    public Builder setListPolicy(Policies policies) {
+      this.policies = policies;
       return this;
     }
 
-    @Override
     public Builder setRestoreDefault(RestoreDefault restoreDefault) {
       this.restoreDefault = restoreDefault;
       return this;
     }
 
-    @Override
     public Builder setUpdateTime(String updateTime) {
       this.updateTime = updateTime;
       return this;
     }
 
-    @Override
     public Builder setVersion(Integer version) {
       this.version = version;
       return this;
     }
 
-    @Override
     public OrgPolicyInfo build() {
       return new OrgPolicyInfo(this);
     }
   }
 
-  OrgPolicyInfo(BuilderImpl builder) {
-    this.booleanPolicy = builder.booleanPolicy;
+  OrgPolicyInfo(Builder builder) {
+    this.boolPolicy = builder.boolPolicy;
     this.constraint = builder.constraint;
     this.etag = builder.etag;
-    this.listPolicy = builder.listPolicy;
+    this.policies = builder.policies;
     this.restoreDefault = builder.restoreDefault;
     this.updateTime = builder.updateTime;
     this.version = builder.version;
   }
 
-  public BooleanPolicy getBooleanPolicy() {
-    return booleanPolicy;
+  /** Returns the boolean constraint to check whether the constraint is enforced or not. */
+  public BoolPolicy getBoolPolicy() {
+    return boolPolicy;
   }
-
+  /** Returns the name of the Constraint. */
   public String getConstraint() {
     return constraint;
   }
-
+  /** */
   public String getEtag() {
     return etag;
   }
-
-  public ListPolicy getListPolicy() {
-    return listPolicy;
+  /** Return the policies. */
+  public Policies getPolicies() {
+    return policies;
   }
-
+  /** Restores the default behavior of the constraint. */
   public RestoreDefault getRestoreDefault() {
     return restoreDefault;
   }
-
+  /** Returns the updated timestamp of policy. */
   public String getUpdateTime() {
     return updateTime;
   }
-
+  /** Returns the version of the Policy, Default version is 0. */
   public Integer getVersion() {
     return version;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    return obj == this
-        || obj != null
-            && obj.getClass().equals(OrgPolicyInfo.class)
-            && Objects.equals(toPb(), ((OrgPolicyInfo) obj).toPb());
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    OrgPolicyInfo that = (OrgPolicyInfo) o;
+    return Objects.equals(boolPolicy, that.boolPolicy)
+        && Objects.equals(constraint, that.constraint)
+        && Objects.equals(etag, that.etag)
+        && Objects.equals(policies, that.policies)
+        && Objects.equals(restoreDefault, that.restoreDefault)
+        && Objects.equals(updateTime, that.updateTime)
+        && Objects.equals(version, that.version);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        getBooleanPolicy(),
-        getConstraint(),
-        getEtag(),
-        getListPolicy(),
-        getRestoreDefault(),
-        getUpdateTime(),
-        getVersion());
+        boolPolicy, constraint, etag, policies, restoreDefault, updateTime, version);
   }
 
+  /** Returns a builder for the {@link OrgPolicyInfo} object. */
   public static Builder newBuilder() {
-    return new BuilderImpl();
+    return new Builder();
   }
 
+  /** Returns a builder for the {@link OrgPolicyInfo} object. */
   public Builder toBuilder() {
-    return new BuilderImpl(this);
+    return new Builder(this);
   }
 
-  com.google.api.services.cloudresourcemanager.model.OrgPolicy toPb() {
-    com.google.api.services.cloudresourcemanager.model.OrgPolicy orgPolicyPb =
-        new com.google.api.services.cloudresourcemanager.model.OrgPolicy();
-    if (booleanPolicy != null) {
-      orgPolicyPb.setBooleanPolicy(booleanPolicy.toPb());
+  OrgPolicy toPb() {
+    OrgPolicy orgPolicyPb = new OrgPolicy();
+    if (boolPolicy != null) {
+      orgPolicyPb.setBooleanPolicy(boolPolicy.toPb());
     }
     orgPolicyPb.setConstraint(constraint);
-    if (listPolicy != null) {
-      orgPolicyPb.setListPolicy(listPolicy.toPb());
+    if (policies != null) {
+      orgPolicyPb.setListPolicy(policies.toPb());
     }
     orgPolicyPb.setRestoreDefault(restoreDefault);
     orgPolicyPb.setEtag(etag);
@@ -368,17 +353,16 @@ public class OrgPolicyInfo implements Serializable {
     return orgPolicyPb;
   }
 
-  static OrgPolicyInfo fromPb(
-      com.google.api.services.cloudresourcemanager.model.OrgPolicy orgPolicyPb) {
+  static OrgPolicyInfo fromPb(OrgPolicy orgPolicyPb) {
     Builder builder = newBuilder();
     if (orgPolicyPb.getBooleanPolicy() != null) {
-      builder.setBooleanPolicy(BooleanPolicy.fromPb(orgPolicyPb.getBooleanPolicy()));
+      builder.setBoolPolicy(BoolPolicy.fromPb(orgPolicyPb.getBooleanPolicy()));
     }
     if (orgPolicyPb.getConstraint() != null) {
       builder.setConstraint(orgPolicyPb.getConstraint());
     }
     if (orgPolicyPb.getListPolicy() != null) {
-      builder.setListPolicy(ListPolicy.fromPb(orgPolicyPb.getListPolicy()));
+      builder.setListPolicy(Policies.fromPb(orgPolicyPb.getListPolicy()));
     }
     if (orgPolicyPb.getRestoreDefault() != null) {
       builder.setRestoreDefault(orgPolicyPb.getRestoreDefault());

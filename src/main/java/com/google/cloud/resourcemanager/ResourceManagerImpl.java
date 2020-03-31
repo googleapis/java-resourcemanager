@@ -20,6 +20,8 @@ import static com.google.cloud.RetryHelper.runWithRetries;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.services.cloudresourcemanager.model.Constraint;
+import com.google.api.services.cloudresourcemanager.model.OrgPolicy;
 import com.google.cloud.BaseService;
 import com.google.cloud.PageImpl;
 import com.google.cloud.PageImpl.NextPageFetcher;
@@ -27,6 +29,7 @@ import com.google.cloud.Policy;
 import com.google.cloud.RetryHelper.RetryHelperException;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
+import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc.ListResult;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -313,14 +316,13 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   }
 
   @Override
-  public OrgPolicy getEffectiveOrgPolicy(final String resource, final String constraint) {
+  public OrgPolicyInfo getEffectiveOrgPolicy(final String resource, final String constraint) {
     try {
-      return OrgPolicy.fromPb(
-          this,
+      return OrgPolicyInfo.fromPb(
           runWithRetries(
-              new Callable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>() {
+              new Callable<OrgPolicy>() {
                 @Override
-                public com.google.api.services.cloudresourcemanager.model.OrgPolicy call() {
+                public OrgPolicy call() {
                   return resourceManagerRpc.getEffectiveOrgPolicy(resource, constraint);
                 }
               },
@@ -333,14 +335,13 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   }
 
   @Override
-  public OrgPolicy getOrgPolicy(final String resource, final String constraint) {
+  public OrgPolicyInfo getOrgPolicy(final String resource, final String constraint) {
     try {
-      return OrgPolicy.fromPb(
-          this,
+      return OrgPolicyInfo.fromPb(
           runWithRetries(
-              new Callable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>() {
+              new Callable<OrgPolicy>() {
                 @Override
-                public com.google.api.services.cloudresourcemanager.model.OrgPolicy call() {
+                public OrgPolicy call() {
                   return resourceManagerRpc.getOrgPolicy(resource, constraint);
                 }
               },
@@ -352,7 +353,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
   }
 
-  private static class ConstraintPageFetcher implements NextPageFetcher<Constraint> {
+  private static class ConstraintPageFetcher implements NextPageFetcher<ConstraintInfo> {
 
     private static final long serialVersionUID = 2158209410430566961L;
     private final String resource;
@@ -371,60 +372,39 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
 
     @Override
-    public Page<Constraint> getNextPage() {
+    public Page<ConstraintInfo> getNextPage() {
       return listAvailableOrgPolicyConstraints(resource, serviceOptions, requestOptions);
     }
   }
 
   @Override
-  public Page<Constraint> listAvailableOrgPolicyConstraints(
+  public Page<ConstraintInfo> listAvailableOrgPolicyConstraints(
       String resource, ListOption... options) {
     return listAvailableOrgPolicyConstraints(resource, getOptions(), optionMap(options));
   }
 
-  private static Page<Constraint> listAvailableOrgPolicyConstraints(
+  private static Page<ConstraintInfo> listAvailableOrgPolicyConstraints(
       final String resource,
       final ResourceManagerOptions serviceOptions,
       final Map<ResourceManagerRpc.Option, ?> optionsMap) {
     try {
-      Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.Constraint>>
-          result =
-              runWithRetries(
-                  new Callable<
-                      Tuple<
-                          String,
-                          Iterable<
-                              com.google.api.services.cloudresourcemanager.model.Constraint>>>() {
-                    @Override
-                    public Tuple<
-                            String,
-                            Iterable<com.google.api.services.cloudresourcemanager.model.Constraint>>
-                        call() {
-                      return serviceOptions
-                          .getResourceManagerRpcV1Beta1()
-                          .listAvailableOrgPolicyConstraints(resource, optionsMap);
-                    }
-                  },
-                  serviceOptions.getRetrySettings(),
-                  EXCEPTION_HANDLER,
-                  serviceOptions.getClock());
-      String cursor = result.x();
-      Iterable<Constraint> constraints =
-          result.y() == null
-              ? ImmutableList.<Constraint>of()
-              : Iterables.transform(
-                  result.y(),
-                  new Function<
-                      com.google.api.services.cloudresourcemanager.model.Constraint, Constraint>() {
-                    @Override
-                    public Constraint apply(
-                        com.google.api.services.cloudresourcemanager.model.Constraint
-                            constraintPb) {
-                      return new Constraint(
-                          serviceOptions.getService(),
-                          new ConstraintInfo.BuilderImpl(ConstraintInfo.fromPb(constraintPb)));
-                    }
-                  });
+      final ResourceManagerRpc rpc = serviceOptions.getResourceManagerRpcV1Beta1();
+      ListResult<Constraint> constraintList =
+          runWithRetries(
+              new Callable<ListResult<Constraint>>() {
+                @Override
+                public ListResult<Constraint> call() {
+                  return rpc.listAvailableOrgPolicyConstraints(resource, optionsMap);
+                }
+              },
+              serviceOptions.getRetrySettings(),
+              EXCEPTION_HANDLER,
+              serviceOptions.getClock());
+      String cursor = constraintList.pageToken();
+      Iterable<ConstraintInfo> constraints =
+          constraintList.results() == null
+              ? ImmutableList.<ConstraintInfo>of()
+              : Iterables.transform(constraintList.results(), ConstraintInfo.FROM_PB_FUNCTION);
       return new PageImpl<>(
           new ConstraintPageFetcher(resource, serviceOptions, cursor, optionsMap),
           cursor,
@@ -434,7 +414,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
   }
 
-  private static class OrgPolicyPageFetcher implements NextPageFetcher<OrgPolicy> {
+  private static class OrgPolicyPageFetcher implements NextPageFetcher<OrgPolicyInfo> {
 
     private static final long serialVersionUID = 2158209410430566961L;
     private final String resource;
@@ -453,56 +433,38 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
 
     @Override
-    public Page<OrgPolicy> getNextPage() {
+    public Page<OrgPolicyInfo> getNextPage() {
       return listOrgPolicies(resource, serviceOptions, requestOptions);
     }
   }
 
   @Override
-  public Page<OrgPolicy> listOrgPolicies(final String resource, ListOption... options) {
+  public Page<OrgPolicyInfo> listOrgPolicies(final String resource, ListOption... options) {
     return listOrgPolicies(resource, getOptions(), optionMap(options));
   }
 
-  private static Page<OrgPolicy> listOrgPolicies(
+  private static PageImpl<OrgPolicyInfo> listOrgPolicies(
       final String resource,
       final ResourceManagerOptions serviceOptions,
       final Map<ResourceManagerRpc.Option, ?> optionsMap) {
     try {
-      Tuple<String, Iterable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>> result =
+      final ResourceManagerRpc rpc = serviceOptions.getResourceManagerRpcV1Beta1();
+      ListResult<OrgPolicy> orgPolicy =
           runWithRetries(
-              new Callable<
-                  Tuple<
-                      String,
-                      Iterable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>>>() {
+              new Callable<ListResult<OrgPolicy>>() {
                 @Override
-                public Tuple<
-                        String,
-                        Iterable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>>
-                    call() {
-                  return serviceOptions
-                      .getResourceManagerRpcV1Beta1()
-                      .listOrgPolicies(resource, optionsMap);
+                public ListResult<OrgPolicy> call() {
+                  return rpc.listOrgPolicies(resource, optionsMap);
                 }
               },
               serviceOptions.getRetrySettings(),
               EXCEPTION_HANDLER,
               serviceOptions.getClock());
-      String cursor = result.x();
-      Iterable<OrgPolicy> orgPolicies =
-          result.y() == null
-              ? ImmutableList.<OrgPolicy>of()
-              : Iterables.transform(
-                  result.y(),
-                  new Function<
-                      com.google.api.services.cloudresourcemanager.model.OrgPolicy, OrgPolicy>() {
-                    @Override
-                    public OrgPolicy apply(
-                        com.google.api.services.cloudresourcemanager.model.OrgPolicy orgPolicyPb) {
-                      return new OrgPolicy(
-                          serviceOptions.getService(),
-                          new OrgPolicyInfo.BuilderImpl(OrgPolicyInfo.fromPb(orgPolicyPb)));
-                    }
-                  });
+      String cursor = orgPolicy.pageToken();
+      Iterable<OrgPolicyInfo> orgPolicies =
+          orgPolicy.results() == null
+              ? ImmutableList.<OrgPolicyInfo>of()
+              : Iterables.transform(orgPolicy.results(), OrgPolicyInfo.FROM_PB_FUNCTION);
       return new PageImpl<>(
           new OrgPolicyPageFetcher(resource, serviceOptions, cursor, optionsMap),
           cursor,
@@ -513,14 +475,13 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   }
 
   @Override
-  public OrgPolicy replaceOrgPolicy(final String resource, final OrgPolicyInfo orgPolicy) {
+  public OrgPolicyInfo replaceOrgPolicy(final String resource, final OrgPolicyInfo orgPolicy) {
     try {
-      return OrgPolicy.fromPb(
-          this,
+      return OrgPolicyInfo.fromPb(
           runWithRetries(
-              new Callable<com.google.api.services.cloudresourcemanager.model.OrgPolicy>() {
+              new Callable<OrgPolicy>() {
                 @Override
-                public com.google.api.services.cloudresourcemanager.model.OrgPolicy call() {
+                public OrgPolicy call() {
                   return resourceManagerRpc.replaceOrgPolicy(resource, orgPolicy.toPb());
                 }
               },

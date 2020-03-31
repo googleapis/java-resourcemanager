@@ -33,25 +33,25 @@ public class OrgPolicyInfoTest {
   private static final String ETAG = "abcd12";
   private static final String UPDATE_TIME = "014-10-02T15:01:23.045123456Z";
   private static final Integer VERSION = 1;
-  private static final OrgPolicyInfo.BooleanPolicy BOOLEAN_POLICY =
-      new OrgPolicyInfo.BooleanPolicy(true);
-  private static final OrgPolicyInfo.ListPolicy LIST_POLICY =
-      new OrgPolicyInfo.ListPolicy(
+  private static final OrgPolicyInfo.BoolPolicy BOOLEAN_POLICY = new OrgPolicyInfo.BoolPolicy(true);
+  private static final OrgPolicyInfo.Policies LIST_POLICY =
+      new OrgPolicyInfo.Policies(
           "allvaluse",
           Arrays.asList("allowedValue-1", "allowedValue-2"),
           Arrays.asList("deniedValue-1", "deniedValue-2"),
           true,
           "suggestedValue");
-  private static RestoreDefault restoreDefault;
-  private static OrgPolicyInfo orgPolicyInfo;
+
+  private RestoreDefault restoreDefault;
+  private OrgPolicyInfo orgPolicyInfo;
 
   @Before
   public void setUp() {
     restoreDefault = new RestoreDefault();
     restoreDefault.set("fields", String.class);
     orgPolicyInfo =
-        OrgPolicy.newBuilder()
-            .setBooleanPolicy(BOOLEAN_POLICY)
+        OrgPolicyInfo.newBuilder()
+            .setBoolPolicy(BOOLEAN_POLICY)
             .setConstraint(CONSTRAINTS_NAME)
             .setListPolicy(LIST_POLICY)
             .setRestoreDefault(restoreDefault)
@@ -64,8 +64,8 @@ public class OrgPolicyInfoTest {
   @Test
   public void testBuilder() {
     assertEquals(CONSTRAINTS_NAME, orgPolicyInfo.getConstraint());
-    assertEquals(BOOLEAN_POLICY, orgPolicyInfo.getBooleanPolicy());
-    assertEquals(LIST_POLICY, orgPolicyInfo.getListPolicy());
+    assertEquals(BOOLEAN_POLICY, orgPolicyInfo.getBoolPolicy());
+    assertEquals(LIST_POLICY, orgPolicyInfo.getPolicies());
     assertEquals(UPDATE_TIME, orgPolicyInfo.getUpdateTime());
     assertEquals(VERSION, orgPolicyInfo.getVersion());
     assertEquals(restoreDefault, orgPolicyInfo.getRestoreDefault());
@@ -90,7 +90,7 @@ public class OrgPolicyInfoTest {
     compareOrgPolicy(
         orgPolicyInfo,
         OrgPolicyInfo.newBuilder()
-            .setBooleanPolicy(BOOLEAN_POLICY)
+            .setBoolPolicy(BOOLEAN_POLICY)
             .setConstraint(CONSTRAINTS_NAME)
             .setListPolicy(LIST_POLICY)
             .setRestoreDefault(restoreDefault)
@@ -98,7 +98,7 @@ public class OrgPolicyInfoTest {
             .setUpdateTime(UPDATE_TIME)
             .setVersion(VERSION)
             .build());
-    compareOrgPolicy(orgPolicyInfo, new OrgPolicyInfo.BuilderImpl(orgPolicyInfo).build());
+    compareOrgPolicy(orgPolicyInfo, new OrgPolicyInfo.Builder(orgPolicyInfo).build());
   }
 
   @Test
@@ -115,16 +115,15 @@ public class OrgPolicyInfoTest {
     assertEquals(expected, value);
     assertEquals(expected.hashCode(), value.hashCode());
     assertEquals(expected.getConstraint(), value.getConstraint());
-    assertEquals(expected.getBooleanPolicy(), value.getBooleanPolicy());
-    assertEquals(expected.getBooleanPolicy().toString(), value.getBooleanPolicy().toString());
-    assertEquals(expected.getListPolicy(), value.getListPolicy());
+    assertEquals(expected.getBoolPolicy(), value.getBoolPolicy());
+    assertEquals(expected.getBoolPolicy().toString(), value.getBoolPolicy().toString());
+    assertEquals(expected.getPolicies(), value.getPolicies());
     assertEquals(expected.getRestoreDefault(), value.getRestoreDefault());
     assertEquals(expected.getUpdateTime(), value.getUpdateTime());
     assertEquals(expected.getVersion(), value.getVersion());
   }
 
-  private void compareListPolicies(
-      OrgPolicyInfo.ListPolicy expected, OrgPolicyInfo.ListPolicy value) {
+  private void compareListPolicies(OrgPolicyInfo.Policies expected, OrgPolicyInfo.Policies value) {
     assertEquals(expected, value);
     assertEquals(expected.hashCode(), value.hashCode());
     assertEquals(expected.toString(), value.toString());
