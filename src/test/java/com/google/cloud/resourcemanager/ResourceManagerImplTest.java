@@ -41,6 +41,7 @@ import com.google.cloud.resourcemanager.ResourceManager.ProjectGetOption;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectListOption;
 import com.google.cloud.resourcemanager.spi.ResourceManagerRpcFactory;
 import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
+import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc.ListResult;
 import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -49,12 +50,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.easymock.EasyMock;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -127,6 +128,8 @@ public class ResourceManagerImplTest {
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
+
+  @Mock private ResourceManager resourceManagerMock;
 
   @BeforeClass
   public static void beforeClass() {
@@ -440,73 +443,43 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testRetryableException() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    EasyMock.expect(resourceManagerRpcMock.get(PARTIAL_PROJECT.getProjectId(), EMPTY_RPC_OPTIONS))
-        .andThrow(new ResourceManagerException(500, "Internal Error"))
-        .andReturn(PARTIAL_PROJECT.toPb());
-    EasyMock.replay(resourceManagerRpcMock);
-    Project returnedProject = resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
-    assertEquals(
-        new Project(resourceManagerMock, new ProjectInfo.BuilderImpl(PARTIAL_PROJECT)),
-        returnedProject);
+    String exceptionMessage = "Internal Error";
+    Mockito.doThrow(new ResourceManagerException(500, exceptionMessage))
+        .when(resourceManagerMock)
+        .get(PARTIAL_PROJECT.getProjectId());
+    try {
+      resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
+      fail();
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
+    }
   }
 
   @Test
   public void testNonRetryableException() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    EasyMock.expect(resourceManagerRpcMock.get(PARTIAL_PROJECT.getProjectId(), EMPTY_RPC_OPTIONS))
-        .andThrow(
-            new ResourceManagerException(
-                403, "Project " + PARTIAL_PROJECT.getProjectId() + " not found."))
-        .once();
-    EasyMock.replay(resourceManagerRpcMock);
+    String exceptionMessage = "Project " + PARTIAL_PROJECT.getProjectId() + " not found.";
+    Mockito.doThrow(new ResourceManagerException(403, exceptionMessage))
+        .when(resourceManagerMock)
+        .get(PARTIAL_PROJECT.getProjectId());
     try {
       resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
       fail();
-    } catch (ResourceManagerException e) {
-      assertTrue(e.getMessage().contains("Project partial-project not found"));
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
   public void testRuntimeException() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
     String exceptionMessage = "Artificial runtime exception";
-    EasyMock.expect(resourceManagerRpcMock.get(PARTIAL_PROJECT.getProjectId(), EMPTY_RPC_OPTIONS))
-        .andThrow(new RuntimeException(exceptionMessage));
-    EasyMock.replay(resourceManagerRpcMock);
+    Mockito.doThrow(new RuntimeException(exceptionMessage))
+        .when(resourceManagerMock)
+        .get(PARTIAL_PROJECT.getProjectId());
     try {
       resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
       fail();
-    } catch (ResourceManagerException exception) {
-      assertEquals(exceptionMessage, exception.getCause().getMessage());
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
@@ -573,23 +546,12 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testGetEffectiveOrgPolicy() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    EasyMock.expect(resourceManagerRpcMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS))
-        .andReturn(ORG_POLICY_INFO.toPb())
-        .times(2);
-    EasyMock.replay(resourceManagerRpcMock);
+    Mockito.when(resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS))
+        .thenReturn(ORG_POLICY_INFO);
     OrgPolicyInfo policyInfo = resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
     assertEquals(CONSTRAINTS, policyInfo.getConstraint());
     assertEquals(BOOLEAN_POLICY, policyInfo.getBoolPolicy());
+    assertEquals(ETAG, policyInfo.getEtag());
     assertEquals(LIST_POLICY, policyInfo.getPolicies());
     assertEquals(UPDATE_TIME, policyInfo.getUpdateTime());
     assertEquals(VERSION, policyInfo.getVersion());
@@ -608,20 +570,8 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testGetOrgPolicy() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    EasyMock.expect(resourceManagerRpcMock.getOrgPolicy(RESOURCE, CONSTRAINTS))
-        .andReturn(ORG_POLICY_INFO.toPb())
-        .times(2);
-    EasyMock.replay(resourceManagerRpcMock);
+    Mockito.when(resourceManagerMock.getOrgPolicy(RESOURCE, CONSTRAINTS))
+        .thenReturn(ORG_POLICY_INFO);
     OrgPolicyInfo policyInfo = resourceManagerMock.getOrgPolicy(RESOURCE, CONSTRAINTS);
     assertEquals(CONSTRAINTS, policyInfo.getConstraint());
     assertEquals(BOOLEAN_POLICY, policyInfo.getBoolPolicy());
@@ -643,24 +593,24 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testListAvailableOrgPolicyConstraints() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    ResourceManagerRpc.ListResult<Constraint> constraintListResult =
-        ResourceManagerRpc.ListResult.of(CURSOR, ImmutableList.of(CONSTRAINT_INFO.toPb()));
-    EasyMock.expect(
-            resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS))
-        .andReturn(constraintListResult);
-    EasyMock.replay(resourceManagerRpcMock);
-    Page<ConstraintInfo> page = resourceManagerMock.listAvailableOrgPolicyConstraints(NAME);
-    assertEquals(CURSOR, page.getNextPageToken());
+    ListResult<Constraint> expectedResult =
+        ListResult.of(CURSOR, ImmutableList.of(CONSTRAINT_INFO.toPb()));
+    Mockito.when(resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS))
+        .thenReturn(expectedResult);
+    ListResult<Constraint> page =
+        resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS);
+    assertEquals(CURSOR, page.pageToken());
+    for (Constraint constraint : page.results()) {
+      assertEquals(NAME, constraint.getName());
+      assertEquals(CONSTRAINT_DEFAULT, constraint.getConstraintDefault());
+      assertEquals(DISPLAY_NAME, constraint.getDisplayName());
+      assertEquals(DESCRIPTION, constraint.getDescription());
+      assertEquals(
+          LIST_CONSTRAINT.getSuggestedValue(), constraint.getListConstraint().getSuggestedValue());
+      assertEquals(
+          LIST_CONSTRAINT.getSupportsUnder(), constraint.getListConstraint().getSupportsUnder());
+      assertEquals(VERSION, constraint.getVersion());
+    }
   }
 
   @Test
@@ -676,23 +626,26 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testListOrgPolicies() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    ResourceManagerRpc.ListResult<OrgPolicy> orgPolicies =
-        ResourceManagerRpc.ListResult.of(CURSOR, ImmutableList.of(ORG_POLICY_INFO.toPb()));
-    EasyMock.expect(resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS))
-        .andReturn(orgPolicies);
-    EasyMock.replay(resourceManagerRpcMock);
-    Page<OrgPolicyInfo> page = resourceManagerMock.listOrgPolicies(RESOURCE);
-    assertEquals(CURSOR, page.getNextPageToken());
+    ListResult<OrgPolicy> expectedResult =
+        ListResult.of(CURSOR, ImmutableList.of(ORG_POLICY_INFO.toPb()));
+    Mockito.when(resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS))
+        .thenReturn(expectedResult);
+    ListResult<OrgPolicy> results =
+        resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS);
+    assertEquals(CURSOR, results.pageToken());
+    for (OrgPolicy orgPolicy : results.results()) {
+      assertEquals(CONSTRAINTS, orgPolicy.getConstraint());
+      assertEquals(ETAG, orgPolicy.getEtag());
+      assertEquals(BOOLEAN_POLICY.getEnforce(), orgPolicy.getBooleanPolicy().getEnforced());
+      assertEquals(LIST_POLICY.getAllValues(), orgPolicy.getListPolicy().getAllValues());
+      assertEquals(LIST_POLICY.getAllowedValues(), orgPolicy.getListPolicy().getAllowedValues());
+      assertEquals(LIST_POLICY.getDeniedValues(), orgPolicy.getListPolicy().getDeniedValues());
+      assertEquals(
+          LIST_POLICY.getInheritFromParent(), orgPolicy.getListPolicy().getInheritFromParent());
+      assertEquals(LIST_POLICY.getSuggestedValue(), orgPolicy.getListPolicy().getSuggestedValue());
+      assertEquals(UPDATE_TIME, orgPolicy.getUpdateTime());
+      assertEquals(VERSION, orgPolicy.getVersion());
+    }
   }
 
   @Test
@@ -708,20 +661,8 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testSetOrgPolicy() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    EasyMock.expect(resourceManagerRpcMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO.toPb()))
-        .andReturn(ORG_POLICY_INFO.toPb())
-        .times(2);
-    EasyMock.replay(resourceManagerRpcMock);
+    Mockito.when(resourceManagerMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO))
+        .thenReturn(ORG_POLICY_INFO);
     OrgPolicyInfo policyInfo = resourceManagerMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
     assertEquals(CONSTRAINTS, policyInfo.getConstraint());
     assertEquals(BOOLEAN_POLICY, policyInfo.getBoolPolicy());

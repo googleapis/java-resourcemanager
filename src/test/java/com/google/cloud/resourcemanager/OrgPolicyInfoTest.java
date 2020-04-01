@@ -116,6 +116,7 @@ public class OrgPolicyInfoTest {
     assertEquals(expected.hashCode(), value.hashCode());
     assertEquals(expected.getConstraint(), value.getConstraint());
     assertEquals(expected.getBoolPolicy(), value.getBoolPolicy());
+    assertEquals(expected.getEtag(), value.getEtag());
     assertEquals(expected.getBoolPolicy().toString(), value.getBoolPolicy().toString());
     assertEquals(expected.getPolicies(), value.getPolicies());
     assertEquals(expected.getRestoreDefault(), value.getRestoreDefault());

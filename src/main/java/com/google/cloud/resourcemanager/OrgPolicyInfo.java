@@ -53,7 +53,7 @@ public class OrgPolicyInfo implements Serializable {
   private String updateTime;
   private Integer version;
 
-  /** Used in policy_type to specify how booleanPolicy will behave at this resource. */
+  /** Used For boolean Constraints, whether to enforce the Constraint or not. */
   static class BoolPolicy implements Serializable {
 
     private static final long serialVersionUID = -2133042982786959351L;
