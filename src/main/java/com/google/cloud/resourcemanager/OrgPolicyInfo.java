@@ -74,8 +74,12 @@ public class OrgPolicyInfo implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
       BoolPolicy that = (BoolPolicy) o;
       return Objects.equals(enforce, that.enforce);
     }
@@ -171,8 +175,12 @@ public class OrgPolicyInfo implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
       Policies policies = (Policies) o;
       return Objects.equals(allValues, policies.allValues)
           && Objects.equals(allowedValues, policies.allowedValues)
@@ -309,8 +317,12 @@ public class OrgPolicyInfo implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     OrgPolicyInfo that = (OrgPolicyInfo) o;
     return Objects.equals(boolPolicy, that.boolPolicy)
         && Objects.equals(constraint, that.constraint)

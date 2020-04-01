@@ -217,8 +217,12 @@ public class ConstraintInfo implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     ConstraintInfo that = (ConstraintInfo) o;
     return Objects.equals(booleanConstraint, that.booleanConstraint)
         && Objects.equals(constraintDefault, that.constraintDefault)
