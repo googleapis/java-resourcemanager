@@ -302,8 +302,8 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
       runWithRetries(
           new Callable<Void>() {
             @Override
-            public Void call() {
-              resourceManagerRpc.clearOrgPolicy(resource, orgPolicy.toPb());
+            public Void call() throws IOException {
+              resourceManagerRpc.clearOrgPolicy(resource, orgPolicy.toProtobuf());
               return null;
             }
           },
@@ -318,11 +318,11 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   @Override
   public OrgPolicyInfo getEffectiveOrgPolicy(final String resource, final String constraint) {
     try {
-      return OrgPolicyInfo.fromPb(
+      return OrgPolicyInfo.fromProtobuf(
           runWithRetries(
               new Callable<OrgPolicy>() {
                 @Override
-                public OrgPolicy call() {
+                public OrgPolicy call() throws IOException {
                   return resourceManagerRpc.getEffectiveOrgPolicy(resource, constraint);
                 }
               },
@@ -337,11 +337,11 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   @Override
   public OrgPolicyInfo getOrgPolicy(final String resource, final String constraint) {
     try {
-      return OrgPolicyInfo.fromPb(
+      return OrgPolicyInfo.fromProtobuf(
           runWithRetries(
               new Callable<OrgPolicy>() {
                 @Override
-                public OrgPolicy call() {
+                public OrgPolicy call() throws IOException {
                   return resourceManagerRpc.getOrgPolicy(resource, constraint);
                 }
               },
@@ -393,7 +393,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
           runWithRetries(
               new Callable<ListResult<Constraint>>() {
                 @Override
-                public ListResult<Constraint> call() {
+                public ListResult<Constraint> call() throws IOException {
                   return rpc.listAvailableOrgPolicyConstraints(resource, optionsMap);
                 }
               },
@@ -453,7 +453,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
           runWithRetries(
               new Callable<ListResult<OrgPolicy>>() {
                 @Override
-                public ListResult<OrgPolicy> call() {
+                public ListResult<OrgPolicy> call() throws IOException {
                   return rpc.listOrgPolicies(resource, optionsMap);
                 }
               },
@@ -477,12 +477,12 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   @Override
   public OrgPolicyInfo replaceOrgPolicy(final String resource, final OrgPolicyInfo orgPolicy) {
     try {
-      return OrgPolicyInfo.fromPb(
+      return OrgPolicyInfo.fromProtobuf(
           runWithRetries(
               new Callable<OrgPolicy>() {
                 @Override
-                public OrgPolicy call() {
-                  return resourceManagerRpc.replaceOrgPolicy(resource, orgPolicy.toPb());
+                public OrgPolicy call() throws IOException {
+                  return resourceManagerRpc.replaceOrgPolicy(resource, orgPolicy.toProtobuf());
                 }
               },
               getOptions().getRetrySettings(),

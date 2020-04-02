@@ -535,12 +535,15 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testClearOrgPolicy() {
+    String exceptionMessage = "Should fail because the organization policy doesn't exist.";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
     try {
-      RESOURCE_MANAGER.clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
-      fail("Should fail because the organization policy doesn't exist.");
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("Not Found"));
+      resourceManagerMock.clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+      fail();
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
@@ -559,12 +562,15 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testGetEffectiveOrgPolicyWithException() {
+    String exceptionMessage = "Not Found";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
     try {
-      RESOURCE_MANAGER.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
+      resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
       fail();
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("Not Found"));
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
@@ -582,19 +588,22 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testGetOrgPolicyWithException() {
+    String exceptionMessage = "Not Found";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .getOrgPolicy(RESOURCE, CONSTRAINTS);
     try {
-      RESOURCE_MANAGER.getOrgPolicy(RESOURCE, CONSTRAINTS);
+      resourceManagerMock.getOrgPolicy(RESOURCE, CONSTRAINTS);
       fail();
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("Not Found"));
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testListAvailableOrgPolicyConstraints() {
+  public void testListAvailableOrgPolicyConstraints() throws IOException {
     ListResult<Constraint> expectedResult =
-        ListResult.of(CURSOR, ImmutableList.of(CONSTRAINT_INFO.toPb()));
+        ListResult.of(CURSOR, ImmutableList.of(CONSTRAINT_INFO.toProtobuf()));
     Mockito.when(resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS))
         .thenReturn(expectedResult);
     ListResult<Constraint> page =
@@ -615,19 +624,22 @@ public class ResourceManagerImplTest {
 
   @Test
   public void listAvailableOrgPolicyConstraintsWithException() {
+    String exceptionMessage = "Not Found";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .listAvailableOrgPolicyConstraints(RESOURCE);
     try {
-      RESOURCE_MANAGER.listAvailableOrgPolicyConstraints(RESOURCE);
+      resourceManagerMock.listAvailableOrgPolicyConstraints(RESOURCE);
       fail();
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("Not Found"));
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testListOrgPolicies() {
+  public void testListOrgPolicies() throws IOException {
     ListResult<OrgPolicy> expectedResult =
-        ListResult.of(CURSOR, ImmutableList.of(ORG_POLICY_INFO.toPb()));
+        ListResult.of(CURSOR, ImmutableList.of(ORG_POLICY_INFO.toProtobuf()));
     Mockito.when(resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS))
         .thenReturn(expectedResult);
     ListResult<OrgPolicy> results =
@@ -650,12 +662,15 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testListOrgPoliciesWithException() {
+    String exceptionMessage = "Not Found";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .listOrgPolicies(RESOURCE);
     try {
-      RESOURCE_MANAGER.listOrgPolicies(RESOURCE);
+      resourceManagerMock.listOrgPolicies(RESOURCE);
       fail();
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("Not Found"));
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
@@ -673,12 +688,15 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testSetOrgPolicyWithException() {
+    String exceptionMessage = "Not Found";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
     try {
-      RESOURCE_MANAGER.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+      resourceManagerMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
       fail();
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("Not Found"));
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 }

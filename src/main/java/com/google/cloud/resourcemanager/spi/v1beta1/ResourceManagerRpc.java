@@ -162,7 +162,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
   // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
 
   /** Clears the Policy from a resource. */
-  void clearOrgPolicy(String resource, OrgPolicy orgPolicy);
+  void clearOrgPolicy(String resource, OrgPolicy orgPolicy) throws IOException;
 
   /**
    * Gets the effective Policy on a resource
@@ -173,7 +173,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  OrgPolicy getEffectiveOrgPolicy(String resource, String constraint);
+  OrgPolicy getEffectiveOrgPolicy(String resource, String constraint) throws IOException;
 
   /**
    * Gets the Policy on a resource.
@@ -184,21 +184,22 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  OrgPolicy getOrgPolicy(String resource, String constraint);
+  OrgPolicy getOrgPolicy(String resource, String constraint) throws IOException;
 
   /**
    * Lists all the Constraints that can be applied on the specified resource.
    *
    * @throws ResourceManagerException upon failure
    */
-  ListResult<Constraint> listAvailableOrgPolicyConstraints(String resource, Map<Option, ?> options);
+  ListResult<Constraint> listAvailableOrgPolicyConstraints(String resource, Map<Option, ?> options)
+      throws IOException;
 
   /**
    * Lists all the Policies set for a particular resource.
    *
    * @throws ResourceManagerException upon failure
    */
-  ListResult<OrgPolicy> listOrgPolicies(String resource, Map<Option, ?> options);
+  ListResult<OrgPolicy> listOrgPolicies(String resource, Map<Option, ?> options) throws IOException;
 
   /**
    * Updates the specified Policy on the resource. Creates a new Policy for that Constraint on the
@@ -208,5 +209,5 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  OrgPolicy replaceOrgPolicy(String resource, OrgPolicy orgPolicy);
+  OrgPolicy replaceOrgPolicy(String resource, OrgPolicy orgPolicy) throws IOException;
 }

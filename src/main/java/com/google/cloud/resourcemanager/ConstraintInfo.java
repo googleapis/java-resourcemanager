@@ -31,15 +31,15 @@ public class ConstraintInfo implements Serializable {
   static final Function<Constraint, ConstraintInfo> FROM_PB_FUNCTION =
       new Function<Constraint, ConstraintInfo>() {
         @Override
-        public ConstraintInfo apply(Constraint pb) {
-          return ConstraintInfo.fromPb(pb);
+        public ConstraintInfo apply(Constraint protobuf) {
+          return ConstraintInfo.fromProtobuf(protobuf);
         }
       };
   static final Function<ConstraintInfo, Constraint> TO_PB_FUNCTION =
       new Function<ConstraintInfo, Constraint>() {
         @Override
         public Constraint apply(ConstraintInfo constraintInfo) {
-          return constraintInfo.toPb();
+          return constraintInfo.toProtobuf();
         }
       };
 
@@ -97,11 +97,11 @@ public class ConstraintInfo implements Serializable {
           && Objects.equals(supportsUnder, that.supportsUnder);
     }
 
-    ListConstraint toPb() {
+    ListConstraint toProtobuf() {
       return new ListConstraint().setSuggestedValue(suggestedValue).setSupportsUnder(supportsUnder);
     }
 
-    static Constraints fromPb(ListConstraint listConstraint) {
+    static Constraints fromProtobuf(ListConstraint listConstraint) {
       return new Constraints(listConstraint.getSuggestedValue(), listConstraint.getSupportsUnder());
     }
   }
@@ -249,21 +249,21 @@ public class ConstraintInfo implements Serializable {
     return new Builder(this);
   }
 
-  Constraint toPb() {
-    Constraint constraintPb = new Constraint();
-    constraintPb.setBooleanConstraint(booleanConstraint);
-    constraintPb.setConstraintDefault(constraintDefault);
-    constraintPb.setDescription(description);
-    constraintPb.setDisplayName(displayName);
+  Constraint toProtobuf() {
+    Constraint constraintProto = new Constraint();
+    constraintProto.setBooleanConstraint(booleanConstraint);
+    constraintProto.setConstraintDefault(constraintDefault);
+    constraintProto.setDescription(description);
+    constraintProto.setDisplayName(displayName);
     if (constraints != null) {
-      constraintPb.setListConstraint(constraints.toPb());
+      constraintProto.setListConstraint(constraints.toProtobuf());
     }
-    constraintPb.setName(name);
-    constraintPb.setVersion(version);
-    return constraintPb;
+    constraintProto.setName(name);
+    constraintProto.setVersion(version);
+    return constraintProto;
   }
 
-  static ConstraintInfo fromPb(Constraint constraintPb) {
+  static ConstraintInfo fromProtobuf(Constraint constraintPb) {
     Builder builder = newBuilder(constraintPb.getName());
     if (constraintPb.getBooleanConstraint() != null) {
       builder.setBooleanConstraint(constraintPb.getBooleanConstraint());
@@ -278,7 +278,7 @@ public class ConstraintInfo implements Serializable {
       builder.setDisplayName(constraintPb.getDisplayName());
     }
     if (constraintPb.getListConstraint() != null) {
-      builder.setConstraints(Constraints.fromPb(constraintPb.getListConstraint()));
+      builder.setConstraints(Constraints.fromProtobuf(constraintPb.getListConstraint()));
     }
     if (constraintPb.getName() != null && !constraintPb.getName().equals("Unnamed")) {
       builder.setName(constraintPb.getName());

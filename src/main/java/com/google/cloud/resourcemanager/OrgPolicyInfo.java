@@ -33,15 +33,15 @@ public class OrgPolicyInfo implements Serializable {
   static final Function<OrgPolicy, OrgPolicyInfo> FROM_PB_FUNCTION =
       new Function<OrgPolicy, OrgPolicyInfo>() {
         @Override
-        public OrgPolicyInfo apply(OrgPolicy pb) {
-          return OrgPolicyInfo.fromPb(pb);
+        public OrgPolicyInfo apply(OrgPolicy protobuf) {
+          return OrgPolicyInfo.fromProtobuf(protobuf);
         }
       };
   static final Function<OrgPolicyInfo, OrgPolicy> TO_PB_FUNCTION =
       new Function<OrgPolicyInfo, OrgPolicy>() {
         @Override
         public OrgPolicy apply(OrgPolicyInfo orgPolicyInfo) {
-          return orgPolicyInfo.toPb();
+          return orgPolicyInfo.toProtobuf();
         }
       };
 
@@ -89,11 +89,11 @@ public class OrgPolicyInfo implements Serializable {
       return Objects.hash(enforce);
     }
 
-    BooleanPolicy toPb() {
+    BooleanPolicy toProtobuf() {
       return new BooleanPolicy().setEnforced(enforce);
     }
 
-    static BoolPolicy fromPb(BooleanPolicy booleanPolicy) {
+    static BoolPolicy fromProtobuf(BooleanPolicy booleanPolicy) {
       return new BoolPolicy(booleanPolicy.getEnforced());
     }
   }
@@ -195,7 +195,7 @@ public class OrgPolicyInfo implements Serializable {
           allValues, allowedValues, deniedValues, inheritFromParent, suggestedValue);
     }
 
-    ListPolicy toPb() {
+    ListPolicy toProtobuf() {
       return new ListPolicy()
           .setAllValues(allValues)
           .setAllowedValues(allowedValues)
@@ -204,7 +204,7 @@ public class OrgPolicyInfo implements Serializable {
           .setSuggestedValue(suggestedValue);
     }
 
-    static Policies fromPb(ListPolicy listPolicy) {
+    static Policies fromProtobuf(ListPolicy listPolicy) {
       return new Policies(
           listPolicy.getAllValues(),
           listPolicy.getAllowedValues(),
@@ -349,32 +349,32 @@ public class OrgPolicyInfo implements Serializable {
     return new Builder(this);
   }
 
-  OrgPolicy toPb() {
-    OrgPolicy orgPolicyPb = new OrgPolicy();
+  OrgPolicy toProtobuf() {
+    OrgPolicy orgPolicyProto = new OrgPolicy();
     if (boolPolicy != null) {
-      orgPolicyPb.setBooleanPolicy(boolPolicy.toPb());
+      orgPolicyProto.setBooleanPolicy(boolPolicy.toProtobuf());
     }
-    orgPolicyPb.setConstraint(constraint);
+    orgPolicyProto.setConstraint(constraint);
     if (policies != null) {
-      orgPolicyPb.setListPolicy(policies.toPb());
+      orgPolicyProto.setListPolicy(policies.toProtobuf());
     }
-    orgPolicyPb.setRestoreDefault(restoreDefault);
-    orgPolicyPb.setEtag(etag);
-    orgPolicyPb.setUpdateTime(updateTime);
-    orgPolicyPb.setVersion(version);
-    return orgPolicyPb;
+    orgPolicyProto.setRestoreDefault(restoreDefault);
+    orgPolicyProto.setEtag(etag);
+    orgPolicyProto.setUpdateTime(updateTime);
+    orgPolicyProto.setVersion(version);
+    return orgPolicyProto;
   }
 
-  static OrgPolicyInfo fromPb(OrgPolicy orgPolicyPb) {
+  static OrgPolicyInfo fromProtobuf(OrgPolicy orgPolicyPb) {
     Builder builder = newBuilder();
     if (orgPolicyPb.getBooleanPolicy() != null) {
-      builder.setBoolPolicy(BoolPolicy.fromPb(orgPolicyPb.getBooleanPolicy()));
+      builder.setBoolPolicy(BoolPolicy.fromProtobuf(orgPolicyPb.getBooleanPolicy()));
     }
     if (orgPolicyPb.getConstraint() != null) {
       builder.setConstraint(orgPolicyPb.getConstraint());
     }
     if (orgPolicyPb.getListPolicy() != null) {
-      builder.setListPolicy(Policies.fromPb(orgPolicyPb.getListPolicy()));
+      builder.setListPolicy(Policies.fromProtobuf(orgPolicyPb.getListPolicy()));
     }
     if (orgPolicyPb.getRestoreDefault() != null) {
       builder.setRestoreDefault(orgPolicyPb.getRestoreDefault());

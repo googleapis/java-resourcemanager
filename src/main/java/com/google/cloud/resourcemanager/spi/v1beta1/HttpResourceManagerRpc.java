@@ -336,7 +336,7 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public void clearOrgPolicy(String resource, OrgPolicy orgPolicy) {
+  public void clearOrgPolicy(String resource, OrgPolicy orgPolicy) throws IOException {
     try {
       resourceManager
           .folders()
@@ -346,39 +346,39 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
                   .setConstraint(orgPolicy.getConstraint())
                   .setEtag(orgPolicy.getEtag()))
           .execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public OrgPolicy getEffectiveOrgPolicy(String resource, String constraint) {
+  public OrgPolicy getEffectiveOrgPolicy(String resource, String constraint) throws IOException {
     try {
       return resourceManager
           .folders()
           .getEffectiveOrgPolicy(
               resource, new GetEffectiveOrgPolicyRequest().setConstraint(constraint))
           .execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public OrgPolicy getOrgPolicy(String resource, String constraint) {
+  public OrgPolicy getOrgPolicy(String resource, String constraint) throws IOException {
     try {
       return resourceManager
           .folders()
           .getOrgPolicy(resource, new GetOrgPolicyRequest().setConstraint(constraint))
           .execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
   public ListResult<Constraint> listAvailableOrgPolicyConstraints(
-      String resource, Map<Option, ?> options) {
+      String resource, Map<Option, ?> options) throws IOException {
     try {
       ListAvailableOrgPolicyConstraintsResponse response =
           resourceManager
@@ -390,13 +390,14 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
                       .setPageToken(Option.PAGE_TOKEN.getString(options)))
               .execute();
       return ListResult.of(response.getNextPageToken(), response.getConstraints());
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public ListResult<OrgPolicy> listOrgPolicies(String resource, Map<Option, ?> options) {
+  public ListResult<OrgPolicy> listOrgPolicies(String resource, Map<Option, ?> options)
+      throws IOException {
     try {
       ListOrgPoliciesResponse response =
           resourceManager
@@ -408,20 +409,20 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
                       .setPageToken(Option.PAGE_TOKEN.getString(options)))
               .execute();
       return ListResult.of(response.getNextPageToken(), response.getPolicies());
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public OrgPolicy replaceOrgPolicy(String resource, OrgPolicy orgPolicy) {
+  public OrgPolicy replaceOrgPolicy(String resource, OrgPolicy orgPolicy) throws IOException {
     try {
       return resourceManager
           .folders()
           .setOrgPolicy(resource, new SetOrgPolicyRequest().setPolicy(orgPolicy))
           .execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 }
