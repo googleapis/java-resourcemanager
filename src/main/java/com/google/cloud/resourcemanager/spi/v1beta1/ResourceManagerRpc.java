@@ -140,5 +140,5 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  Organization getOrganization(String name);
+  Organization getOrganization(String name) throws IOException;
 }

@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.core.ApiFunction;
 import com.google.api.services.cloudresourcemanager.model.Organization;
+import com.google.api.services.cloudresourcemanager.model.OrganizationOwner;
 import com.google.cloud.StringEnumType;
 import com.google.cloud.StringEnumValue;
 import com.google.common.base.MoreObjects;
@@ -37,9 +38,9 @@ public class OrganizationInfo implements Serializable {
   private String displayName;
   private State lifecycleState;
   private String name;
-  private OrganizationOwner owner;
+  private OrgOwner owner;
 
-  public static final class State extends StringEnumValue {
+  static final class State extends StringEnumValue {
 
     private static final ApiFunction<String, State> CONSTRUCTOR =
         new ApiFunction<String, State>() {
@@ -57,8 +58,8 @@ public class OrganizationInfo implements Serializable {
     public static final State ACTIVE = type.createAndRegister("ACTIVE");
 
     /**
-     * Represents the state of organization that has been marked for deletion from GCP by the user
-     * or by the system (Google Cloud Platform).
+     * Represents the state of an organization that has been marked for deletion from GCP by the
+     * user or by the system (Google Cloud Platform).
      */
     public static final State DELETE_REQUESTED = type.createAndRegister("DELETE_REQUESTED");
 
@@ -85,17 +86,17 @@ public class OrganizationInfo implements Serializable {
     }
   }
 
-  public static final class OrganizationOwner implements Serializable {
+  static class OrgOwner implements Serializable {
 
     private static final long serialVersionUID = -325199985993344727L;
     private final String directoryCustomerId;
 
-    OrganizationOwner(String directoryCustomerId) {
+    OrgOwner(String directoryCustomerId) {
       this.directoryCustomerId = checkNotNull(directoryCustomerId);
     }
 
-    public static OrganizationOwner of(String directoryCustomerId) {
-      return new OrganizationOwner(checkNotNull(directoryCustomerId));
+    public static OrgOwner of(String directoryCustomerId) {
+      return new OrgOwner(checkNotNull(directoryCustomerId));
     }
 
     public String getDirectoryCustomerId() {
@@ -111,9 +112,13 @@ public class OrganizationInfo implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      OrganizationOwner that = (OrganizationOwner) o;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      OrgOwner that = (OrgOwner) o;
       return Objects.equals(directoryCustomerId, that.directoryCustomerId);
     }
 
@@ -122,25 +127,24 @@ public class OrganizationInfo implements Serializable {
       return Objects.hash(directoryCustomerId);
     }
 
-    com.google.api.services.cloudresourcemanager.model.OrganizationOwner toPb() {
-      com.google.api.services.cloudresourcemanager.model.OrganizationOwner organizationOwnerPb =
-          new com.google.api.services.cloudresourcemanager.model.OrganizationOwner();
-      organizationOwnerPb.setDirectoryCustomerId(directoryCustomerId);
-      return organizationOwnerPb;
+    OrganizationOwner toProtobuf() {
+      OrganizationOwner organizationOwnerProto = new OrganizationOwner();
+      organizationOwnerProto.setDirectoryCustomerId(directoryCustomerId);
+      return organizationOwnerProto;
     }
 
-    static OrganizationOwner fromPb(
-        com.google.api.services.cloudresourcemanager.model.OrganizationOwner organizationOwnerPb) {
-      return new OrganizationOwner(organizationOwnerPb.getDirectoryCustomerId());
+    static OrgOwner fromProtobuf(OrganizationOwner organizationOwnerPb) {
+      return new OrgOwner(organizationOwnerPb.getDirectoryCustomerId());
     }
   }
 
-  public static final class Builder {
+  /** Builder for {@code OrganizationInfo}. */
+  static class Builder {
     private Long creationTime;
     private String displayName;
     private State lifecycleState;
     private String name;
-    private OrganizationOwner owner;
+    private OrgOwner owner;
 
     private Builder() {}
 
@@ -172,7 +176,7 @@ public class OrganizationInfo implements Serializable {
       return this;
     }
 
-    public Builder setOwner(OrganizationOwner owner) {
+    public Builder setOwner(OrgOwner owner) {
       this.owner = owner;
       return this;
     }
@@ -228,7 +232,7 @@ public class OrganizationInfo implements Serializable {
    *
    * <p>This field is specified on creation time. Once set, it cannot be changed.
    */
-  public OrganizationOwner getOwner() {
+  public OrgOwner getOwner() {
     return owner;
   }
 
@@ -255,8 +259,12 @@ public class OrganizationInfo implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     OrganizationInfo that = (OrganizationInfo) o;
     return Objects.equals(creationTime, that.creationTime)
         && Objects.equals(displayName, that.displayName)
@@ -270,7 +278,7 @@ public class OrganizationInfo implements Serializable {
     return Objects.hash(creationTime, displayName, lifecycleState, name, owner);
   }
 
-  Organization toPb() {
+  Organization toProtobuf() {
     Organization organization = new Organization();
     if (creationTime != null) {
       organization.setCreationTime(
@@ -284,12 +292,12 @@ public class OrganizationInfo implements Serializable {
     }
     organization.setName(name);
     if (owner != null) {
-      organization.setOwner(owner.toPb());
+      organization.setOwner(owner.toProtobuf());
     }
     return organization;
   }
 
-  static OrganizationInfo fromPb(Organization organization) {
+  static OrganizationInfo fromProtobuf(Organization organization) {
     Builder builder = newBuilder();
     if (organization.getCreationTime() != null) {
       builder.setCreationTime(
@@ -305,7 +313,7 @@ public class OrganizationInfo implements Serializable {
       builder.setName(organization.getName());
     }
     if (organization.getOwner() != null) {
-      builder.setOwner(OrganizationOwner.fromPb(organization.getOwner()));
+      builder.setOwner(OrgOwner.fromProtobuf(organization.getOwner()));
     }
     return builder.build();
   }

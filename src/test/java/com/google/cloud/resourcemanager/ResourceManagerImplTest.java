@@ -52,6 +52,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.Instant;
@@ -90,8 +91,8 @@ public class ResourceManagerImplTest {
   private static final String ORGANIZATION_NAME = "organizations/1234";
   private static final String ORGANIZATION_DISPLAY_NAME = "google.com";
   private static final String ORGANIZATION_DIRECTORY_CUSTOMER_ID = "customer-id-123";
-  private static final OrganizationInfo.OrganizationOwner ORGANIZATION_OWNER =
-      OrganizationInfo.OrganizationOwner.of(ORGANIZATION_DIRECTORY_CUSTOMER_ID);
+  private static final OrganizationInfo.OrgOwner ORGANIZATION_OWNER =
+      OrganizationInfo.OrgOwner.of(ORGANIZATION_DIRECTORY_CUSTOMER_ID);
   private static final OrganizationInfo.State ORGANIZATION_LIFECYCLE_STATE =
       OrganizationInfo.State.LIFECYCLE_STATE_UNSPECIFIED;
   private static final OrganizationInfo ORGANIZATION_INFO =
@@ -105,6 +106,8 @@ public class ResourceManagerImplTest {
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
+
+  @Mock private ResourceManager resourceManagerMock;
 
   @BeforeClass
   public static void beforeClass() {
@@ -540,19 +543,8 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testGetOrganization() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
-        ResourceManagerOptions.newBuilder()
-            .setServiceRpcFactory(rpcFactoryMock)
-            .build()
-            .getService();
-    EasyMock.expect(resourceManagerRpcMock.getOrganization(ORGANIZATION_NAME))
-        .andReturn(ORGANIZATION_INFO.toPb());
-    EasyMock.replay(resourceManagerRpcMock);
+    Mockito.when(resourceManagerMock.getOrganization(ORGANIZATION_NAME))
+        .thenReturn(ORGANIZATION_INFO.toProtobuf());
     Organization organization = resourceManagerMock.getOrganization(ORGANIZATION_NAME);
     assertEquals(ORGANIZATION_NAME, organization.getName());
     assertEquals(
@@ -568,12 +560,16 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testGetOrganizationWithException() {
+    String organization = "organizations/12345";
+    String exceptionMessage = "Not Found";
+    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerMock)
+        .getOrganization(organization);
     try {
-      RESOURCE_MANAGER.getOrganization("organizations/12345");
-      fail("Should fail because the organization doesn't exist.");
-    } catch (ResourceManagerException e) {
-      assertEquals(404, e.getCode());
-      assertTrue(e.getMessage().contains("Not Found"));
+      resourceManagerMock.getOrganization(organization);
+      fail();
+    } catch (RuntimeException expected) {
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 }

@@ -327,11 +327,11 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Organization getOrganization(String name) {
+  public Organization getOrganization(String name) throws IOException {
     try {
       return resourceManager.organizations().get(name).execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 }

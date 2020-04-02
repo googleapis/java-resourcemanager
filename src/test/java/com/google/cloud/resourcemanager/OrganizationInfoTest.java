@@ -28,8 +28,8 @@ public class OrganizationInfoTest {
   private static final String ORGANIZATION_NAME = "organizations/1234";
   private static final String ORGANIZATION_DISPLAY_NAME = "google.com";
   private static final String ORGANIZATION_DIRECTORY_CUSTOMER_ID = "customer-id-123";
-  private static final OrganizationInfo.OrganizationOwner ORGANIZATION_OWNER =
-      OrganizationInfo.OrganizationOwner.of(ORGANIZATION_DIRECTORY_CUSTOMER_ID);
+  private static final OrganizationInfo.OrgOwner ORGANIZATION_OWNER =
+      OrganizationInfo.OrgOwner.of(ORGANIZATION_DIRECTORY_CUSTOMER_ID);
   private static final OrganizationInfo.State ORGANIZATION_LIFECYCLE_STATE =
       OrganizationInfo.State.LIFECYCLE_STATE_UNSPECIFIED;
   private static final OrganizationInfo ORGANIZATION_INFO =
@@ -68,7 +68,8 @@ public class OrganizationInfoTest {
 
   @Test
   public void testToAndFromPb() {
-    compareOrganizationInfo(ORGANIZATION_INFO, OrganizationInfo.fromPb(ORGANIZATION_INFO.toPb()));
+    compareOrganizationInfo(
+        ORGANIZATION_INFO, OrganizationInfo.fromProtobuf(ORGANIZATION_INFO.toProtobuf()));
   }
 
   private void compareOrganizationInfo(OrganizationInfo expected, OrganizationInfo value) {

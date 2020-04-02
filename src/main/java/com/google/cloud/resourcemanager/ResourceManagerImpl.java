@@ -300,7 +300,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
       return runWithRetries(
           new Callable<Organization>() {
             @Override
-            public Organization call() {
+            public Organization call() throws IOException {
               return resourceManagerRpc.getOrganization(name);
             }
           },
