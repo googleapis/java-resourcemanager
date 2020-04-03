@@ -404,7 +404,8 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
       Iterable<ConstraintInfo> constraints =
           constraintList.results() == null
               ? ImmutableList.<ConstraintInfo>of()
-              : Iterables.transform(constraintList.results(), ConstraintInfo.FROM_PB_FUNCTION);
+              : Iterables.transform(
+                  constraintList.results(), ConstraintInfo.FROM_PROTOBUF_FUNCTION);
       return new PageImpl<>(
           new ConstraintPageFetcher(resource, serviceOptions, cursor, optionsMap),
           cursor,
@@ -464,7 +465,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
       Iterable<OrgPolicyInfo> orgPolicies =
           orgPolicy.results() == null
               ? ImmutableList.<OrgPolicyInfo>of()
-              : Iterables.transform(orgPolicy.results(), OrgPolicyInfo.FROM_PB_FUNCTION);
+              : Iterables.transform(orgPolicy.results(), OrgPolicyInfo.FROM_PROTOBUF_FUNCTION);
       return new PageImpl<>(
           new OrgPolicyPageFetcher(resource, serviceOptions, cursor, optionsMap),
           cursor,

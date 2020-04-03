@@ -65,7 +65,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
     private final Iterable<T> results;
     private final String pageToken;
 
-    public ListResult(String pageToken, Iterable<T> results) {
+    ListResult(String pageToken, Iterable<T> results) {
       this.results = ImmutableList.copyOf(results);
       this.pageToken = pageToken;
     }
@@ -165,9 +165,9 @@ public interface ResourceManagerRpc extends ServiceRpc {
   void clearOrgPolicy(String resource, OrgPolicy orgPolicy) throws IOException;
 
   /**
-   * Gets the effective Policy on a resource
+   * Gets the effective Policy on a resource.
    *
-   * <p>This is the result of merging Policies in the resource hierarchy. The returned Policy will
+   * <p>This is the result of merging Policies in the resource hierarchy. The returned Policy does
    * not have an etag set because it is a computed Policy across multiple resources. Subtrees of
    * Resource Manager resource hierarchy with 'under:' prefix will not be expanded.
    *

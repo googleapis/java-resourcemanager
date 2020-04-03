@@ -80,9 +80,10 @@ public class OrgPolicyInfoTest {
   public void testToAndFromPb() {
     assertTrue(orgPolicyInfo.toProtobuf().getUpdateTime().endsWith("Z"));
     compareOrgPolicy(orgPolicyInfo, orgPolicyInfo.fromProtobuf(orgPolicyInfo.toProtobuf()));
-    assertNotNull(OrgPolicyInfo.TO_PB_FUNCTION.apply(orgPolicyInfo));
+    assertNotNull(OrgPolicyInfo.TO_PROTOBUF_FUNCTION.apply(orgPolicyInfo));
     assertNotNull(
-        OrgPolicyInfo.FROM_PB_FUNCTION.apply(OrgPolicyInfo.TO_PB_FUNCTION.apply(orgPolicyInfo)));
+        OrgPolicyInfo.FROM_PROTOBUF_FUNCTION.apply(
+            OrgPolicyInfo.TO_PROTOBUF_FUNCTION.apply(orgPolicyInfo)));
   }
 
   @Test

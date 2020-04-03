@@ -74,9 +74,10 @@ public class ConstraintInfoTest {
   @Test
   public void testToAndFromPb() {
     compareConstraints(constraintInfo, ConstraintInfo.fromProtobuf(constraintInfo.toProtobuf()));
-    assertNotNull(ConstraintInfo.TO_PB_FUNCTION.apply(constraintInfo));
+    assertNotNull(ConstraintInfo.TO_PROTOBUF_FUNCTION.apply(constraintInfo));
     assertNotNull(
-        ConstraintInfo.FROM_PB_FUNCTION.apply(ConstraintInfo.TO_PB_FUNCTION.apply(constraintInfo)));
+        ConstraintInfo.FROM_PROTOBUF_FUNCTION.apply(
+            ConstraintInfo.TO_PROTOBUF_FUNCTION.apply(constraintInfo)));
   }
 
   @Test

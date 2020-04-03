@@ -25,19 +25,24 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-/** A Google Cloud Resource Manager organization policy metadata object. */
+/**
+ * A Google Cloud Resource Manager organization policy metadata object.
+ *
+ * <p>Defines a Cloud Organization Policy which specifies constraints for configurations of Cloud
+ * Platform resources.
+ */
 public class OrgPolicyInfo implements Serializable {
 
   private static final long serialVersionUID = 9148970963697734236L;
 
-  static final Function<OrgPolicy, OrgPolicyInfo> FROM_PB_FUNCTION =
+  static final Function<OrgPolicy, OrgPolicyInfo> FROM_PROTOBUF_FUNCTION =
       new Function<OrgPolicy, OrgPolicyInfo>() {
         @Override
         public OrgPolicyInfo apply(OrgPolicy protobuf) {
           return OrgPolicyInfo.fromProtobuf(protobuf);
         }
       };
-  static final Function<OrgPolicyInfo, OrgPolicy> TO_PB_FUNCTION =
+  static final Function<OrgPolicyInfo, OrgPolicy> TO_PROTOBUF_FUNCTION =
       new Function<OrgPolicyInfo, OrgPolicy>() {
         @Override
         public OrgPolicy apply(OrgPolicyInfo orgPolicyInfo) {
@@ -365,28 +370,28 @@ public class OrgPolicyInfo implements Serializable {
     return orgPolicyProto;
   }
 
-  static OrgPolicyInfo fromProtobuf(OrgPolicy orgPolicyPb) {
+  static OrgPolicyInfo fromProtobuf(OrgPolicy orgPolicyProtobuf) {
     Builder builder = newBuilder();
-    if (orgPolicyPb.getBooleanPolicy() != null) {
-      builder.setBoolPolicy(BoolPolicy.fromProtobuf(orgPolicyPb.getBooleanPolicy()));
+    if (orgPolicyProtobuf.getBooleanPolicy() != null) {
+      builder.setBoolPolicy(BoolPolicy.fromProtobuf(orgPolicyProtobuf.getBooleanPolicy()));
     }
-    if (orgPolicyPb.getConstraint() != null) {
-      builder.setConstraint(orgPolicyPb.getConstraint());
+    if (orgPolicyProtobuf.getConstraint() != null) {
+      builder.setConstraint(orgPolicyProtobuf.getConstraint());
     }
-    if (orgPolicyPb.getListPolicy() != null) {
-      builder.setListPolicy(Policies.fromProtobuf(orgPolicyPb.getListPolicy()));
+    if (orgPolicyProtobuf.getListPolicy() != null) {
+      builder.setListPolicy(Policies.fromProtobuf(orgPolicyProtobuf.getListPolicy()));
     }
-    if (orgPolicyPb.getRestoreDefault() != null) {
-      builder.setRestoreDefault(orgPolicyPb.getRestoreDefault());
+    if (orgPolicyProtobuf.getRestoreDefault() != null) {
+      builder.setRestoreDefault(orgPolicyProtobuf.getRestoreDefault());
     }
-    if (orgPolicyPb.getEtag() != null) {
-      builder.setEtag(orgPolicyPb.getEtag());
+    if (orgPolicyProtobuf.getEtag() != null) {
+      builder.setEtag(orgPolicyProtobuf.getEtag());
     }
-    if (orgPolicyPb.getUpdateTime() != null) {
-      builder.setUpdateTime(orgPolicyPb.getUpdateTime());
+    if (orgPolicyProtobuf.getUpdateTime() != null) {
+      builder.setUpdateTime(orgPolicyProtobuf.getUpdateTime());
     }
-    if (orgPolicyPb.getVersion() != null) {
-      builder.setVersion(orgPolicyPb.getVersion());
+    if (orgPolicyProtobuf.getVersion() != null) {
+      builder.setVersion(orgPolicyProtobuf.getVersion());
     }
     return builder.build();
   }

@@ -23,19 +23,29 @@ import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** A Google Cloud Resource Manager constraint metadata object. */
+/**
+ * A Google Cloud Resource Manager constraint metadata object.
+ *
+ * <p>A Constraint describes a way in which a resource's configuration can be restricted. For
+ * example, it controls which cloud services can be activated across an organization, or whether a
+ * Compute Engine instance can have serial port connections established. Constraints can be
+ * configured by the organization's policy administrator to fit the needs of the organization by
+ * setting Policies for Constraints at different locations in the organization's resource hierarchy.
+ * Policies are inherited down the resource hierarchy from higher levels, but can also be
+ * overridden. For details about the inheritance rules please read about Policies.
+ */
 public class ConstraintInfo implements Serializable {
 
   private static final long serialVersionUID = 9148970963697734236L;
 
-  static final Function<Constraint, ConstraintInfo> FROM_PB_FUNCTION =
+  static final Function<Constraint, ConstraintInfo> FROM_PROTOBUF_FUNCTION =
       new Function<Constraint, ConstraintInfo>() {
         @Override
         public ConstraintInfo apply(Constraint protobuf) {
           return ConstraintInfo.fromProtobuf(protobuf);
         }
       };
-  static final Function<ConstraintInfo, Constraint> TO_PB_FUNCTION =
+  static final Function<ConstraintInfo, Constraint> TO_PROTOBUF_FUNCTION =
       new Function<ConstraintInfo, Constraint>() {
         @Override
         public Constraint apply(ConstraintInfo constraintInfo) {
@@ -263,28 +273,28 @@ public class ConstraintInfo implements Serializable {
     return constraintProto;
   }
 
-  static ConstraintInfo fromProtobuf(Constraint constraintPb) {
-    Builder builder = newBuilder(constraintPb.getName());
-    if (constraintPb.getBooleanConstraint() != null) {
-      builder.setBooleanConstraint(constraintPb.getBooleanConstraint());
+  static ConstraintInfo fromProtobuf(Constraint constraintProtobuf) {
+    Builder builder = newBuilder(constraintProtobuf.getName());
+    if (constraintProtobuf.getBooleanConstraint() != null) {
+      builder.setBooleanConstraint(constraintProtobuf.getBooleanConstraint());
     }
-    if (constraintPb.getConstraintDefault() != null) {
-      builder.setConstraintDefault(constraintPb.getConstraintDefault());
+    if (constraintProtobuf.getConstraintDefault() != null) {
+      builder.setConstraintDefault(constraintProtobuf.getConstraintDefault());
     }
-    if (constraintPb.getDescription() != null) {
-      builder.setDescription(constraintPb.getDescription());
+    if (constraintProtobuf.getDescription() != null) {
+      builder.setDescription(constraintProtobuf.getDescription());
     }
-    if (constraintPb.getDisplayName() != null) {
-      builder.setDisplayName(constraintPb.getDisplayName());
+    if (constraintProtobuf.getDisplayName() != null) {
+      builder.setDisplayName(constraintProtobuf.getDisplayName());
     }
-    if (constraintPb.getListConstraint() != null) {
-      builder.setConstraints(Constraints.fromProtobuf(constraintPb.getListConstraint()));
+    if (constraintProtobuf.getListConstraint() != null) {
+      builder.setConstraints(Constraints.fromProtobuf(constraintProtobuf.getListConstraint()));
     }
-    if (constraintPb.getName() != null && !constraintPb.getName().equals("Unnamed")) {
-      builder.setName(constraintPb.getName());
+    if (constraintProtobuf.getName() != null && !constraintProtobuf.getName().equals("Unnamed")) {
+      builder.setName(constraintProtobuf.getName());
     }
-    if (constraintPb.getVersion() != null) {
-      builder.setVersion(constraintPb.getVersion());
+    if (constraintProtobuf.getVersion() != null) {
+      builder.setVersion(constraintProtobuf.getVersion());
     }
     return builder.build();
   }
