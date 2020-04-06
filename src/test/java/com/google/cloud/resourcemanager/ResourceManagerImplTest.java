@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +56,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -128,8 +128,6 @@ public class ResourceManagerImplTest {
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
-
-  @Mock private ResourceManager resourceManagerMock;
 
   @BeforeClass
   public static void beforeClass() {
@@ -443,43 +441,63 @@ public class ResourceManagerImplTest {
 
   @Test
   public void testRetryableException() {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Internal Error";
-    Mockito.doThrow(new ResourceManagerException(500, exceptionMessage))
-        .when(resourceManagerMock)
-        .get(PARTIAL_PROJECT.getProjectId());
+    doThrow(new ResourceManagerException(500, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .get(PARTIAL_PROJECT.getProjectId(), EMPTY_RPC_OPTIONS);
     try {
-      resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.get(PARTIAL_PROJECT.getProjectId());
+    } catch (ResourceManagerException expected) {
+      assertEquals(500, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
   public void testNonRetryableException() {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Project " + PARTIAL_PROJECT.getProjectId() + " not found.";
-    Mockito.doThrow(new ResourceManagerException(403, exceptionMessage))
-        .when(resourceManagerMock)
-        .get(PARTIAL_PROJECT.getProjectId());
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .get(PARTIAL_PROJECT.getProjectId(), EMPTY_RPC_OPTIONS);
     try {
-      resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.get(PARTIAL_PROJECT.getProjectId());
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
   public void testRuntimeException() {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Artificial runtime exception";
-    Mockito.doThrow(new RuntimeException(exceptionMessage))
-        .when(resourceManagerMock)
-        .get(PARTIAL_PROJECT.getProjectId());
+    doThrow(new RuntimeException(exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .get(PARTIAL_PROJECT.getProjectId(), EMPTY_RPC_OPTIONS);
     try {
-      resourceManagerMock.get(PARTIAL_PROJECT.getProjectId());
-      fail();
+      resourceManager.get(PARTIAL_PROJECT.getProjectId());
     } catch (RuntimeException expected) {
-      assertEquals(exceptionMessage, expected.getMessage());
+      assertTrue(expected.getMessage().contains(exceptionMessage));
     }
   }
 
@@ -534,168 +552,257 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testClearOrgPolicy() {
+  public void testClearOrgPolicy() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    doNothing().when(resourceManagerRpcMock).clearOrgPolicy(RESOURCE, ORG_POLICY_INFO.toProtobuf());
+    resourceManager.clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+    verify(resourceManagerRpcMock).clearOrgPolicy(RESOURCE, ORG_POLICY_INFO.toProtobuf());
+  }
+
+  @Test
+  public void testClearOrgPolicyWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Should fail because the organization policy doesn't exist.";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
-        .clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .clearOrgPolicy(RESOURCE, ORG_POLICY_INFO.toProtobuf());
     try {
-      resourceManagerMock.clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.clearOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testGetEffectiveOrgPolicy() {
-    Mockito.when(resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS))
-        .thenReturn(ORG_POLICY_INFO);
-    OrgPolicyInfo policyInfo = resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
+  public void testGetEffectiveOrgPolicy() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    when(resourceManagerRpcMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS))
+        .thenReturn(ORG_POLICY_INFO.toProtobuf());
+    OrgPolicyInfo policyInfo = resourceManager.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
     assertEquals(CONSTRAINTS, policyInfo.getConstraint());
     assertEquals(BOOLEAN_POLICY, policyInfo.getBoolPolicy());
     assertEquals(ETAG, policyInfo.getEtag());
     assertEquals(LIST_POLICY, policyInfo.getPolicies());
     assertEquals(UPDATE_TIME, policyInfo.getUpdateTime());
     assertEquals(VERSION, policyInfo.getVersion());
+
+    verify(resourceManagerRpcMock).getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
   }
 
   @Test
-  public void testGetEffectiveOrgPolicyWithException() {
+  public void testGetEffectiveOrgPolicyWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Not Found";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
         .getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
     try {
-      resourceManagerMock.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.getEffectiveOrgPolicy(RESOURCE, CONSTRAINTS);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testGetOrgPolicy() {
-    Mockito.when(resourceManagerMock.getOrgPolicy(RESOURCE, CONSTRAINTS))
-        .thenReturn(ORG_POLICY_INFO);
-    OrgPolicyInfo policyInfo = resourceManagerMock.getOrgPolicy(RESOURCE, CONSTRAINTS);
+  public void testGetOrgPolicy() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    when(resourceManagerRpcMock.getOrgPolicy(RESOURCE, CONSTRAINTS))
+        .thenReturn(ORG_POLICY_INFO.toProtobuf());
+    OrgPolicyInfo policyInfo = resourceManager.getOrgPolicy(RESOURCE, CONSTRAINTS);
     assertEquals(CONSTRAINTS, policyInfo.getConstraint());
     assertEquals(BOOLEAN_POLICY, policyInfo.getBoolPolicy());
     assertEquals(LIST_POLICY, policyInfo.getPolicies());
     assertEquals(UPDATE_TIME, policyInfo.getUpdateTime());
     assertEquals(VERSION, policyInfo.getVersion());
+
+    verify(resourceManagerRpcMock).getOrgPolicy(RESOURCE, CONSTRAINTS);
   }
 
   @Test
-  public void testGetOrgPolicyWithException() {
+  public void testGetOrgPolicyWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Not Found";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
         .getOrgPolicy(RESOURCE, CONSTRAINTS);
     try {
-      resourceManagerMock.getOrgPolicy(RESOURCE, CONSTRAINTS);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.getOrgPolicy(RESOURCE, CONSTRAINTS);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
   public void testListAvailableOrgPolicyConstraints() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     ListResult<Constraint> expectedResult =
         ListResult.of(CURSOR, ImmutableList.of(CONSTRAINT_INFO.toProtobuf()));
-    Mockito.when(resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS))
+    when(resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS))
         .thenReturn(expectedResult);
-    ListResult<Constraint> page =
-        resourceManagerRpcMock.listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS);
-    assertEquals(CURSOR, page.pageToken());
-    for (Constraint constraint : page.results()) {
-      assertEquals(NAME, constraint.getName());
-      assertEquals(CONSTRAINT_DEFAULT, constraint.getConstraintDefault());
-      assertEquals(DISPLAY_NAME, constraint.getDisplayName());
-      assertEquals(DESCRIPTION, constraint.getDescription());
-      assertEquals(
-          LIST_CONSTRAINT.getSuggestedValue(), constraint.getListConstraint().getSuggestedValue());
-      assertEquals(
-          LIST_CONSTRAINT.getSupportsUnder(), constraint.getListConstraint().getSupportsUnder());
-      assertEquals(VERSION, constraint.getVersion());
+    Page<ConstraintInfo> page = resourceManager.listAvailableOrgPolicyConstraints(NAME);
+    assertEquals(CURSOR, page.getNextPageToken());
+    for (ConstraintInfo constraintInfo : page.getValues()) {
+      assertEquals(NAME, constraintInfo.getName());
+      assertEquals(CONSTRAINT_DEFAULT, constraintInfo.getConstraintDefault());
+      assertEquals(DISPLAY_NAME, constraintInfo.getDisplayName());
+      assertEquals(DESCRIPTION, constraintInfo.getDescription());
+      assertEquals(LIST_CONSTRAINT, constraintInfo.getConstraints());
+      assertEquals(VERSION, constraintInfo.getVersion());
     }
+    verify(resourceManagerRpcMock).listAvailableOrgPolicyConstraints(NAME, EMPTY_RPC_OPTIONS);
   }
 
   @Test
-  public void listAvailableOrgPolicyConstraintsWithException() {
+  public void listAvailableOrgPolicyConstraintsWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Not Found";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
-        .listAvailableOrgPolicyConstraints(RESOURCE);
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .listAvailableOrgPolicyConstraints(RESOURCE, EMPTY_RPC_OPTIONS);
     try {
-      resourceManagerMock.listAvailableOrgPolicyConstraints(RESOURCE);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.listAvailableOrgPolicyConstraints(RESOURCE);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
   public void testListOrgPolicies() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     ListResult<OrgPolicy> expectedResult =
         ListResult.of(CURSOR, ImmutableList.of(ORG_POLICY_INFO.toProtobuf()));
-    Mockito.when(resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS))
+    when(resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS))
         .thenReturn(expectedResult);
-    ListResult<OrgPolicy> results =
-        resourceManagerRpcMock.listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS);
-    assertEquals(CURSOR, results.pageToken());
-    for (OrgPolicy orgPolicy : results.results()) {
-      assertEquals(CONSTRAINTS, orgPolicy.getConstraint());
-      assertEquals(ETAG, orgPolicy.getEtag());
-      assertEquals(BOOLEAN_POLICY.getEnforce(), orgPolicy.getBooleanPolicy().getEnforced());
-      assertEquals(LIST_POLICY.getAllValues(), orgPolicy.getListPolicy().getAllValues());
-      assertEquals(LIST_POLICY.getAllowedValues(), orgPolicy.getListPolicy().getAllowedValues());
-      assertEquals(LIST_POLICY.getDeniedValues(), orgPolicy.getListPolicy().getDeniedValues());
-      assertEquals(
-          LIST_POLICY.getInheritFromParent(), orgPolicy.getListPolicy().getInheritFromParent());
-      assertEquals(LIST_POLICY.getSuggestedValue(), orgPolicy.getListPolicy().getSuggestedValue());
-      assertEquals(UPDATE_TIME, orgPolicy.getUpdateTime());
-      assertEquals(VERSION, orgPolicy.getVersion());
+    Page<OrgPolicyInfo> policies = resourceManager.listOrgPolicies(RESOURCE);
+    assertEquals(CURSOR, policies.getNextPageToken());
+    for (OrgPolicyInfo orgPolicyInfo : policies.getValues()) {
+      assertEquals(CONSTRAINTS, orgPolicyInfo.getConstraint());
+      assertEquals(ETAG, orgPolicyInfo.getEtag());
+      assertEquals(BOOLEAN_POLICY, orgPolicyInfo.getBoolPolicy());
+      assertEquals(LIST_POLICY, orgPolicyInfo.getPolicies());
+      assertEquals(UPDATE_TIME, orgPolicyInfo.getUpdateTime());
+      assertEquals(VERSION, orgPolicyInfo.getVersion());
     }
+    verify(resourceManagerRpcMock).listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS);
   }
 
   @Test
-  public void testListOrgPoliciesWithException() {
+  public void testListOrgPoliciesWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Not Found";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
-        .listOrgPolicies(RESOURCE);
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .listOrgPolicies(RESOURCE, EMPTY_RPC_OPTIONS);
     try {
-      resourceManagerMock.listOrgPolicies(RESOURCE);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.listOrgPolicies(RESOURCE);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testSetOrgPolicy() {
-    Mockito.when(resourceManagerMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO))
-        .thenReturn(ORG_POLICY_INFO);
-    OrgPolicyInfo policyInfo = resourceManagerMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+  public void testSetOrgPolicy() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    when(resourceManagerRpcMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO.toProtobuf()))
+        .thenReturn(ORG_POLICY_INFO.toProtobuf());
+    OrgPolicyInfo policyInfo = resourceManager.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
     assertEquals(CONSTRAINTS, policyInfo.getConstraint());
     assertEquals(BOOLEAN_POLICY, policyInfo.getBoolPolicy());
     assertEquals(LIST_POLICY, policyInfo.getPolicies());
     assertEquals(UPDATE_TIME, policyInfo.getUpdateTime());
     assertEquals(VERSION, policyInfo.getVersion());
+
+    verify(resourceManagerRpcMock).replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO.toProtobuf());
   }
 
   @Test
-  public void testSetOrgPolicyWithException() {
+  public void testSetOrgPolicyWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
     String exceptionMessage = "Not Found";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
-        .replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO.toProtobuf());
     try {
-      resourceManagerMock.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.replaceOrgPolicy(RESOURCE, ORG_POLICY_INFO);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
