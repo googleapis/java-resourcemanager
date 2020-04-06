@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.117.3](https://www.github.com/googleapis/java-resourcemanager/compare/v0.117.2...v0.117.3) (2020-04-06)
+
+
+### Dependencies
+
+* update core dependencies to v1.93.3 ([#104](https://www.github.com/googleapis/java-resourcemanager/issues/104)) ([273e621](https://www.github.com/googleapis/java-resourcemanager/commit/273e621ec47c63ec1245a4ba6862d564dd5db013))
+* update dependency com.google.api:api-common to v1.9.0 ([#120](https://www.github.com/googleapis/java-resourcemanager/issues/120)) ([7112223](https://www.github.com/googleapis/java-resourcemanager/commit/7112223387a6c5faef7626a6acfcbf4b6306377f))
+* update dependency com.google.api:gax-bom to v1.55.0 ([#124](https://www.github.com/googleapis/java-resourcemanager/issues/124)) ([dc2002f](https://www.github.com/googleapis/java-resourcemanager/commit/dc2002fe22146d67a2d31b38e163d6c029c161fc))
+* update dependency com.google.apis:google-api-services-cloudresourcemanager to v1-rev20200311-1.30.9 ([#100](https://www.github.com/googleapis/java-resourcemanager/issues/100)) ([9af1f5d](https://www.github.com/googleapis/java-resourcemanager/commit/9af1f5d1fc1d17976b3e0a5ea9f5ebc4803993ee))
+* update dependency org.threeten:threetenbp to v1.4.2 ([#112](https://www.github.com/googleapis/java-resourcemanager/issues/112)) ([da637f0](https://www.github.com/googleapis/java-resourcemanager/commit/da637f0a32a3bdc63faaffb564e06121e186b24c))
+* update dependency org.threeten:threetenbp to v1.4.3 ([#131](https://www.github.com/googleapis/java-resourcemanager/issues/131)) ([ee08cde](https://www.github.com/googleapis/java-resourcemanager/commit/ee08cdea780a57b2b76295bc4081c35e03ffd0f2))
+
 ### [0.117.2](https://www.github.com/googleapis/java-resourcemanager/compare/v0.117.1...v0.117.2) (2020-03-10)
 
 
