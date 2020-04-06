@@ -9,7 +9,7 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>com.google.cloud.resourcemanager.Lien createLien(com.google.cloud.resourcemanager.LienInfo)</method>
+        <method>com.google.cloud.resourcemanager.LienInfo createLien(com.google.cloud.resourcemanager.LienInfo)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
@@ -19,7 +19,7 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>com.google.cloud.resourcemanager.Lien getLien(java.lang.String)</method>
+        <method>com.google.cloud.resourcemanager.LienInfo getLien(java.lang.String)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
@@ -37,7 +37,6 @@
         <method>com.google.api.services.cloudresourcemanager.model.Lien createLien(com.google.api.services.cloudresourcemanager.model.Lien)</method>
         <differenceType>7012</differenceType>
     </difference>
-
     <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
         <method>void deleteLien(java.lang.String)</method>
@@ -50,7 +49,7 @@
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
-        <method>com.google.api.services.cloudresourcemanager.model.ListLiensResponse listLiens(java.lang.String, java.util.Map)</method>
+        <method>com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc$ListResult listLiens(java.lang.String, java.util.Map)</method>
         <differenceType>7012</differenceType>
     </difference>
 </differences>

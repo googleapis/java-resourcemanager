@@ -328,50 +328,46 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Lien createLien(Lien lien) {
+  public Lien createLien(Lien lien) throws IOException {
     try {
       return resourceManager.liens().create(lien).execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public void deleteLien(String name) {
+  public void deleteLien(String name) throws IOException {
     try {
       resourceManager.liens().delete(name).execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public Lien getLien(String name) {
+  public Lien getLien(String name) throws IOException {
     try {
       return resourceManager.liens().get(name).execute();
-    } catch (IOException ex) {
-      ResourceManagerException translated = translate(ex);
-      if (translated.getCode() == HTTP_FORBIDDEN || translated.getCode() == HTTP_NOT_FOUND) {
-        // Service can return either 403 or 404 to signify that the lien doesn't exist.
-        return null;
-      } else {
-        throw translated;
-      }
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
   @Override
-  public ListLiensResponse listLiens(String parent, Map<Option, ?> options) {
+  public ListResult<Lien> listLiens(String parent, Map<Option, ?> options) throws IOException {
     try {
-      return resourceManager
-          .liens()
-          .list()
-          .setParent(parent)
-          .setPageSize(Option.PAGE_SIZE.getInt(options))
-          .setPageToken(Option.PAGE_TOKEN.getString(options))
-          .execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+      ListLiensResponse response =
+          resourceManager
+              .liens()
+              .list()
+              .setParent(parent)
+              .setPageSize(Option.PAGE_SIZE.getInt(options))
+              .setPageToken(Option.PAGE_TOKEN.getString(options))
+              .execute();
+      return ListResult.of(response.getNextPageToken(), response.getLiens());
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 }

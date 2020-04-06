@@ -20,7 +20,7 @@ import static com.google.cloud.RetryHelper.runWithRetries;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.api.gax.paging.Page;
-import com.google.api.services.cloudresourcemanager.model.ListLiensResponse;
+import com.google.api.services.cloudresourcemanager.model.Lien;
 import com.google.cloud.BaseService;
 import com.google.cloud.PageImpl;
 import com.google.cloud.PageImpl.NextPageFetcher;
@@ -28,6 +28,7 @@ import com.google.cloud.Policy;
 import com.google.cloud.RetryHelper.RetryHelperException;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
+import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc.ListResult;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -295,15 +296,14 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   }
 
   @Override
-  public Lien createLien(final LienInfo lienInfo) {
-    final com.google.api.services.cloudresourcemanager.model.Lien lien = lienInfo.toPb();
+  public LienInfo createLien(final LienInfo lienInfo) {
+    final Lien lien = lienInfo.toProtobuf();
     try {
-      return Lien.fromPb(
-          this,
+      return LienInfo.fromProtobuf(
           runWithRetries(
-              new Callable<com.google.api.services.cloudresourcemanager.model.Lien>() {
+              new Callable<Lien>() {
                 @Override
-                public com.google.api.services.cloudresourcemanager.model.Lien call() {
+                public Lien call() throws IOException {
                   return resourceManagerRpc.createLien(lien);
                 }
               },
@@ -321,7 +321,7 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
       runWithRetries(
           new Callable<Void>() {
             @Override
-            public Void call() {
+            public Void call() throws IOException {
               resourceManagerRpc.deleteLien(name);
               return null;
             }
@@ -335,26 +335,25 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
   }
 
   @Override
-  public Lien getLien(final String name) {
+  public LienInfo getLien(final String name) {
     try {
-      com.google.api.services.cloudresourcemanager.model.Lien answer =
+      return LienInfo.fromProtobuf(
           runWithRetries(
-              new Callable<com.google.api.services.cloudresourcemanager.model.Lien>() {
+              new Callable<Lien>() {
                 @Override
-                public com.google.api.services.cloudresourcemanager.model.Lien call() {
+                public Lien call() throws IOException {
                   return resourceManagerRpc.getLien(name);
                 }
               },
               getOptions().getRetrySettings(),
               EXCEPTION_HANDLER,
-              getOptions().getClock());
-      return answer == null ? null : Lien.fromPb(this, answer);
+              getOptions().getClock()));
     } catch (RetryHelperException ex) {
       throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 
-  private static class LienPageFetcher implements NextPageFetcher<Lien> {
+  private static class LienPageFetcher implements NextPageFetcher<LienInfo> {
 
     private final Map<ResourceManagerRpc.Option, ?> requestOptions;
     private final ResourceManagerOptions serviceOptions;
@@ -372,26 +371,26 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
     }
 
     @Override
-    public Page<Lien> getNextPage() {
+    public Page<LienInfo> getNextPage() {
       return listLiens(parent, serviceOptions, requestOptions);
     }
   }
 
   @Override
-  public Page<Lien> listLiens(String parent, LienListOption... options) {
+  public Page<LienInfo> listLiens(String parent, LienListOption... options) {
     return listLiens(parent, getOptions(), optionMap(options));
   }
 
-  private static Page<Lien> listLiens(
+  private static Page<LienInfo> listLiens(
       final String parent,
       final ResourceManagerOptions serviceOptions,
       final Map<ResourceManagerRpc.Option, ?> optionsMap) {
     try {
-      ListLiensResponse result =
+      ListResult<Lien> result =
           runWithRetries(
-              new Callable<ListLiensResponse>() {
+              new Callable<ListResult<Lien>>() {
                 @Override
-                public ListLiensResponse call() {
+                public ListResult<Lien> call() throws IOException {
                   return serviceOptions
                       .getResourceManagerRpcV1Beta1()
                       .listLiens(parent, optionsMap);
@@ -400,22 +399,11 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
               serviceOptions.getRetrySettings(),
               EXCEPTION_HANDLER,
               serviceOptions.getClock());
-      String cursor = result.getNextPageToken();
-
-      Iterable<Lien> liens =
-          result.getLiens() == null
-              ? ImmutableList.<Lien>of()
-              : Iterables.transform(
-                  result.getLiens(),
-                  new Function<com.google.api.services.cloudresourcemanager.model.Lien, Lien>() {
-                    @Override
-                    public Lien apply(
-                        com.google.api.services.cloudresourcemanager.model.Lien lienPb) {
-                      return new Lien(
-                          serviceOptions.getService(),
-                          new LienInfo.BuilderImpl(LienInfo.fromPb(lienPb)));
-                    }
-                  });
+      String cursor = result.pageToken();
+      Iterable<LienInfo> liens =
+          result.results() == null
+              ? ImmutableList.<LienInfo>of()
+              : Iterables.transform(result.results(), LienInfo.FROM_PROTOBUF_FUNCTION);
       return new PageImpl<>(
           new LienPageFetcher(parent, serviceOptions, cursor, optionsMap), cursor, liens);
     } catch (RetryHelperException ex) {

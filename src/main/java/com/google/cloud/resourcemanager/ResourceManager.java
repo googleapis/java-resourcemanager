@@ -392,7 +392,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/create">
    *     Resource Manager create</a>
    */
-  Lien createLien(LienInfo lienInfo);
+  LienInfo createLien(LienInfo lienInfo);
 
   /**
    * Deletes the lien by name.
@@ -410,7 +410,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/get"> Resource
    *     Manager get</a>
    */
-  Lien getLien(String name);
+  LienInfo getLien(String name);
 
   /**
    * Lists all the liens applied to the parent resource.
@@ -419,5 +419,5 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href= "https://cloud.google.com/resource-manager/reference/rest/v1/liens/list">
    *     Resource Manager list</a>
    */
-  Page<Lien> listLiens(String parent, LienListOption... options);
+  Page<LienInfo> listLiens(String parent, LienListOption... options);
 }

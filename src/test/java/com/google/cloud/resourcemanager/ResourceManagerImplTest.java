@@ -24,12 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
-import com.google.api.services.cloudresourcemanager.model.ListLiensResponse;
+import com.google.api.services.cloudresourcemanager.model.Lien;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
@@ -39,10 +40,10 @@ import com.google.cloud.resourcemanager.ResourceManager.ProjectGetOption;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectListOption;
 import com.google.cloud.resourcemanager.spi.ResourceManagerRpcFactory;
 import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
+import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc.ListResult;
 import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -102,7 +103,6 @@ public class ResourceManagerImplTest {
           .setReason(LIEN_REASON)
           .setRestrictions(LIEN_RESTRICTIONS)
           .build();
-  private static final LienInfo PARTIAL_LIEN_INFO = LienInfo.newBuilder(LIEN_PARENT).build();
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
@@ -540,121 +540,140 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testCreateLien() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testCreateLien() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    EasyMock.expect(resourceManagerRpcMock.createLien(COMPLETE_LIEN_INFO.toPb()))
-        .andReturn(COMPLETE_LIEN_INFO.toPb());
-    EasyMock.replay(resourceManagerRpcMock);
-    Lien lien = resourceManagerMock.createLien(COMPLETE_LIEN_INFO);
+    when(resourceManagerRpcMock.createLien(COMPLETE_LIEN_INFO.toProtobuf()))
+        .thenReturn(COMPLETE_LIEN_INFO.toProtobuf());
+    LienInfo lien = resourceManager.createLien(COMPLETE_LIEN_INFO);
     assertEquals(LIEN_NAME, lien.getName());
     assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
     assertEquals(LIEN_ORIGIN, lien.getOrigin());
     assertEquals(LIEN_PARENT, lien.getParent());
     assertEquals(LIEN_REASON, lien.getReason());
     assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+
+    verify(resourceManagerRpcMock).createLien(COMPLETE_LIEN_INFO.toProtobuf());
   }
 
   @Test
-  public void testCreateLienWithResourceManagerException() {
+  public void testCreateLienWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    String exceptionMessage = "Not Found";
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .createLien(COMPLETE_LIEN_INFO.toProtobuf());
     try {
-      Lien lien = RESOURCE_MANAGER.createLien(COMPLETE_LIEN_INFO);
-      fail();
+      resourceManager.createLien(COMPLETE_LIEN_INFO);
     } catch (ResourceManagerException expected) {
       assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("404 Not Found"));
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testDeleteLien() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testDeleteLien() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    resourceManagerMock.deleteLien(LIEN_NAME);
+    doNothing().when(resourceManagerRpcMock).deleteLien(LIEN_NAME);
+    resourceManager.deleteLien(LIEN_NAME);
+    verify(resourceManagerRpcMock).deleteLien(LIEN_NAME);
   }
 
   @Test
-  public void testDeleteLienWithResourceManagerException() {
+  public void testDeleteLienWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    String exceptionMessage = "Not Found";
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .deleteLien(LIEN_NAME);
     try {
-      RESOURCE_MANAGER.deleteLien(LIEN_NAME);
-      fail("Should fail because the lien doesn't exist.");
-    } catch (ResourceManagerException e) {
-      assertEquals(404, e.getCode());
+      resourceManager.deleteLien(LIEN_NAME);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 
   @Test
-  public void testGetLien() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testGetLien() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    EasyMock.expect(resourceManagerRpcMock.getLien(LIEN_NAME)).andReturn(COMPLETE_LIEN_INFO.toPb());
-    EasyMock.replay(resourceManagerRpcMock);
-    Lien lien = resourceManagerMock.getLien(LIEN_NAME);
+    when(resourceManagerRpcMock.getLien(LIEN_NAME)).thenReturn(COMPLETE_LIEN_INFO.toProtobuf());
+    LienInfo lien = resourceManager.getLien(LIEN_NAME);
     assertEquals(LIEN_NAME, lien.getName());
     assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
     assertEquals(LIEN_ORIGIN, lien.getOrigin());
     assertEquals(LIEN_PARENT, lien.getParent());
     assertEquals(LIEN_REASON, lien.getReason());
     assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
+
+    verify(resourceManagerRpcMock).getLien(LIEN_NAME);
   }
 
   @Test
-  public void testGetLienWithResourceManagerException() {
-    try {
-      Lien lien = RESOURCE_MANAGER.getLien("invalid-lien-name");
-      fail();
-    } catch (ResourceManagerException expected) {
-      assertTrue(expected.getMessage().contains("Parameter name must conform to the pattern"));
-    }
-  }
-
-  @Test
-  public void testListLien() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testGetLienWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    List<com.google.api.services.cloudresourcemanager.model.Lien> lienList =
-        Arrays.asList(COMPLETE_LIEN_INFO.toPb());
-    ListLiensResponse listLiensResponse = new ListLiensResponse();
-    listLiensResponse.setLiens(lienList);
-    listLiensResponse.setNextPageToken(CURSOR);
-    EasyMock.expect(resourceManagerRpcMock.listLiens(LIEN_PARENT, EMPTY_RPC_OPTIONS))
-        .andReturn(listLiensResponse);
-    EasyMock.replay(resourceManagerRpcMock);
-    Page<Lien> page = resourceManagerMock.listLiens(LIEN_PARENT);
+    String exceptionMessage = "Not Found";
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .getLien(LIEN_NAME);
+    try {
+      resourceManager.getLien(LIEN_NAME);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
+    }
+  }
+
+  @Test
+  public void testListLien() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    ListResult<Lien> result =
+        ListResult.of(CURSOR, ImmutableList.of(COMPLETE_LIEN_INFO.toProtobuf()));
+    when(resourceManagerRpcMock.listLiens(LIEN_PARENT, EMPTY_RPC_OPTIONS)).thenReturn(result);
+    Page<LienInfo> page = resourceManager.listLiens(LIEN_PARENT);
     assertEquals(CURSOR, page.getNextPageToken());
-    for (Lien lien : page.getValues()) {
+    for (LienInfo lien : page.getValues()) {
       assertEquals(LIEN_NAME, lien.getName());
       assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
       assertEquals(LIEN_ORIGIN, lien.getOrigin());
@@ -662,45 +681,47 @@ public class ResourceManagerImplTest {
       assertEquals(LIEN_REASON, lien.getReason());
       assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
     }
+    verify(resourceManagerRpcMock).listLiens(LIEN_PARENT, EMPTY_RPC_OPTIONS);
   }
 
   @Test
-  public void testListLienWithResourceManagerException() {
-    try {
-      Page<Lien> page = RESOURCE_MANAGER.listLiens(LIEN_PARENT);
-      fail();
-    } catch (ResourceManagerException expected) {
-      assertEquals(404, expected.getCode());
-      assertTrue(expected.getMessage().contains("404 Not Found"));
-    }
-  }
-
-  @Test
-  public void testListLienPaging() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testListLienWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    List<com.google.api.services.cloudresourcemanager.model.Lien> lienList =
-        Arrays.asList(COMPLETE_LIEN_INFO.toPb());
-    ListLiensResponse listLiensResponse = new ListLiensResponse();
-    listLiensResponse.setLiens(lienList);
-    listLiensResponse.setNextPageToken(CURSOR);
+    String exceptionMessage = "Not Found";
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .listLiens(LIEN_PARENT, EMPTY_RPC_OPTIONS);
+    try {
+      resourceManager.listLiens(LIEN_PARENT);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
+    }
+  }
+
+  @Test
+  public void testListLienPaging() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    ListResult<Lien> result = ListResult.of(CURSOR, ImmutableList.<Lien>of());
     Map<ResourceManagerRpc.Option, ?> rpcOptions =
         ImmutableMap.of(ResourceManagerRpc.Option.PAGE_SIZE, 1);
-    EasyMock.expect(resourceManagerRpcMock.listLiens(LIEN_PARENT, rpcOptions))
-        .andReturn(listLiensResponse);
-    EasyMock.replay(resourceManagerRpcMock);
-    Page<Lien> page =
-        resourceManagerMock.listLiens(LIEN_PARENT, ResourceManager.LienListOption.pageSize(1));
+    when(resourceManagerRpcMock.listLiens(LIEN_PARENT, rpcOptions)).thenReturn(result);
+    Page<LienInfo> page =
+        resourceManager.listLiens(LIEN_PARENT, ResourceManager.LienListOption.pageSize(1));
     assertEquals(CURSOR, page.getNextPageToken());
-    for (Lien lien : page.getValues()) {
+    for (LienInfo lien : page.getValues()) {
       assertEquals(LIEN_NAME, lien.getName());
       assertEquals(LIEN_CREATE_TIME, lien.getCreateTime());
       assertEquals(LIEN_ORIGIN, lien.getOrigin());
@@ -708,5 +729,6 @@ public class ResourceManagerImplTest {
       assertEquals(LIEN_REASON, lien.getReason());
       assertEquals(LIEN_RESTRICTIONS, lien.getRestrictions());
     }
+    verify(resourceManagerRpcMock).listLiens(LIEN_PARENT, rpcOptions);
   }
 }

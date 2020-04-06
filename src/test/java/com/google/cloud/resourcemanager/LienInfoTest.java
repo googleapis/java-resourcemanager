@@ -64,8 +64,8 @@ public class LienInfoTest {
 
   @Test
   public void testToAndFromPb() {
-    assertTrue(FULL_LIEN_INFO.toPb().getCreateTime().endsWith("Z"));
-    compareLiens(FULL_LIEN_INFO, LienInfo.fromPb(FULL_LIEN_INFO.toPb()));
+    assertTrue(FULL_LIEN_INFO.toProtobuf().getCreateTime().endsWith("Z"));
+    compareLiens(FULL_LIEN_INFO, LienInfo.fromProtobuf(FULL_LIEN_INFO.toProtobuf()));
   }
 
   @Test
@@ -79,7 +79,7 @@ public class LienInfoTest {
             .setReason(LIEN_REASON)
             .setRestrictions(LIEN_RESTRICTIONS)
             .build());
-    compareLiens(FULL_LIEN_INFO, new LienInfo.BuilderImpl(FULL_LIEN_INFO).build());
+    compareLiens(FULL_LIEN_INFO, new LienInfo.Builder(FULL_LIEN_INFO).build());
     assertNotEquals(FULL_LIEN_INFO, PARTIAL_LIEN_INFO);
     assertFalse(FULL_LIEN_INFO == null);
   }

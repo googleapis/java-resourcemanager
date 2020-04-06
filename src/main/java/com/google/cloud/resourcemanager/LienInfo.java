@@ -17,36 +17,32 @@ package com.google.cloud.resourcemanager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.api.services.cloudresourcemanager.model.Lien;
 import com.google.common.base.Function;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * A Google Cloud Resource Manager lien metadata object.A Lien represents an encumbrance on the
- * actions that can be performed on a resource.
+ * A Google Cloud Resource Manager lien metadata object.
+ *
+ * <p>A Lien represents an encumbrance on the actions that can be performed on a resource.
  */
-public class LienInfo implements Serializable {
+public class LienInfo {
 
-  static final Function<com.google.api.services.cloudresourcemanager.model.Lien, LienInfo>
-      FROM_PB_FUNCTION =
-          new Function<com.google.api.services.cloudresourcemanager.model.Lien, LienInfo>() {
-            @Override
-            public LienInfo apply(com.google.api.services.cloudresourcemanager.model.Lien pb) {
-              return LienInfo.fromPb(pb);
-            }
-          };
-  static final Function<LienInfo, com.google.api.services.cloudresourcemanager.model.Lien>
-      TO_PB_FUNCTION =
-          new Function<LienInfo, com.google.api.services.cloudresourcemanager.model.Lien>() {
-            @Override
-            public com.google.api.services.cloudresourcemanager.model.Lien apply(
-                LienInfo lienInfo) {
-              return lienInfo.toPb();
-            }
-          };
-
-  private static final long serialVersionUID = 9148970963697734236L;
+  static final Function<Lien, LienInfo> FROM_PROTOBUF_FUNCTION =
+      new Function<Lien, LienInfo>() {
+        @Override
+        public LienInfo apply(Lien lienProtobuf) {
+          return LienInfo.fromProtobuf(lienProtobuf);
+        }
+      };
+  static final Function<LienInfo, Lien> TO_PROTOBUF_FUNCTION =
+      new Function<LienInfo, Lien>() {
+        @Override
+        public Lien apply(LienInfo lienInfo) {
+          return lienInfo.toProtobuf();
+        }
+      };
 
   private String createTime;
   private String name;
@@ -56,23 +52,7 @@ public class LienInfo implements Serializable {
   private List<String> restrictions;
 
   /** Builder for {@code LienInfo}. */
-  public abstract static class Builder {
-    public abstract Builder setCreateTime(String createTime);
-
-    public abstract Builder setName(String name);
-
-    public abstract Builder setOrigin(String origin);
-
-    public abstract Builder setParent(String parent);
-
-    public abstract Builder setReason(String reason);
-
-    public abstract Builder setRestrictions(List<String> restrictions);
-
-    public abstract LienInfo build();
-  }
-
-  static class BuilderImpl extends Builder {
+  static class Builder {
 
     private String createTime;
     private String name;
@@ -81,11 +61,11 @@ public class LienInfo implements Serializable {
     private String reason;
     private List<String> restrictions;
 
-    BuilderImpl(String parent) {
+    Builder(String parent) {
       this.parent = parent;
     }
 
-    BuilderImpl(LienInfo info) {
+    Builder(LienInfo info) {
       this.createTime = info.createTime;
       this.name = info.name;
       this.origin = info.origin;
@@ -119,19 +99,17 @@ public class LienInfo implements Serializable {
       return this;
     }
 
-    @Override
     public Builder setParent(String parent) {
       this.parent = checkNotNull(parent);
       return this;
     }
 
-    @Override
     public LienInfo build() {
       return new LienInfo(this);
     }
   }
 
-  LienInfo(BuilderImpl builder) {
+  LienInfo(Builder builder) {
     this.createTime = builder.createTime;
     this.name = builder.name;
     this.origin = builder.origin;
@@ -140,36 +118,46 @@ public class LienInfo implements Serializable {
     this.restrictions = builder.restrictions;
   }
 
+  /** Returns the creation time of the lien. */
   public String getCreateTime() {
     return createTime;
   }
-
+  /** Returns the name of the lien. */
   public String getName() {
     return name;
   }
-
+  /** Returns the origin of the lien */
   public String getOrigin() {
     return origin;
   }
-
+  /** Returns the parent of the lien. */
   public String getParent() {
     return parent;
   }
-
+  /** Returns the reason of the lien. */
   public String getReason() {
     return reason;
   }
-
+  /** Returns the restrictions of the lien. */
   public List<String> getRestrictions() {
     return restrictions;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    return obj == this
-        || obj != null
-            && obj.getClass().equals(LienInfo.class)
-            && Objects.equals(toPb(), ((LienInfo) obj).toPb());
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    LienInfo lienInfo = (LienInfo) o;
+    return Objects.equals(createTime, lienInfo.createTime)
+        && Objects.equals(name, lienInfo.name)
+        && Objects.equals(origin, lienInfo.origin)
+        && Objects.equals(parent, lienInfo.parent)
+        && Objects.equals(reason, lienInfo.reason)
+        && Objects.equals(restrictions, lienInfo.restrictions);
   }
 
   @Override
@@ -177,45 +165,45 @@ public class LienInfo implements Serializable {
     return Objects.hash(createTime, name, origin, parent, reason, restrictions);
   }
 
+  /** Returns a builder for the {@link LienInfo} object. */
   public static Builder newBuilder(String parent) {
-    return new BuilderImpl(parent);
+    return new Builder(parent);
   }
-
+  /** Returns a builder for the {@link LienInfo} object. */
   public Builder toBuilder() {
-    return new BuilderImpl(this);
+    return new Builder(this);
   }
 
-  com.google.api.services.cloudresourcemanager.model.Lien toPb() {
-    com.google.api.services.cloudresourcemanager.model.Lien lienPb =
-        new com.google.api.services.cloudresourcemanager.model.Lien();
-    lienPb.setCreateTime(createTime);
-    lienPb.setName(name);
-    lienPb.setParent(parent);
-    lienPb.setOrigin(origin);
-    lienPb.setReason(reason);
-    lienPb.setRestrictions(restrictions);
-    return lienPb;
+  Lien toProtobuf() {
+    Lien lien = new Lien();
+    lien.setCreateTime(createTime);
+    lien.setName(name);
+    lien.setParent(parent);
+    lien.setOrigin(origin);
+    lien.setReason(reason);
+    lien.setRestrictions(restrictions);
+    return lien;
   }
 
-  static LienInfo fromPb(com.google.api.services.cloudresourcemanager.model.Lien lienPb) {
-    Builder builder = newBuilder(lienPb.getParent());
-    if (lienPb.getCreateTime() != null) {
-      builder.setCreateTime(lienPb.getCreateTime());
+  static LienInfo fromProtobuf(Lien lien) {
+    Builder builder = newBuilder(lien.getParent());
+    if (lien.getCreateTime() != null) {
+      builder.setCreateTime(lien.getCreateTime());
     }
-    if (lienPb.getName() != null && !lienPb.getName().equals("Unnamed")) {
-      builder.setName(lienPb.getName());
+    if (lien.getName() != null && !lien.getName().equals("Unnamed")) {
+      builder.setName(lien.getName());
     }
-    if (lienPb.getParent() != null) {
-      builder.setParent(lienPb.getParent());
+    if (lien.getParent() != null) {
+      builder.setParent(lien.getParent());
     }
-    if (lienPb.getOrigin() != null) {
-      builder.setOrigin(lienPb.getOrigin());
+    if (lien.getOrigin() != null) {
+      builder.setOrigin(lien.getOrigin());
     }
-    if (lienPb.getReason() != null) {
-      builder.setReason(lienPb.getReason());
+    if (lien.getReason() != null) {
+      builder.setReason(lien.getReason());
     }
-    if (lienPb.getRestrictions() != null) {
-      builder.setRestrictions(lienPb.getRestrictions());
+    if (lien.getRestrictions() != null) {
+      builder.setRestrictions(lien.getRestrictions());
     }
     return builder.build();
   }
