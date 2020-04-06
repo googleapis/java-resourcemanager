@@ -52,7 +52,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.Instant;
@@ -106,8 +105,6 @@ public class ResourceManagerImplTest {
 
   private ResourceManagerRpcFactory rpcFactoryMock = Mockito.mock(ResourceManagerRpcFactory.class);
   private ResourceManagerRpc resourceManagerRpcMock = Mockito.mock(ResourceManagerRpc.class);
-
-  @Mock private ResourceManager resourceManagerMock;
 
   @BeforeClass
   public static void beforeClass() {
@@ -542,10 +539,17 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testGetOrganization() {
-    Mockito.when(resourceManagerMock.getOrganization(ORGANIZATION_NAME))
+  public void testGetOrganization() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    when(resourceManagerRpcMock.getOrganization(ORGANIZATION_NAME))
         .thenReturn(ORGANIZATION_INFO.toProtobuf());
-    Organization organization = resourceManagerMock.getOrganization(ORGANIZATION_NAME);
+    Organization organization = resourceManager.getOrganization(ORGANIZATION_NAME);
     assertEquals(ORGANIZATION_NAME, organization.getName());
     assertEquals(
         DateTimeFormatter.ISO_DATE_TIME
@@ -556,19 +560,27 @@ public class ResourceManagerImplTest {
     assertEquals(
         ORGANIZATION_DIRECTORY_CUSTOMER_ID, organization.getOwner().getDirectoryCustomerId());
     assertEquals(ORGANIZATION_LIFECYCLE_STATE.toString(), organization.getLifecycleState());
+    verify(resourceManagerRpcMock).getOrganization(ORGANIZATION_NAME);
   }
 
   @Test
-  public void testGetOrganizationWithException() {
+  public void testGetOrganizationWithResourceManagerException() throws IOException {
     String organization = "organizations/12345";
     String exceptionMessage = "Not Found";
-    Mockito.doThrow(new ResourceManagerException(404, exceptionMessage))
-        .when(resourceManagerMock)
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
         .getOrganization(organization);
     try {
-      resourceManagerMock.getOrganization(organization);
-      fail();
-    } catch (RuntimeException expected) {
+      resourceManager.getOrganization(organization);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
       assertEquals(exceptionMessage, expected.getMessage());
     }
   }
