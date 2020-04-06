@@ -16,8 +16,8 @@
 package com.google.cloud.resourcemanager;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -58,12 +58,23 @@ public class LienInfoTest {
 
   @Test
   public void testToBuilder() {
-    LienInfo lienInfo = FULL_LIEN_INFO.toBuilder().setName(LIEN_NAME).build();
-    compareLiens(FULL_LIEN_INFO, lienInfo);
+    String name = "liens/12345";
+    String parent = "projects/12345";
+    String createTime = "2015-11-02T15:02:23.045123456Z";
+    LienInfo lienInfo =
+        FULL_LIEN_INFO
+            .toBuilder()
+            .setName("liens/12345")
+            .setParent("projects/12345")
+            .setCreateTime(createTime)
+            .build();
+    assertEquals(name, lienInfo.getName());
+    assertEquals(parent, lienInfo.getParent());
+    assertEquals(createTime, lienInfo.getCreateTime());
   }
 
   @Test
-  public void testToAndFromPb() {
+  public void testToAndFromProtobuf() {
     assertTrue(FULL_LIEN_INFO.toProtobuf().getCreateTime().endsWith("Z"));
     compareLiens(FULL_LIEN_INFO, LienInfo.fromProtobuf(FULL_LIEN_INFO.toProtobuf()));
   }
@@ -81,16 +92,16 @@ public class LienInfoTest {
             .build());
     compareLiens(FULL_LIEN_INFO, new LienInfo.Builder(FULL_LIEN_INFO).build());
     assertNotEquals(FULL_LIEN_INFO, PARTIAL_LIEN_INFO);
-    assertFalse(FULL_LIEN_INFO == null);
+    assertNotNull(FULL_LIEN_INFO);
   }
 
-  private void compareLiens(LienInfo expected, LienInfo value) {
-    assertEquals(expected, value);
-    assertEquals(expected.getName(), value.getName());
-    assertEquals(expected.getParent(), value.getParent());
-    assertEquals(expected.getRestrictions(), value.getRestrictions());
-    assertEquals(expected.getReason(), value.getReason());
-    assertEquals(expected.getOrigin(), value.getOrigin());
-    assertEquals(expected.getCreateTime(), value.getCreateTime());
+  private void compareLiens(LienInfo expected, LienInfo actual) {
+    assertEquals(expected, actual);
+    assertEquals(expected.getName(), actual.getName());
+    assertEquals(expected.getParent(), actual.getParent());
+    assertEquals(expected.getRestrictions(), actual.getRestrictions());
+    assertEquals(expected.getReason(), actual.getReason());
+    assertEquals(expected.getOrigin(), actual.getOrigin());
+    assertEquals(expected.getCreateTime(), actual.getCreateTime());
   }
 }
