@@ -127,8 +127,7 @@ public interface ResourceManagerRpc extends ServiceRpc {
 
   /**
    * Tests whether the caller has the given permissions on the specified Organization. Returns the
-   * permissions and their results corresponding to whether or not the user has the permission in
-   * the same position of input list.
+   * permissions and their results.
    *
    * @throws ResourceManagerException upon failure
    */
