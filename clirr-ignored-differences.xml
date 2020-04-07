@@ -3,12 +3,12 @@
 <differences>
     <difference>
         <className>com/google/cloud/resourcemanager/ResourceManager</className>
-        <method>java.util.List testOrgPermissions(java.lang.String, java.util.List)</method>
+        <method>java.util.Map testOrgPermissions(java.lang.String, java.util.List)</method>
         <differenceType>7012</differenceType>
     </difference>
     <difference>
         <className>com/google/cloud/resourcemanager/spi/v1beta1/ResourceManagerRpc</className>
-        <method>java.util.List testOrgPermissions(java.lang.String, java.util.List)</method>
+        <method>java.util.Map testOrgPermissions(java.lang.String, java.util.List)</method>
         <differenceType>7012</differenceType>
     </difference>
 </differences>

@@ -21,6 +21,7 @@ import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.cloud.ServiceRpc;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.ResourceManagerException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -125,11 +126,12 @@ public interface ResourceManagerRpc extends ServiceRpc {
   List<Boolean> testPermissions(String projectId, List<String> permissions);
 
   /**
-   * Tests whether the caller has the given permissions on the specified Organization. Returns a
-   * list of booleans corresponding to whether or not the user has the permission in the same
-   * position of input list.
+   * Tests whether the caller has the given permissions on the specified Organization. Returns the
+   * permissions and their results corresponding to whether or not the user has the permission in
+   * the same position of input list.
    *
    * @throws ResourceManagerException upon failure
    */
-  List<Boolean> testOrgPermissions(String resource, List<String> permissions);
+  Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions)
+      throws IOException;
 }
