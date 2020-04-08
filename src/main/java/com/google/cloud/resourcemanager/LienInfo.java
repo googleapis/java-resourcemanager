@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.services.cloudresourcemanager.model.Lien;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,37 +75,37 @@ public class LienInfo {
       this.restrictions = info.restrictions;
     }
 
-    public Builder setCreateTime(String createTime) {
+    Builder setCreateTime(String createTime) {
       this.createTime = createTime;
       return this;
     }
 
-    public Builder setName(String name) {
+    Builder setName(String name) {
       this.name = name;
       return this;
     }
 
-    public Builder setOrigin(String origin) {
+    Builder setOrigin(String origin) {
       this.origin = origin;
       return this;
     }
 
-    public Builder setReason(String reason) {
+    Builder setReason(String reason) {
       this.reason = reason;
       return this;
     }
 
-    public Builder setRestrictions(List<String> restrictions) {
+    Builder setRestrictions(List<String> restrictions) {
       this.restrictions = restrictions;
       return this;
     }
 
-    public Builder setParent(String parent) {
+    Builder setParent(String parent) {
       this.parent = checkNotNull(parent);
       return this;
     }
 
-    public LienInfo build() {
+    LienInfo build() {
       return new LienInfo(this);
     }
   }
@@ -115,7 +116,7 @@ public class LienInfo {
     this.origin = builder.origin;
     this.parent = builder.parent;
     this.reason = builder.reason;
-    this.restrictions = builder.restrictions;
+    this.restrictions = ImmutableList.copyOf(builder.restrictions);
   }
 
   /** Returns the creation time of the lien. */
@@ -140,7 +141,7 @@ public class LienInfo {
   }
   /** Returns the restrictions of the lien. */
   public List<String> getRestrictions() {
-    return restrictions;
+    return ImmutableList.copyOf(restrictions);
   }
 
   @Override
