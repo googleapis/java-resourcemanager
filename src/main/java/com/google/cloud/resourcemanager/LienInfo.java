@@ -96,7 +96,7 @@ public class LienInfo {
     }
 
     Builder setRestrictions(List<String> restrictions) {
-      this.restrictions = restrictions;
+      this.restrictions = ImmutableList.copyOf(restrictions);
       return this;
     }
 
@@ -116,7 +116,7 @@ public class LienInfo {
     this.origin = builder.origin;
     this.parent = builder.parent;
     this.reason = builder.reason;
-    this.restrictions = ImmutableList.copyOf(builder.restrictions);
+    this.restrictions = builder.restrictions;
   }
 
   /** Returns the creation time of the lien. */
@@ -141,7 +141,7 @@ public class LienInfo {
   }
   /** Returns the restrictions of the lien. */
   public List<String> getRestrictions() {
-    return ImmutableList.copyOf(restrictions);
+    return restrictions;
   }
 
   @Override
@@ -188,24 +188,14 @@ public class LienInfo {
 
   static LienInfo fromProtobuf(Lien lien) {
     Builder builder = newBuilder(lien.getParent());
-    if (lien.getCreateTime() != null) {
-      builder.setCreateTime(lien.getCreateTime());
-    }
+    builder.setCreateTime(lien.getCreateTime());
     if (lien.getName() != null && !lien.getName().equals("Unnamed")) {
       builder.setName(lien.getName());
     }
-    if (lien.getParent() != null) {
-      builder.setParent(lien.getParent());
-    }
-    if (lien.getOrigin() != null) {
-      builder.setOrigin(lien.getOrigin());
-    }
-    if (lien.getReason() != null) {
-      builder.setReason(lien.getReason());
-    }
-    if (lien.getRestrictions() != null) {
-      builder.setRestrictions(lien.getRestrictions());
-    }
+    builder.setParent(lien.getParent());
+    builder.setOrigin(lien.getOrigin());
+    builder.setReason(lien.getReason());
+    builder.setRestrictions(lien.getRestrictions());
     return builder.build();
   }
 }
