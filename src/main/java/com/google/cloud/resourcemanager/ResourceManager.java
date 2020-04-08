@@ -355,13 +355,14 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    */
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions);
 
-  /** Gets the latest state of a long-running operation.
+  /**
+   * Gets the latest state of a long-running operation.
    *
    * <p>Clients can use this method to poll the operation result at intervals as recommended by the
    * API service.
    *
-   * @param name The name of the operation resource.
-   * @return The result of a long-running operation.
+   * @param name the name of the operation resource
+   * @return the result of a long-running operation
    * @throws ResourceManagerException upon failure
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1/operations/get">Resource

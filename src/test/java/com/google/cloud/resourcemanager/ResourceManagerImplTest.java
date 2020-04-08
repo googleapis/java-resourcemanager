@@ -29,7 +29,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
-import com.google.api.services.cloudresourcemanager.model.Operation;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
@@ -482,17 +481,18 @@ public class ResourceManagerImplTest {
   public void testTestOrgPermissions() throws IOException {
     String organization = "organization/12345";
     List<String> permissions =
-            ImmutableList.of(
-                    "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+        ImmutableList.of(
+            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
     Map<String, Boolean> expected =
-            ImmutableMap.of(
-                    "resourcemanager.organizations.get",
-                    true,
-                    "resourcemanager.organizations.getIamPolicy",
-                    false);
+        ImmutableMap.of(
+            "resourcemanager.organizations.get",
+            true,
+            "resourcemanager.organizations.getIamPolicy",
+            false);
     when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
-            .thenReturn(resourceManagerRpcMock);
-    ResourceManager resourceManager = ResourceManagerOptions.newBuilder()
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
@@ -507,17 +507,18 @@ public class ResourceManagerImplTest {
     String organization = "organizations/12345";
     String exceptionMessage = "Not Found";
     List<String> permissions =
-            ImmutableList.of(
-                    "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
+        ImmutableList.of(
+            "resourcemanager.organizations.get", "resourcemanager.organizations.getIamPolicy");
     when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
-            .thenReturn(resourceManagerRpcMock);
-    ResourceManager resourceManager = ResourceManagerOptions.newBuilder()
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
     doThrow(new ResourceManagerException(404, exceptionMessage))
-            .when(resourceManagerRpcMock)
-            .testOrgPermissions(organization, permissions);
+        .when(resourceManagerRpcMock)
+        .testOrgPermissions(organization, permissions);
     try {
       resourceManager.testOrgPermissions(organization, permissions);
     } catch (ResourceManagerException expected) {
@@ -527,20 +528,16 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testGetOperationsWithResponse() {
+  public void testGetOperationsWithResponse() throws IOException {
     Map<String, Object> metadata = new HashMap<>();
     metadata.put("id", ID);
     metadata.put("@type", TYPE);
     Map<String, Object> response = new HashMap<>();
     response.put("id", ID);
     response.put("@type", TYPE);
-
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
@@ -551,31 +548,27 @@ public class ResourceManagerImplTest {
             .setMetadata(metadata)
             .setResponse(response)
             .build();
-    Operation operation = operationInfo.toPb();
-    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operation);
-    EasyMock.replay(resourceManagerRpcMock);
-    OperationInfo actualOperation = resourceManagerMock.getOperations(NAME);
+    when(resourceManagerRpcMock.getOperations(NAME)).thenReturn(operationInfo.toProtobuf());
+    OperationInfo actualOperation = resourceManager.getOperations(NAME);
     assertEquals(NAME, actualOperation.getName());
     assertEquals(metadata, actualOperation.getMetadata());
     assertEquals(Boolean.TRUE, actualOperation.getDone());
     assertEquals(response, actualOperation.getResponse());
+
+    verify(resourceManagerRpcMock).getOperations(NAME);
   }
 
   @Test
-  public void testGetOperationsWithError() {
+  public void testGetOperationsWithError() throws IOException {
     Map<String, Object> metadata = new HashMap<>();
     metadata.put("id", ID);
     metadata.put("@type", TYPE);
     Map<String, Object> detailMaps = new HashMap<>();
     detailMaps.put("id", ID);
     detailMaps.put("@type", TYPE);
-
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
@@ -588,47 +581,34 @@ public class ResourceManagerImplTest {
             .setMetadata(metadata)
             .setError(status)
             .build();
-    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME)).andReturn(operationInfo.toPb());
-    EasyMock.replay(resourceManagerRpcMock);
-    OperationInfo actualOperation = resourceManagerMock.getOperations(NAME);
+    when(resourceManagerRpcMock.getOperations(NAME)).thenReturn(operationInfo.toProtobuf());
+    OperationInfo actualOperation = resourceManager.getOperations(NAME);
     assertEquals(NAME, actualOperation.getName());
     assertEquals(metadata, actualOperation.getMetadata());
     assertEquals(Boolean.TRUE, actualOperation.getDone());
     assertEquals(status, actualOperation.getError());
+
+    verify(resourceManagerRpcMock).getOperations(NAME);
   }
 
   @Test
-  public void testGetOperationsWithRuntimeException() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testGetOperationsWithResourceManagerException() throws IOException {
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    String exceptionMessage = "Artificial runtime exception";
-    EasyMock.expect(resourceManagerRpcMock.getOperations(NAME))
-        .andThrow(new RuntimeException(exceptionMessage));
-    EasyMock.replay(resourceManagerRpcMock);
+    String exceptionMessage = "Not Found";
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .getOperations(NAME);
     try {
-      resourceManagerMock.getOperations(NAME);
-      fail();
-    } catch (ResourceManagerException exception) {
-      assertEquals(exceptionMessage, exception.getCause().getMessage());
-    }
-  }
-
-  @Test
-  public void testGetOperationsWithException() {
-    try {
-      OperationInfo operationInfo = RESOURCE_MANAGER.getOperations(NAME);
-      assertNull(operationInfo);
-      assertEquals(NAME, operationInfo.getName());
-      fail();
-    } catch (NullPointerException expected) {
+      resourceManager.getOperations(NAME);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 }

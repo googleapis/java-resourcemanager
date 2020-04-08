@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -34,40 +35,43 @@ public class OperationInfoTest {
   private static final String NAME = "operations/{unique_id}";
   private static final String TYPE = "types.example.com/standard/id";
   private static final String MESSAGE = "INVALID_ARGUMENT";
-  public static Map<String, Object> operationMap;
-
-  static {
-    operationMap = new HashMap<>();
-    operationMap.put("id", ID);
-    operationMap.put("@type", TYPE);
-  }
-
-  private static final List<Map<String, Object>> DETAILS = Arrays.asList(operationMap);
-  private static final OperationInfo.Status STATUS =
-      new OperationInfo.Status(CODE, MESSAGE, DETAILS);
-  private static final OperationInfo OPERATION_INFO_WITH_RESPONSE =
-      OperationInfo.newBuilder(NAME)
-          .setDone(Boolean.TRUE)
-          .setMetadata(operationMap)
-          .setResponse(operationMap)
-          .build();
-  private static final OperationInfo OPERATION_INFO_WITH_ERROR =
-      OperationInfo.newBuilder(NAME)
-          .setDone(Boolean.TRUE)
-          .setMetadata(operationMap)
-          .setError(STATUS)
-          .build();
   private static final OperationInfo INCOMPLETE_OPERATION_INFO =
       OperationInfo.newBuilder(NAME).build();
 
+  private Map<String, Object> operationMap;
+  private List<Map<String, Object>> details;
+  private OperationInfo.Status status;
+  private OperationInfo operationInfoWithResponse;
+  private OperationInfo operationInfoWithError;
+
+  @Before
+  public void setUp() {
+    operationMap = new HashMap<>();
+    operationMap.put("id", ID);
+    operationMap.put("@type", TYPE);
+    details = Arrays.asList(operationMap);
+    status = new OperationInfo.Status(CODE, MESSAGE, details);
+    operationInfoWithResponse =
+        OperationInfo.newBuilder(NAME)
+            .setDone(Boolean.TRUE)
+            .setMetadata(operationMap)
+            .setResponse(operationMap)
+            .build();
+    operationInfoWithError =
+        OperationInfo.newBuilder(NAME)
+            .setDone(Boolean.TRUE)
+            .setMetadata(operationMap)
+            .setError(status)
+            .build();
+  }
+
   @Test
   public void testToBuilder() {
-    compareOperations(
-        OPERATION_INFO_WITH_RESPONSE, OPERATION_INFO_WITH_RESPONSE.toBuilder().build());
-    OperationInfo operationInfo = OPERATION_INFO_WITH_RESPONSE.toBuilder().setName(NAME).build();
+    compareOperations(operationInfoWithResponse, operationInfoWithResponse.toBuilder().build());
+    OperationInfo operationInfo = operationInfoWithResponse.toBuilder().setName(NAME).build();
     assertEquals(NAME, operationInfo.getName());
     assertEquals(Boolean.TRUE, operationInfo.getDone());
-    compareOperations(OPERATION_INFO_WITH_RESPONSE, operationInfo);
+    compareOperations(operationInfoWithResponse, operationInfo);
   }
 
   @Test
@@ -77,73 +81,76 @@ public class OperationInfoTest {
 
   @Test
   public void testBuilder() {
-    assertEquals(NAME, OPERATION_INFO_WITH_RESPONSE.getName());
-    assertEquals(Boolean.TRUE, OPERATION_INFO_WITH_RESPONSE.getDone());
-    assertEquals(operationMap, OPERATION_INFO_WITH_RESPONSE.getMetadata());
-    assertEquals(operationMap, OPERATION_INFO_WITH_RESPONSE.getResponse());
-    assertEquals(STATUS, OPERATION_INFO_WITH_ERROR.getError());
+    assertEquals(NAME, operationInfoWithResponse.getName());
+    assertEquals(Boolean.TRUE, operationInfoWithResponse.getDone());
+    assertEquals(operationMap, operationInfoWithResponse.getMetadata());
+    assertEquals(operationMap, operationInfoWithResponse.getResponse());
+    assertEquals(status, operationInfoWithError.getError());
   }
 
   @Test
-  public void testToPbAndFromPb() {
+  public void testToProtobufAndFromProtbuf() {
     compareOperations(
-        OPERATION_INFO_WITH_RESPONSE, OperationInfo.fromPb(OPERATION_INFO_WITH_RESPONSE.toPb()));
+        operationInfoWithResponse,
+        OperationInfo.fromProtobuf(operationInfoWithResponse.toProtobuf()));
     OperationInfo operationInfoWithResponse =
         OperationInfo.of(NAME).toBuilder().setResponse(operationMap).build();
     compareOperations(
-        operationInfoWithResponse, OperationInfo.fromPb(operationInfoWithResponse.toPb()));
+        operationInfoWithResponse,
+        OperationInfo.fromProtobuf(operationInfoWithResponse.toProtobuf()));
     compareOperations(
-        OPERATION_INFO_WITH_ERROR, OperationInfo.fromPb(OPERATION_INFO_WITH_ERROR.toPb()));
+        operationInfoWithError, OperationInfo.fromProtobuf(operationInfoWithError.toProtobuf()));
     OperationInfo operationInfoWithError =
-        OperationInfo.of(NAME).toBuilder().setError(STATUS).build();
-    compareOperations(operationInfoWithError, OperationInfo.fromPb(operationInfoWithError.toPb()));
+        OperationInfo.of(NAME).toBuilder().setError(status).build();
+    compareOperations(
+        operationInfoWithError, OperationInfo.fromProtobuf(operationInfoWithError.toProtobuf()));
   }
 
   @Test
   public void testToString() {
-    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("name=" + NAME));
-    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("done=" + Boolean.TRUE));
-    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("metadata=" + operationMap));
-    assertTrue(OPERATION_INFO_WITH_RESPONSE.toString().contains("response=" + operationMap));
-    assertTrue(OPERATION_INFO_WITH_ERROR.toString().contains("error=" + STATUS));
+    assertTrue(operationInfoWithResponse.toString().contains("name=" + NAME));
+    assertTrue(operationInfoWithResponse.toString().contains("done=" + Boolean.TRUE));
+    assertTrue(operationInfoWithResponse.toString().contains("metadata=" + operationMap));
+    assertTrue(operationInfoWithResponse.toString().contains("response=" + operationMap));
+    assertTrue(operationInfoWithError.toString().contains("error=" + status));
   }
 
   @Test
   public void testStatus() {
-    OperationInfo.Status status = new OperationInfo.Status(CODE, MESSAGE, DETAILS);
-    compareStatus(status, STATUS);
+    OperationInfo.Status expected = new OperationInfo.Status(CODE, MESSAGE, details);
+    compareStatus(expected, status);
   }
 
   @Test
-  public void testStatusToPbAndFromPb() {
-    OperationInfo.Status status = new OperationInfo.Status(CODE, MESSAGE, DETAILS);
-    assertEquals(status, OperationInfo.Status.fromPb(status.toPb()));
-    compareStatus(status, STATUS);
+  public void testStatusToProtobufAndFromProtobuf() {
+    OperationInfo.Status expected = new OperationInfo.Status(CODE, MESSAGE, details);
+    assertEquals(expected, OperationInfo.Status.fromProtobuf(expected.toProtobuf()));
+    compareStatus(expected, status);
   }
 
   @Test
   public void testStatusToString() {
-    assertTrue(STATUS.toString().contains("code=" + CODE));
-    assertTrue(STATUS.toString().contains("message=" + MESSAGE));
-    assertTrue(STATUS.toString().contains("details=" + DETAILS));
+    assertTrue(status.toString().contains("code=" + CODE));
+    assertTrue(status.toString().contains("message=" + MESSAGE));
+    assertTrue(status.toString().contains("details=" + details));
   }
 
-  private void compareOperations(OperationInfo expected, OperationInfo value) {
-    assertTrue(expected.equals(value));
-    assertEquals(expected.hashCode(), value.hashCode());
-    assertEquals(expected.getName(), value.getName());
-    assertEquals(expected.getDone(), value.getDone());
-    assertEquals(expected.getMetadata(), value.getMetadata());
-    assertEquals(expected.getResponse(), value.getResponse());
-    assertEquals(expected.getError(), value.getError());
+  private void compareOperations(OperationInfo expected, OperationInfo actual) {
+    assertEquals(expected, actual);
+    assertEquals(expected.hashCode(), actual.hashCode());
+    assertEquals(expected.getName(), actual.getName());
+    assertEquals(expected.getDone(), actual.getDone());
+    assertEquals(expected.getMetadata(), actual.getMetadata());
+    assertEquals(expected.getResponse(), actual.getResponse());
+    assertEquals(expected.getError(), actual.getError());
   }
 
-  private void compareStatus(OperationInfo.Status expected, OperationInfo.Status value) {
-    assertTrue(expected.equals(value));
-    assertEquals(expected.toString(), value.toString());
-    assertEquals(expected.hashCode(), value.hashCode());
-    assertEquals(expected.getCode(), value.getCode());
-    assertEquals(expected.getMessage(), value.getMessage());
-    assertEquals(expected.getDetails(), value.getDetails());
+  private void compareStatus(OperationInfo.Status expected, OperationInfo.Status actual) {
+    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
+    assertEquals(expected.hashCode(), actual.hashCode());
+    assertEquals(expected.getCode(), actual.getCode());
+    assertEquals(expected.getMessage(), actual.getMessage());
+    assertEquals(expected.getDetails(), actual.getDetails());
   }
 }

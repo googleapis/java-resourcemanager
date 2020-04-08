@@ -141,10 +141,10 @@ public interface ResourceManagerRpc extends ServiceRpc {
    * <p>Clients can use this method to poll the operation result at intervals as recommended by the
    * API service.
    *
-   * @param name The name of the operation resource.
-   * @return The result of a long-running operation.
+   * @param name the name of the operation resource.
+   * @return the result of a long-running operation.
    */
-  Operation getOperations(String name);
+  Operation getOperations(String name) throws IOException;
 
   // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
 }

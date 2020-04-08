@@ -19,15 +19,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.api.services.cloudresourcemanager.model.Operation;
 import com.google.common.base.MoreObjects;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /** Google Resource Manager Operation metadata. */
-public class OperationInfo implements Serializable {
-
-  private static final long serialVersionUID = -2133042982786959352L;
+public class OperationInfo {
 
   private final Boolean done;
   private final Status error;
@@ -40,9 +37,7 @@ public class OperationInfo implements Serializable {
    * environments, including REST APIs and RPC APIs. It is used by gRPC. Each Status message
    * contains three pieces of data: error code, error message, and error details.
    */
-  public static class Status implements Serializable {
-
-    private static final long serialVersionUID = -2133042982786959352L;
+  static class Status {
 
     private Integer code;
     private List<Map<String, Object>> details;
@@ -54,12 +49,12 @@ public class OperationInfo implements Serializable {
       this.details = details;
     }
 
-    /** Returns the status code */
+    /** Returns the status code. */
     public Integer getCode() {
       return code;
     }
 
-    /** Returns the error message */
+    /** Returns the error message. */
     public String getMessage() {
       return message;
     }
@@ -79,31 +74,37 @@ public class OperationInfo implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-      return Objects.hash(getCode(), getMessage(), getDetails());
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      Status status = (Status) o;
+      return Objects.equals(code, status.code)
+          && Objects.equals(details, status.details)
+          && Objects.equals(message, status.message);
     }
 
     @Override
-    public final boolean equals(Object obj) {
-      return obj == this
-          || obj != null
-              && obj.getClass().equals(Status.class)
-              && Objects.equals(toPb(), ((Status) obj).toPb());
+    public int hashCode() {
+      return Objects.hash(code, details, message);
     }
 
-    com.google.api.services.cloudresourcemanager.model.Status toPb() {
+    com.google.api.services.cloudresourcemanager.model.Status toProtobuf() {
       return new com.google.api.services.cloudresourcemanager.model.Status()
           .setCode(code)
           .setMessage(message)
           .setDetails(details);
     }
 
-    static Status fromPb(com.google.api.services.cloudresourcemanager.model.Status status) {
+    static Status fromProtobuf(com.google.api.services.cloudresourcemanager.model.Status status) {
       return new Status(status.getCode(), status.getMessage(), status.getDetails());
     }
   }
 
-  public static final class Builder {
+  static class Builder {
 
     private Boolean done;
     private Status error;
@@ -162,20 +163,20 @@ public class OperationInfo implements Serializable {
     error = builder.error;
   }
   /**
-   * Return the true or false,If the value is false, it means the operation is still in progress. If
-   * true, the operation is completed, and either error or response is available.
+   * If the value is false, it means the operation is still in progress. If true, the operation is
+   * completed, and either error or response is available.
    */
   public Boolean getDone() {
     return done;
   }
 
-  /** Return the error result of the operation in case of failure or cancellation. */
+  /** Returns the error result of the operation in case of failure or cancellation. */
   public Status getError() {
     return error;
   }
 
   /**
-   * Return the service-specific metadata associated with the operation. It typically contains
+   * Returns the service-specific metadata associated with the operation. It typically contains
    * progress information and common metadata such as create time.
    */
   public Map<String, Object> getMetadata() {
@@ -195,22 +196,30 @@ public class OperationInfo implements Serializable {
     return response;
   }
 
-  /** Returns a builder for the current notification. */
+  /** Returns a builder for the current operation. */
   public Builder toBuilder() {
     return new Builder(this);
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(getName());
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    OperationInfo that = (OperationInfo) o;
+    return Objects.equals(done, that.done)
+        && Objects.equals(error, that.error)
+        && Objects.equals(metadata, that.metadata)
+        && Objects.equals(name, that.name)
+        && Objects.equals(response, that.response);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    return obj == this
-        || obj != null
-            && obj.getClass().equals(OperationInfo.class)
-            && Objects.equals(toPb(), ((OperationInfo) obj).toPb());
+  public int hashCode() {
+    return Objects.hash(done, error, metadata, name, response);
   }
 
   @Override
@@ -224,18 +233,18 @@ public class OperationInfo implements Serializable {
         .toString();
   }
 
-  Operation toPb() {
-    Operation operationPb = new Operation();
-    operationPb.setName(name);
-    operationPb.setDone(done);
-    operationPb.setMetadata(metadata);
+  Operation toProtobuf() {
+    Operation operation = new Operation();
+    operation.setName(name);
+    operation.setDone(done);
+    operation.setMetadata(metadata);
     if (response != null) {
-      operationPb.setResponse(response);
+      operation.setResponse(response);
     }
     if (error != null) {
-      operationPb.setError(error.toPb());
+      operation.setError(error.toProtobuf());
     }
-    return operationPb;
+    return operation;
   }
 
   /** Creates a {@code OperationInfo} object for the provided operation name. */
@@ -250,22 +259,22 @@ public class OperationInfo implements Serializable {
     return new Builder(name);
   }
 
-  static OperationInfo fromPb(Operation operationPb) {
-    Builder builder = newBuilder(operationPb.getName());
-    if (operationPb.getName() != null) {
-      builder.setName(operationPb.getName());
+  static OperationInfo fromProtobuf(Operation operation) {
+    Builder builder = newBuilder(operation.getName());
+    if (operation.getName() != null) {
+      builder.setName(operation.getName());
     }
-    if (operationPb.getDone() != null) {
-      builder.setDone(operationPb.getDone());
+    if (operation.getDone() != null) {
+      builder.setDone(operation.getDone());
     }
-    if (operationPb.getMetadata() != null) {
-      builder.setMetadata(operationPb.getMetadata());
+    if (operation.getMetadata() != null) {
+      builder.setMetadata(operation.getMetadata());
     }
-    if (operationPb.getResponse() != null) {
-      builder.setResponse(operationPb.getResponse());
+    if (operation.getResponse() != null) {
+      builder.setResponse(operation.getResponse());
     }
-    if (operationPb.getError() != null) {
-      builder.setError(Status.fromPb(operationPb.getError()));
+    if (operation.getError() != null) {
+      builder.setError(Status.fromProtobuf(operation.getError()));
     }
     return builder.build();
   }
