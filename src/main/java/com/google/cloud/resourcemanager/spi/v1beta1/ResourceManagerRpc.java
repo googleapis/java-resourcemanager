@@ -159,8 +159,6 @@ public interface ResourceManagerRpc extends ServiceRpc {
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions)
       throws IOException;
 
-  // TODO(ajaykannan): implement "Organization" functionality when available (issue #319)
-
   /**
    * Creates the new lien which applies to the resource denoted by the parent field.
    *
