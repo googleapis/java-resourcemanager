@@ -50,17 +50,17 @@ public class OperationInfo {
     }
 
     /** Returns the status code. */
-    public Integer getCode() {
+    Integer getCode() {
       return code;
     }
 
     /** Returns the error message. */
-    public String getMessage() {
+    String getMessage() {
       return message;
     }
 
     /** Return the list of messages that carry the error details. */
-    public List<Map<String, Object>> getDetails() {
+    List<Map<String, Object>> getDetails() {
       return details;
     }
 
@@ -124,32 +124,32 @@ public class OperationInfo {
       error = info.error;
     }
 
-    public Builder setName(String name) {
+    Builder setName(String name) {
       this.name = name;
       return this;
     }
 
-    public Builder setDone(Boolean done) {
+    Builder setDone(Boolean done) {
       this.done = done;
       return this;
     }
 
-    public Builder setMetadata(Map<String, Object> metadata) {
+    Builder setMetadata(Map<String, Object> metadata) {
       this.metadata = metadata;
       return this;
     }
 
-    public Builder setResponse(Map<String, Object> response) {
+    Builder setResponse(Map<String, Object> response) {
       this.response = response;
       return this;
     }
 
-    public Builder setError(Status error) {
+    Builder setError(Status error) {
       this.error = error;
       return this;
     }
 
-    public OperationInfo build() {
+    OperationInfo build() {
       checkNotNull(name);
       return new OperationInfo(this);
     }
@@ -247,13 +247,14 @@ public class OperationInfo {
     return operation;
   }
 
-  /** Creates a {@code OperationInfo} object for the provided operation name. */
+  /** Creates an {@code OperationInfo} object for the provided operation name. */
   public static OperationInfo of(String name) {
     return newBuilder(name).build();
   }
 
   /**
-   * Returns a {@code OperationInfo} builder where the operation's name is set to the provided name.
+   * Returns an {@code OperationInfo} builder where the operation's name is set to the provided
+   * name.
    */
   public static Builder newBuilder(String name) {
     return new Builder(name);
@@ -261,15 +262,9 @@ public class OperationInfo {
 
   static OperationInfo fromProtobuf(Operation operation) {
     Builder builder = newBuilder(operation.getName());
-    if (operation.getName() != null) {
-      builder.setName(operation.getName());
-    }
-    if (operation.getDone() != null) {
-      builder.setDone(operation.getDone());
-    }
-    if (operation.getMetadata() != null) {
-      builder.setMetadata(operation.getMetadata());
-    }
+    builder.setName(operation.getName());
+    builder.setDone(operation.getDone());
+    builder.setMetadata(operation.getMetadata());
     if (operation.getResponse() != null) {
       builder.setResponse(operation.getResponse());
     }
