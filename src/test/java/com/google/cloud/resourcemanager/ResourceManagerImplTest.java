@@ -40,7 +40,6 @@ import com.google.cloud.resourcemanager.ResourceManager.ProjectGetOption;
 import com.google.cloud.resourcemanager.ResourceManager.ProjectListOption;
 import com.google.cloud.resourcemanager.spi.ResourceManagerRpcFactory;
 import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
-import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc.ListResult;
 import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

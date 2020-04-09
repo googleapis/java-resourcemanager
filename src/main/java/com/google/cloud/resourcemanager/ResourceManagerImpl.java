@@ -28,7 +28,6 @@ import com.google.cloud.Policy;
 import com.google.cloud.RetryHelper.RetryHelperException;
 import com.google.cloud.Tuple;
 import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc;
-import com.google.cloud.resourcemanager.spi.v1beta1.ResourceManagerRpc.ListResult;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

@@ -21,8 +21,8 @@ import com.google.api.services.cloudresourcemanager.model.Policy;
 import com.google.api.services.cloudresourcemanager.model.Project;
 import com.google.cloud.ServiceRpc;
 import com.google.cloud.Tuple;
+import com.google.cloud.resourcemanager.ListResult;
 import com.google.cloud.resourcemanager.ResourceManagerException;
-import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -56,29 +56,6 @@ public interface ResourceManagerRpc extends ServiceRpc {
 
     Integer getInt(Map<Option, ?> options) {
       return get(options);
-    }
-  }
-
-  class ListResult<T> {
-
-    private final Iterable<T> results;
-    private final String pageToken;
-
-    ListResult(String pageToken, Iterable<T> results) {
-      this.results = ImmutableList.copyOf(results);
-      this.pageToken = pageToken;
-    }
-
-    public static <T> ListResult<T> of(String pageToken, Iterable<T> list) {
-      return new ListResult<>(pageToken, list);
-    }
-
-    public Iterable<T> results() {
-      return results;
-    }
-
-    public String pageToken() {
-      return pageToken;
     }
   }
 
