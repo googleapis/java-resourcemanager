@@ -360,7 +360,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    *
    * @param resource the organization's resource name, e.g. "organizations/123"
    * @param newPolicy the new IAM policy for resource
-   * @return the updated IAM policy for resource.
+   * @return the updated IAM policy for resource
    * @throws ResourceManagerException upon failure
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1/organizations/setIamPolicy">

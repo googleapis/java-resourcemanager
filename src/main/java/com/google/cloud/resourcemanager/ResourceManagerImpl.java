@@ -300,8 +300,9 @@ final class ResourceManagerImpl extends BaseService<ResourceManagerOptions>
           runWithRetries(
               new Callable<com.google.api.services.cloudresourcemanager.model.Policy>() {
                 @Override
-                public com.google.api.services.cloudresourcemanager.model.Policy call() {
-                  return resourceManagerRpc.replacePolicy(
+                public com.google.api.services.cloudresourcemanager.model.Policy call()
+                    throws IOException {
+                  return resourceManagerRpc.replaceOrgPolicy(
                       resource, PolicyMarshaller.INSTANCE.toPb(newPolicy));
                 }
               },

@@ -139,5 +139,5 @@ public interface ResourceManagerRpc extends ServiceRpc {
    *
    * @throws ResourceManagerException upon failure
    */
-  Policy replaceOrgPolicy(String resource, Policy newPolicy);
+  Policy replaceOrgPolicy(String resource, Policy newPolicy) throws IOException;
 }

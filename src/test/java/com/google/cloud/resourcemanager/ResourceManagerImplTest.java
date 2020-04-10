@@ -519,15 +519,44 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testReplaceOrgPolicy() {
+  public void testReplaceOrgPolicy() throws IOException {
+    String organization = "organizations/12345";
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    when(resourceManagerRpcMock.replaceOrgPolicy(
+            organization, PolicyMarshaller.INSTANCE.toPb(POLICY)))
+        .thenReturn(PolicyMarshaller.INSTANCE.toPb(POLICY));
+    Policy policy = resourceManager.replaceOrgPolicy(organization, POLICY);
+    assertEquals(POLICY.getBindings(), policy.getBindings());
+    assertEquals(0, policy.getVersion());
+    verify(resourceManagerRpcMock)
+        .replaceOrgPolicy(organization, PolicyMarshaller.INSTANCE.toPb(POLICY));
+  }
+
+  @Test
+  public void testReplaceOrgPolicyWitheResourceManagerException() throws IOException {
+    String organization = "organizations/12345";
+    String exceptionMessage = "Not Found";
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .replaceOrgPolicy(organization, PolicyMarshaller.INSTANCE.toPb(POLICY));
     try {
-      Policy policy = RESOURCE_MANAGER.replaceOrgPolicy("organizations/12345", POLICY);
-      assertEquals(POLICY.getBindings(), policy.getBindings());
-      assertNotNull(policy.getEtag());
-      fail();
-    } catch (ResourceManagerException exception) {
-      assertEquals(403, exception.getCode());
-      assertTrue(exception.getMessage().contains("not found."));
+      resourceManager.replaceOrgPolicy(organization, POLICY);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 }

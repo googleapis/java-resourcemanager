@@ -326,14 +326,14 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Policy replaceOrgPolicy(String resource, Policy newPolicy) {
+  public Policy replaceOrgPolicy(String resource, Policy newPolicy) throws IOException {
     try {
       return resourceManager
           .organizations()
           .setIamPolicy(resource, new SetIamPolicyRequest().setPolicy(newPolicy))
           .execute();
-    } catch (IOException ex) {
-      throw translate(ex);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 }
