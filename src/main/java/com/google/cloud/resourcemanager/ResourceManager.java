@@ -356,8 +356,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   Map<String, Boolean> testOrgPermissions(String resource, List<String> permissions);
 
   /**
-   * Returns the IAM access control policy for an organization. Returns {@code null} if the resource
-   * does not exist or if you do not have adequate permission to get the policy.
+   * Returns the IAM access control policy for an organization.
    *
    * @throws ResourceManagerException upon failure
    * @see <a href=
