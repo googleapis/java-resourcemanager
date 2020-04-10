@@ -44,7 +44,6 @@ import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -88,8 +87,8 @@ public class ResourceManagerImplTest {
   // Lien
   private static final String LIEN_NAME = "liens/1234abcd";
   private static final String LIEN_PARENT = "projects/1234";
-  private static final List<String> LIEN_RESTRICTIONS =
-      Arrays.asList("resourcemanager.projects.get", "resourcemanager.projects.delete");
+  private static final ImmutableList<String> LIEN_RESTRICTIONS =
+      ImmutableList.of("resourcemanager.projects.get", "resourcemanager.projects.delete");
   private static final String LIEN_REASON = "Holds production API key";
   private static final String LIEN_ORIGIN = "compute.googleapis.com";
   private static final String LIEN_CREATE_TIME = "2014-10-02T15:01:23.045123456Z";

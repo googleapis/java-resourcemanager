@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.api.services.cloudresourcemanager.model.Lien;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -50,7 +49,7 @@ public class LienInfo {
   private String origin;
   private String parent;
   private String reason;
-  private List<String> restrictions;
+  private ImmutableList<String> restrictions;
 
   /** Builder for {@code LienInfo}. */
   static class Builder {
@@ -60,7 +59,7 @@ public class LienInfo {
     private String origin;
     private String parent;
     private String reason;
-    private List<String> restrictions;
+    private ImmutableList<String> restrictions;
 
     Builder(String parent) {
       this.parent = parent;
@@ -95,8 +94,8 @@ public class LienInfo {
       return this;
     }
 
-    Builder setRestrictions(List<String> restrictions) {
-      this.restrictions = ImmutableList.copyOf(restrictions);
+    Builder setRestrictions(ImmutableList<String> restrictions) {
+      this.restrictions = restrictions;
       return this;
     }
 
@@ -140,7 +139,7 @@ public class LienInfo {
     return reason;
   }
   /** Returns the restrictions of the lien. */
-  public List<String> getRestrictions() {
+  public ImmutableList<String> getRestrictions() {
     return restrictions;
   }
 
@@ -195,7 +194,7 @@ public class LienInfo {
     builder.setParent(lien.getParent());
     builder.setOrigin(lien.getOrigin());
     builder.setReason(lien.getReason());
-    builder.setRestrictions(lien.getRestrictions());
+    builder.setRestrictions((ImmutableList<String>) lien.getRestrictions());
     return builder.build();
   }
 }

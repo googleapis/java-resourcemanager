@@ -165,8 +165,6 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   /** Class for specifying Lien list options. */
   class LienListOption extends Option {
 
-    private static final long serialVersionUID = 7888768979702012328L;
-
     private LienListOption(ResourceManagerRpc.Option option, Object value) {
       super(option, value);
     }
@@ -177,7 +175,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
      * <p>The page token (returned from a previous call to list) indicates from where listing should
      * continue.
      */
-    public static LienListOption pageToken(String pageToken) {
+    static LienListOption pageToken(String pageToken) {
       return new LienListOption(ResourceManagerRpc.Option.PAGE_TOKEN, pageToken);
     }
 
@@ -187,7 +185,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
      * <p>The server can return fewer liens than requested. When there are more results than the
      * page size, the server returns a page token that can be used to fetch other results.
      */
-    public static LienListOption pageSize(int pageSize) {
+    static LienListOption pageSize(int pageSize) {
       return new LienListOption(ResourceManagerRpc.Option.PAGE_SIZE, pageSize);
     }
   }

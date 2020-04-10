@@ -20,8 +20,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,8 +30,8 @@ public class LienInfoTest {
 
   private static final String LIEN_NAME = "liens/1234abcd";
   private static final String LIEN_PARENT = " projects/1234";
-  private static final List<String> LIEN_RESTRICTIONS =
-      Arrays.asList("resourcemanager.projects.get", "resourcemanager.projects.delete");
+  private static final ImmutableList<String> LIEN_RESTRICTIONS =
+      ImmutableList.of("resourcemanager.projects.get", "resourcemanager.projects.delete");
   private static final String LIEN_REASON = "Holds production API key";
   private static final String LIEN_ORIGIN = "compute.googleapis.com";
   private static final String LIEN_CREATE_TIME = "2014-10-02T15:01:23.045123456Z";

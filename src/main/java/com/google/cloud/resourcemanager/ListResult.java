@@ -39,8 +39,8 @@ public class ListResult<T> {
   }
 
   /**
-   * Returns the token to retrieves the next page of results, or empty if there are no more results
-   * in the list.
+   * Returns the token to retrieves the next page of results, or empty string if there are no more
+   * results in the list.
    */
   public String pageToken() {
     return pageToken;
