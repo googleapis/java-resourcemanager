@@ -326,20 +326,14 @@ public class HttpResourceManagerRpc implements ResourceManagerRpc {
   }
 
   @Override
-  public Policy getOrgPolicy(String name) {
+  public Policy getOrgPolicy(String name) throws IOException {
     try {
       return resourceManager
           .organizations()
           .getIamPolicy(name, new GetIamPolicyRequest())
           .execute();
-    } catch (IOException ex) {
-      ResourceManagerException translated = translate(ex);
-      if (translated.getCode() == HTTP_FORBIDDEN) {
-        // Service returns permission denied if policy doesn't exist.
-        return null;
-      } else {
-        throw translated;
-      }
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw ResourceManagerException.translateAndThrow(ex);
     }
   }
 }

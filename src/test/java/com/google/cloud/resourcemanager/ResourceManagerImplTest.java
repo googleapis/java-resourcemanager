@@ -29,7 +29,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.api.gax.paging.Page;
-import com.google.api.services.cloudresourcemanager.model.Binding;
 import com.google.cloud.Identity;
 import com.google.cloud.Policy;
 import com.google.cloud.Role;
@@ -43,7 +42,6 @@ import com.google.cloud.resourcemanager.testing.LocalResourceManagerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -521,37 +519,42 @@ public class ResourceManagerImplTest {
   }
 
   @Test
-  public void testGetOrgPolicy() {
-    ResourceManagerRpcFactory rpcFactoryMock = EasyMock.createMock(ResourceManagerRpcFactory.class);
-    ResourceManagerRpc resourceManagerRpcMock = EasyMock.createMock(ResourceManagerRpc.class);
-    EasyMock.expect(rpcFactoryMock.create(EasyMock.anyObject(ResourceManagerOptions.class)))
-        .andReturn(resourceManagerRpcMock);
-    EasyMock.replay(rpcFactoryMock);
-    ResourceManager resourceManagerMock =
+  public void testGetOrgPolicy() throws IOException {
+    String organization = "organizations/12345";
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
         ResourceManagerOptions.newBuilder()
             .setServiceRpcFactory(rpcFactoryMock)
             .build()
             .getService();
-    List<Binding> bindings =
-        Arrays.asList(new Binding().setRole("owner").setMembers(Arrays.asList("members")));
-    com.google.api.services.cloudresourcemanager.model.Policy policy =
-        new com.google.api.services.cloudresourcemanager.model.Policy();
-    policy.setEtag("etag").setVersion(0).setBindings(bindings);
-    EasyMock.expect(resourceManagerRpcMock.getOrgPolicy("resource-name")).andReturn(policy);
-    EasyMock.replay(resourceManagerRpcMock);
-    Policy actual = resourceManagerMock.getOrgPolicy("resource-name");
-    assertEquals("etag", actual.getEtag());
-    assertEquals(0, actual.getVersion());
+    when(resourceManagerRpcMock.getOrgPolicy(organization))
+        .thenReturn(PolicyMarshaller.INSTANCE.toPb(POLICY));
+    Policy policy = resourceManager.getOrgPolicy(organization);
+    assertEquals(POLICY.getBindings(), policy.getBindings());
+    assertEquals(0, policy.getVersion());
+    verify(resourceManagerRpcMock).getOrgPolicy(organization);
   }
 
   @Test
-  public void testGetOrgPolicyWithException() {
+  public void testGetOrgPolicyWithResourceManagerException() throws IOException {
+    String organization = "organizations/12345";
+    String exceptionMessage = "Not Found";
+    when(rpcFactoryMock.create(Mockito.any(ResourceManagerOptions.class)))
+        .thenReturn(resourceManagerRpcMock);
+    ResourceManager resourceManager =
+        ResourceManagerOptions.newBuilder()
+            .setServiceRpcFactory(rpcFactoryMock)
+            .build()
+            .getService();
+    doThrow(new ResourceManagerException(404, exceptionMessage))
+        .when(resourceManagerRpcMock)
+        .getOrgPolicy(organization);
     try {
-      Policy policy = RESOURCE_MANAGER.getOrgPolicy("organizations/12345");
-      fail("Should fail because the organization policy doesn't exist.");
-    } catch (ResourceManagerException e) {
-      assertEquals(404, e.getCode());
-      assertTrue(e.getMessage().contains("Not Found"));
+      resourceManager.getOrgPolicy(organization);
+    } catch (ResourceManagerException expected) {
+      assertEquals(404, expected.getCode());
+      assertEquals(exceptionMessage, expected.getMessage());
     }
   }
 }
