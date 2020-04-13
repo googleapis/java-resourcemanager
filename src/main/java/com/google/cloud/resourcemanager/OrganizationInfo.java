@@ -29,8 +29,13 @@ import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;
 
-/** A Google Cloud Resource Manager organization metadata object. */
-public class OrganizationInfo implements Serializable {
+/**
+ * A Google Cloud Resource Manager organization metadata object.
+ *
+ * @see <a
+ *     href="https://cloud.google.com/resource-manager/reference/rest/v1/organizations#organization">organization</a>
+ */
+public class OrganizationInfo {
 
   public static final DateTimeFormatter DATE_TIME_FORMATTER =
       DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneOffset.UTC);
@@ -86,20 +91,19 @@ public class OrganizationInfo implements Serializable {
     }
   }
 
-  static class OrgOwner implements Serializable {
+  static class OrgOwner {
 
-    private static final long serialVersionUID = -325199985993344727L;
     private final String directoryCustomerId;
 
     OrgOwner(String directoryCustomerId) {
       this.directoryCustomerId = checkNotNull(directoryCustomerId);
     }
 
-    public static OrgOwner of(String directoryCustomerId) {
+    static OrgOwner of(String directoryCustomerId) {
       return new OrgOwner(checkNotNull(directoryCustomerId));
     }
 
-    public String getDirectoryCustomerId() {
+    String getDirectoryCustomerId() {
       return directoryCustomerId;
     }
 
@@ -118,8 +122,8 @@ public class OrganizationInfo implements Serializable {
       if (o == null || getClass() != o.getClass()) {
         return false;
       }
-      OrgOwner that = (OrgOwner) o;
-      return Objects.equals(directoryCustomerId, that.directoryCustomerId);
+      OrgOwner orgOwner = (OrgOwner) o;
+      return Objects.equals(directoryCustomerId, orgOwner.directoryCustomerId);
     }
 
     @Override
@@ -156,33 +160,33 @@ public class OrganizationInfo implements Serializable {
       this.owner = info.owner;
     }
 
-    public Builder setCreationTime(Long creationTime) {
+    Builder setCreationTime(Long creationTime) {
       this.creationTime = creationTime;
       return this;
     }
 
-    public Builder setDisplayName(String displayName) {
+    Builder setDisplayName(String displayName) {
       this.displayName = displayName;
       return this;
     }
 
-    public Builder setLifecycleState(State lifecycleState) {
+    Builder setLifecycleState(State lifecycleState) {
       this.lifecycleState = lifecycleState;
       return this;
     }
 
-    public Builder setName(String name) {
+    Builder setName(String name) {
       this.name = name;
       return this;
     }
 
-    public Builder setOwner(OrgOwner owner) {
+    Builder setOwner(OrgOwner owner) {
       this.owner = owner;
       return this;
     }
 
-    /** Creates a {@link OrganizationInfo} object. */
-    public OrganizationInfo build() {
+    /** Creates an {@link OrganizationInfo} object. */
+    OrganizationInfo build() {
       return new OrganizationInfo(this);
     }
   }
@@ -265,12 +269,12 @@ public class OrganizationInfo implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrganizationInfo that = (OrganizationInfo) o;
-    return Objects.equals(creationTime, that.creationTime)
-        && Objects.equals(displayName, that.displayName)
-        && Objects.equals(lifecycleState, that.lifecycleState)
-        && Objects.equals(name, that.name)
-        && Objects.equals(owner, that.owner);
+    OrganizationInfo info = (OrganizationInfo) o;
+    return Objects.equals(creationTime, info.creationTime)
+        && Objects.equals(displayName, info.displayName)
+        && Objects.equals(lifecycleState, info.lifecycleState)
+        && Objects.equals(name, info.name)
+        && Objects.equals(owner, info.owner);
   }
 
   @Override
@@ -303,15 +307,11 @@ public class OrganizationInfo implements Serializable {
       builder.setCreationTime(
           DATE_TIME_FORMATTER.parse(organization.getCreationTime(), Instant.FROM).toEpochMilli());
     }
-    if (organization.getDisplayName() != null) {
-      builder.setDisplayName(organization.getDisplayName());
-    }
+    builder.setDisplayName(organization.getDisplayName());
     if (organization.getLifecycleState() != null) {
       builder.setLifecycleState(State.valueOf(organization.getLifecycleState()));
     }
-    if (organization.getName() != null && !organization.getName().equals("Unnamed")) {
-      builder.setName(organization.getName());
-    }
+    builder.setName(organization.getName());
     if (organization.getOwner() != null) {
       builder.setOwner(OrgOwner.fromProtobuf(organization.getOwner()));
     }
