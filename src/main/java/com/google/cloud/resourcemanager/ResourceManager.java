@@ -421,7 +421,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   OrgPolicyInfo getOrgPolicy(String resource, String constraint);
 
   /**
-   * Lists all the Constraints that could be applied on the specified resource.
+   * Lists the Constraints that could be applied on the specified resource.
    *
    * @throws ResourceManagerException upon failure
    * @see <a
@@ -431,7 +431,7 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
   Page<ConstraintInfo> listAvailableOrgPolicyConstraints(String resource, ListOption... options);
 
   /**
-   * Lists all the Policies set for a particular resource.
+   * Lists the Policies set for a particular resource.
    *
    * @throws ResourceManagerException upon failure
    * @see <a

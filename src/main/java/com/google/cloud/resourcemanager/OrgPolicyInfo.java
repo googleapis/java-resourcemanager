@@ -21,7 +21,6 @@ import com.google.api.services.cloudresourcemanager.model.OrgPolicy;
 import com.google.api.services.cloudresourcemanager.model.RestoreDefault;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,9 +30,7 @@ import java.util.Objects;
  * <p>Defines a Cloud Organization Policy which specifies constraints for configurations of Cloud
  * Platform resources.
  */
-public class OrgPolicyInfo implements Serializable {
-
-  private static final long serialVersionUID = 9148970963697734236L;
+public class OrgPolicyInfo {
 
   static final Function<OrgPolicy, OrgPolicyInfo> FROM_PROTOBUF_FUNCTION =
       new Function<OrgPolicy, OrgPolicyInfo>() {
@@ -59,9 +56,8 @@ public class OrgPolicyInfo implements Serializable {
   private Integer version;
 
   /** Used For boolean Constraints, whether to enforce the Constraint or not. */
-  static class BoolPolicy implements Serializable {
+  static class BoolPolicy {
 
-    private static final long serialVersionUID = -2133042982786959351L;
     private final Boolean enforce;
 
     BoolPolicy(Boolean enforce) {

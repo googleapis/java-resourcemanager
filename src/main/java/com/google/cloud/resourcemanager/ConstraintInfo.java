@@ -20,7 +20,6 @@ import com.google.api.services.cloudresourcemanager.model.Constraint;
 import com.google.api.services.cloudresourcemanager.model.ListConstraint;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -29,9 +28,7 @@ import java.util.Objects;
  * @see <a
  *     href="https://cloud.google.com/resource-manager/reference/rest/v1/ListAvailableOrgPolicyConstraintsResponse#Constraint">Constraint</a>
  */
-public class ConstraintInfo implements Serializable {
-
-  private static final long serialVersionUID = 9148970963697734236L;
+public class ConstraintInfo {
 
   static final Function<Constraint, ConstraintInfo> FROM_PROTOBUF_FUNCTION =
       new Function<Constraint, ConstraintInfo>() {
@@ -77,6 +74,7 @@ public class ConstraintInfo implements Serializable {
     String getSuggestedValue() {
       return suggestedValue;
     }
+
     /**
      * Indicates whether subtrees of Cloud Resource Manager resource hierarchy can be used in
      * Policy.allowed_values and Policy.denied_values.
