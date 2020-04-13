@@ -119,9 +119,7 @@ public class OrgPolicyInfo implements Serializable {
    * used to allow or deny all values. If allValues is set to either ALLOW or DENY, allowedValues
    * and deniedValues must be unset.
    */
-  static class Policies implements Serializable {
-
-    private static final long serialVersionUID = -2133042982786959352L;
+  static class Policies {
 
     private final String allValues;
     private final List<String> allowedValues;
@@ -129,7 +127,7 @@ public class OrgPolicyInfo implements Serializable {
     private final Boolean inheritFromParent;
     private final String suggestedValue;
 
-    public Policies(
+    Policies(
         String allValues,
         List<String> allowedValues,
         List<String> deniedValues,
@@ -143,27 +141,27 @@ public class OrgPolicyInfo implements Serializable {
     }
 
     /** Returns all the Values state of this policy. */
-    public String getAllValues() {
+    String getAllValues() {
       return allValues;
     }
 
     /** Returns the list of allowed values of this resource */
-    public List<String> getAllowedValues() {
+    List<String> getAllowedValues() {
       return allowedValues;
     }
 
     /** Returns the list of denied values of this resource. */
-    public List<String> getDeniedValues() {
+    List<String> getDeniedValues() {
       return deniedValues;
     }
 
     /** Returns the inheritance behavior for this Policy */
-    public Boolean getInheritFromParent() {
+    Boolean getInheritFromParent() {
       return inheritFromParent;
     }
 
     /** Returns the suggested value of this policy. */
-    public String getSuggestedValue() {
+    String getSuggestedValue() {
       return suggestedValue;
     }
 
@@ -241,42 +239,42 @@ public class OrgPolicyInfo implements Serializable {
       this.version = info.version;
     }
 
-    public Builder setBoolPolicy(BoolPolicy boolPolicy) {
+    Builder setBoolPolicy(BoolPolicy boolPolicy) {
       this.boolPolicy = boolPolicy;
       return this;
     }
 
-    public Builder setConstraint(String constraint) {
+    Builder setConstraint(String constraint) {
       this.constraint = constraint;
       return this;
     }
 
-    public Builder setEtag(String etag) {
+    Builder setEtag(String etag) {
       this.etag = etag;
       return this;
     }
 
-    public Builder setListPolicy(Policies policies) {
+    Builder setListPolicy(Policies policies) {
       this.policies = policies;
       return this;
     }
 
-    public Builder setRestoreDefault(RestoreDefault restoreDefault) {
+    Builder setRestoreDefault(RestoreDefault restoreDefault) {
       this.restoreDefault = restoreDefault;
       return this;
     }
 
-    public Builder setUpdateTime(String updateTime) {
+    Builder setUpdateTime(String updateTime) {
       this.updateTime = updateTime;
       return this;
     }
 
-    public Builder setVersion(Integer version) {
+    Builder setVersion(Integer version) {
       this.version = version;
       return this;
     }
 
-    public OrgPolicyInfo build() {
+    OrgPolicyInfo build() {
       return new OrgPolicyInfo(this);
     }
   }
@@ -328,14 +326,14 @@ public class OrgPolicyInfo implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrgPolicyInfo that = (OrgPolicyInfo) o;
-    return Objects.equals(boolPolicy, that.boolPolicy)
-        && Objects.equals(constraint, that.constraint)
-        && Objects.equals(etag, that.etag)
-        && Objects.equals(policies, that.policies)
-        && Objects.equals(restoreDefault, that.restoreDefault)
-        && Objects.equals(updateTime, that.updateTime)
-        && Objects.equals(version, that.version);
+    OrgPolicyInfo policyInfo = (OrgPolicyInfo) o;
+    return Objects.equals(boolPolicy, policyInfo.boolPolicy)
+        && Objects.equals(constraint, policyInfo.constraint)
+        && Objects.equals(etag, policyInfo.etag)
+        && Objects.equals(policies, policyInfo.policies)
+        && Objects.equals(restoreDefault, policyInfo.restoreDefault)
+        && Objects.equals(updateTime, policyInfo.updateTime)
+        && Objects.equals(version, policyInfo.version);
   }
 
   @Override
@@ -375,24 +373,14 @@ public class OrgPolicyInfo implements Serializable {
     if (orgPolicyProtobuf.getBooleanPolicy() != null) {
       builder.setBoolPolicy(BoolPolicy.fromProtobuf(orgPolicyProtobuf.getBooleanPolicy()));
     }
-    if (orgPolicyProtobuf.getConstraint() != null) {
-      builder.setConstraint(orgPolicyProtobuf.getConstraint());
-    }
+    builder.setConstraint(orgPolicyProtobuf.getConstraint());
     if (orgPolicyProtobuf.getListPolicy() != null) {
       builder.setListPolicy(Policies.fromProtobuf(orgPolicyProtobuf.getListPolicy()));
     }
-    if (orgPolicyProtobuf.getRestoreDefault() != null) {
-      builder.setRestoreDefault(orgPolicyProtobuf.getRestoreDefault());
-    }
-    if (orgPolicyProtobuf.getEtag() != null) {
-      builder.setEtag(orgPolicyProtobuf.getEtag());
-    }
-    if (orgPolicyProtobuf.getUpdateTime() != null) {
-      builder.setUpdateTime(orgPolicyProtobuf.getUpdateTime());
-    }
-    if (orgPolicyProtobuf.getVersion() != null) {
-      builder.setVersion(orgPolicyProtobuf.getVersion());
-    }
+    builder.setRestoreDefault(orgPolicyProtobuf.getRestoreDefault());
+    builder.setEtag(orgPolicyProtobuf.getEtag());
+    builder.setUpdateTime(orgPolicyProtobuf.getUpdateTime());
+    builder.setVersion(orgPolicyProtobuf.getVersion());
     return builder.build();
   }
 }

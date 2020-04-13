@@ -77,7 +77,7 @@ public class OrgPolicyInfoTest {
   }
 
   @Test
-  public void testToAndFromPb() {
+  public void testToAndFromProtobuf() {
     assertTrue(orgPolicyInfo.toProtobuf().getUpdateTime().endsWith("Z"));
     compareOrgPolicy(orgPolicyInfo, orgPolicyInfo.fromProtobuf(orgPolicyInfo.toProtobuf()));
     assertNotNull(OrgPolicyInfo.TO_PROTOBUF_FUNCTION.apply(orgPolicyInfo));
@@ -108,7 +108,7 @@ public class OrgPolicyInfoTest {
   }
 
   @Test
-  public void testListPolicyToAndFromPb() {
+  public void testListPolicyToAndFromProtobuf() {
     compareListPolicies(LIST_POLICY, LIST_POLICY.fromProtobuf(LIST_POLICY.toProtobuf()));
   }
 

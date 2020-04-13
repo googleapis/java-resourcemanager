@@ -26,13 +26,8 @@ import java.util.Objects;
 /**
  * A Google Cloud Resource Manager constraint metadata object.
  *
- * <p>A Constraint describes a way in which a resource's configuration can be restricted. For
- * example, it controls which cloud services can be activated across an organization, or whether a
- * Compute Engine instance can have serial port connections established. Constraints can be
- * configured by the organization's policy administrator to fit the needs of the organization by
- * setting Policies for Constraints at different locations in the organization's resource hierarchy.
- * Policies are inherited down the resource hierarchy from higher levels, but can also be
- * overridden. For details about the inheritance rules please read about Policies.
+ * @see <a
+ *     href="https://cloud.google.com/resource-manager/reference/rest/v1/ListAvailableOrgPolicyConstraintsResponse#Constraint">Constraint</a>
  */
 public class ConstraintInfo implements Serializable {
 
@@ -65,9 +60,7 @@ public class ConstraintInfo implements Serializable {
    * A Constraint that allows or disallows a list of string values, which are configured by an
    * Organization's policy administrator with a Policy.
    */
-  static class Constraints implements Serializable {
-
-    private static final long serialVersionUID = -2133042982786959352L;
+  static class Constraints {
 
     private final String suggestedValue;
     private final Boolean supportsUnder;
@@ -77,11 +70,18 @@ public class ConstraintInfo implements Serializable {
       this.supportsUnder = supportsUnder;
     }
 
-    public String getSuggestedValue() {
+    /**
+     * The Google Cloud Console tries to default to a configuration that matches the value specified
+     * in this Constraint.
+     */
+    String getSuggestedValue() {
       return suggestedValue;
     }
-
-    public Boolean getSupportsUnder() {
+    /**
+     * Indicates whether subtrees of Cloud Resource Manager resource hierarchy can be used in
+     * Policy.allowed_values and Policy.denied_values.
+     */
+    Boolean getSupportsUnder() {
       return supportsUnder;
     }
 
@@ -100,8 +100,12 @@ public class ConstraintInfo implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
       Constraints that = (Constraints) o;
       return Objects.equals(suggestedValue, that.suggestedValue)
           && Objects.equals(supportsUnder, that.supportsUnder);
@@ -140,42 +144,42 @@ public class ConstraintInfo implements Serializable {
       this.version = info.version;
     }
 
-    public Builder setBooleanConstraint(BooleanConstraint booleanConstraint) {
+    Builder setBooleanConstraint(BooleanConstraint booleanConstraint) {
       this.booleanConstraint = booleanConstraint;
       return this;
     }
 
-    public Builder setConstraintDefault(String constraintDefault) {
+    Builder setConstraintDefault(String constraintDefault) {
       this.constraintDefault = constraintDefault;
       return this;
     }
 
-    public Builder setDescription(String description) {
+    Builder setDescription(String description) {
       this.description = description;
       return this;
     }
 
-    public Builder setDisplayName(String displayName) {
+    Builder setDisplayName(String displayName) {
       this.displayName = displayName;
       return this;
     }
 
-    public Builder setConstraints(Constraints constraints) {
+    Builder setConstraints(Constraints constraints) {
       this.constraints = constraints;
       return this;
     }
 
-    public Builder setName(String name) {
+    Builder setName(String name) {
       this.name = name;
       return this;
     }
 
-    public Builder setVersion(Integer version) {
+    Builder setVersion(Integer version) {
       this.version = version;
       return this;
     }
 
-    public ConstraintInfo build() {
+    ConstraintInfo build() {
       return new ConstraintInfo(this);
     }
   }
@@ -275,27 +279,17 @@ public class ConstraintInfo implements Serializable {
 
   static ConstraintInfo fromProtobuf(Constraint constraintProtobuf) {
     Builder builder = newBuilder(constraintProtobuf.getName());
-    if (constraintProtobuf.getBooleanConstraint() != null) {
-      builder.setBooleanConstraint(constraintProtobuf.getBooleanConstraint());
-    }
-    if (constraintProtobuf.getConstraintDefault() != null) {
-      builder.setConstraintDefault(constraintProtobuf.getConstraintDefault());
-    }
-    if (constraintProtobuf.getDescription() != null) {
-      builder.setDescription(constraintProtobuf.getDescription());
-    }
-    if (constraintProtobuf.getDisplayName() != null) {
-      builder.setDisplayName(constraintProtobuf.getDisplayName());
-    }
+    builder.setBooleanConstraint(constraintProtobuf.getBooleanConstraint());
+    builder.setConstraintDefault(constraintProtobuf.getConstraintDefault());
+    builder.setDescription(constraintProtobuf.getDescription());
+    builder.setDisplayName(constraintProtobuf.getDisplayName());
     if (constraintProtobuf.getListConstraint() != null) {
       builder.setConstraints(Constraints.fromProtobuf(constraintProtobuf.getListConstraint()));
     }
     if (constraintProtobuf.getName() != null && !constraintProtobuf.getName().equals("Unnamed")) {
       builder.setName(constraintProtobuf.getName());
     }
-    if (constraintProtobuf.getVersion() != null) {
-      builder.setVersion(constraintProtobuf.getVersion());
-    }
+    builder.setVersion(constraintProtobuf.getVersion());
     return builder.build();
   }
 }
