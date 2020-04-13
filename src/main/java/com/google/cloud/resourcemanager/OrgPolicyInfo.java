@@ -289,26 +289,32 @@ public class OrgPolicyInfo {
   public BoolPolicy getBoolPolicy() {
     return boolPolicy;
   }
+
   /** Returns the name of the Constraint. */
   public String getConstraint() {
     return constraint;
   }
-  /** */
+
+  /** Returns the etag value of policy. */
   public String getEtag() {
     return etag;
   }
+
   /** Return the policies. */
   public Policies getPolicies() {
     return policies;
   }
+
   /** Restores the default behavior of the constraint. */
   public RestoreDefault getRestoreDefault() {
     return restoreDefault;
   }
+
   /** Returns the updated timestamp of policy. */
   public String getUpdateTime() {
     return updateTime;
   }
+
   /** Returns the version of the Policy, Default version is 0. */
   public Integer getVersion() {
     return version;
