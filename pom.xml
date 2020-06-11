@@ -77,7 +77,7 @@
     <google.auth.version>0.20.0</google.auth.version>
     <http-client-bom.version>1.35.0</http-client-bom.version>
     <protobuf.version>3.12.2</protobuf.version>
-    <errorprone.version>2.3.4</errorprone.version>
+    <errorprone.version>2.4.0</errorprone.version>
   </properties>
 
   <dependencyManagement>
