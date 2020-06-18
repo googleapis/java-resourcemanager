@@ -3,15 +3,26 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/java-resourcemanager.git",
-        "sha": "c311897eaaa0e62f9127a831092558b5c7ea3739"
+        "remote": "git@github.com:googleapis/java-resourcemanager.git",
+        "sha": "8fe56195ec1d7553080209b8e3be5734b164fc88"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c4f3059c27591eb24d6942a0e357ec94c80459f2"
+        "sha": "8e7edfbb4f9db7a86a1c61b46bde7c8e0782abca"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "resourcemanager",
+        "apiVersion": "v2",
+        "language": "java",
+        "generator": "bazel"
       }
     }
   ]

@@ -18,4 +18,15 @@ import synthtool.languages.java as java
 
 AUTOSYNTH_MULTIPLE_COMMITS = True
 
+service = 'resourcemanager'
+versions = ['v2']
+
+for version in versions:
+    java.bazel_library(
+        service=service,
+        version=version,
+        proto_path=f'google/cloud/resourcemanager/{version}',
+        bazel_target=f'//google/cloud/resourcemanager/{version}:google-cloud-{service}-{version}-java',
+    )
+
 java.common_templates()
