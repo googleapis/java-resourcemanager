@@ -27,4 +27,3 @@ deep-copy-regex:
   dest: "/grpc-google-cloud-resourcemanager-$1/src"
 - source: "/google/cloud/resourcemanager/v.*/.*-java/gapic-google-.*/src"
   dest: "/google-cloud-resourcemanager/src"
-  
