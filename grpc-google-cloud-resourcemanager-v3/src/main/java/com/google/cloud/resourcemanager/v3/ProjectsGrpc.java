@@ -1,8 +1,25 @@
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.google.cloud.resourcemanager.v3;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
+ *
+ *
  * <pre>
  * Manages Google Cloud Projects.
  * </pre>
@@ -17,399 +34,537 @@ public final class ProjectsGrpc {
   public static final String SERVICE_NAME = "google.cloud.resourcemanager.v3.Projects";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.GetProjectRequest,
-      com.google.cloud.resourcemanager.v3.Project> getGetProjectMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.GetProjectRequest,
+          com.google.cloud.resourcemanager.v3.Project>
+      getGetProjectMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetProject",
       requestType = com.google.cloud.resourcemanager.v3.GetProjectRequest.class,
       responseType = com.google.cloud.resourcemanager.v3.Project.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.GetProjectRequest,
-      com.google.cloud.resourcemanager.v3.Project> getGetProjectMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.GetProjectRequest, com.google.cloud.resourcemanager.v3.Project> getGetProjectMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.GetProjectRequest,
+          com.google.cloud.resourcemanager.v3.Project>
+      getGetProjectMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.GetProjectRequest,
+            com.google.cloud.resourcemanager.v3.Project>
+        getGetProjectMethod;
     if ((getGetProjectMethod = ProjectsGrpc.getGetProjectMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getGetProjectMethod = ProjectsGrpc.getGetProjectMethod) == null) {
-          ProjectsGrpc.getGetProjectMethod = getGetProjectMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.GetProjectRequest, com.google.cloud.resourcemanager.v3.Project>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetProject"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.GetProjectRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.Project.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("GetProject"))
-              .build();
+          ProjectsGrpc.getGetProjectMethod =
+              getGetProjectMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.GetProjectRequest,
+                          com.google.cloud.resourcemanager.v3.Project>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetProject"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.GetProjectRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.Project.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("GetProject"))
+                      .build();
         }
       }
     }
     return getGetProjectMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.ListProjectsRequest,
-      com.google.cloud.resourcemanager.v3.ListProjectsResponse> getListProjectsMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.ListProjectsRequest,
+          com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+      getListProjectsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "ListProjects",
       requestType = com.google.cloud.resourcemanager.v3.ListProjectsRequest.class,
       responseType = com.google.cloud.resourcemanager.v3.ListProjectsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.ListProjectsRequest,
-      com.google.cloud.resourcemanager.v3.ListProjectsResponse> getListProjectsMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.ListProjectsRequest, com.google.cloud.resourcemanager.v3.ListProjectsResponse> getListProjectsMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.ListProjectsRequest,
+          com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+      getListProjectsMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.ListProjectsRequest,
+            com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+        getListProjectsMethod;
     if ((getListProjectsMethod = ProjectsGrpc.getListProjectsMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getListProjectsMethod = ProjectsGrpc.getListProjectsMethod) == null) {
-          ProjectsGrpc.getListProjectsMethod = getListProjectsMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.ListProjectsRequest, com.google.cloud.resourcemanager.v3.ListProjectsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ListProjects"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.ListProjectsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.ListProjectsResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("ListProjects"))
-              .build();
+          ProjectsGrpc.getListProjectsMethod =
+              getListProjectsMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.ListProjectsRequest,
+                          com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ListProjects"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.ListProjectsRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.ListProjectsResponse
+                                  .getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("ListProjects"))
+                      .build();
         }
       }
     }
     return getListProjectsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
-      com.google.cloud.resourcemanager.v3.SearchProjectsResponse> getSearchProjectsMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
+          com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+      getSearchProjectsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "SearchProjects",
       requestType = com.google.cloud.resourcemanager.v3.SearchProjectsRequest.class,
       responseType = com.google.cloud.resourcemanager.v3.SearchProjectsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
-      com.google.cloud.resourcemanager.v3.SearchProjectsResponse> getSearchProjectsMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.SearchProjectsRequest, com.google.cloud.resourcemanager.v3.SearchProjectsResponse> getSearchProjectsMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
+          com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+      getSearchProjectsMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
+            com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+        getSearchProjectsMethod;
     if ((getSearchProjectsMethod = ProjectsGrpc.getSearchProjectsMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getSearchProjectsMethod = ProjectsGrpc.getSearchProjectsMethod) == null) {
-          ProjectsGrpc.getSearchProjectsMethod = getSearchProjectsMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.SearchProjectsRequest, com.google.cloud.resourcemanager.v3.SearchProjectsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SearchProjects"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.SearchProjectsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.SearchProjectsResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("SearchProjects"))
-              .build();
+          ProjectsGrpc.getSearchProjectsMethod =
+              getSearchProjectsMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
+                          com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SearchProjects"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.SearchProjectsRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.SearchProjectsResponse
+                                  .getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("SearchProjects"))
+                      .build();
         }
       }
     }
     return getSearchProjectsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.CreateProjectRequest,
-      com.google.longrunning.Operation> getCreateProjectMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.CreateProjectRequest,
+          com.google.longrunning.Operation>
+      getCreateProjectMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "CreateProject",
       requestType = com.google.cloud.resourcemanager.v3.CreateProjectRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.CreateProjectRequest,
-      com.google.longrunning.Operation> getCreateProjectMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.CreateProjectRequest, com.google.longrunning.Operation> getCreateProjectMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.CreateProjectRequest,
+          com.google.longrunning.Operation>
+      getCreateProjectMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.CreateProjectRequest,
+            com.google.longrunning.Operation>
+        getCreateProjectMethod;
     if ((getCreateProjectMethod = ProjectsGrpc.getCreateProjectMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getCreateProjectMethod = ProjectsGrpc.getCreateProjectMethod) == null) {
-          ProjectsGrpc.getCreateProjectMethod = getCreateProjectMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.CreateProjectRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "CreateProject"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.CreateProjectRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("CreateProject"))
-              .build();
+          ProjectsGrpc.getCreateProjectMethod =
+              getCreateProjectMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.CreateProjectRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "CreateProject"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.CreateProjectRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("CreateProject"))
+                      .build();
         }
       }
     }
     return getCreateProjectMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
-      com.google.longrunning.Operation> getUpdateProjectMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
+          com.google.longrunning.Operation>
+      getUpdateProjectMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "UpdateProject",
       requestType = com.google.cloud.resourcemanager.v3.UpdateProjectRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
-      com.google.longrunning.Operation> getUpdateProjectMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UpdateProjectRequest, com.google.longrunning.Operation> getUpdateProjectMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
+          com.google.longrunning.Operation>
+      getUpdateProjectMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
+            com.google.longrunning.Operation>
+        getUpdateProjectMethod;
     if ((getUpdateProjectMethod = ProjectsGrpc.getUpdateProjectMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getUpdateProjectMethod = ProjectsGrpc.getUpdateProjectMethod) == null) {
-          ProjectsGrpc.getUpdateProjectMethod = getUpdateProjectMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.UpdateProjectRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UpdateProject"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.UpdateProjectRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("UpdateProject"))
-              .build();
+          ProjectsGrpc.getUpdateProjectMethod =
+              getUpdateProjectMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UpdateProject"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.UpdateProjectRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("UpdateProject"))
+                      .build();
         }
       }
     }
     return getUpdateProjectMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.MoveProjectRequest,
-      com.google.longrunning.Operation> getMoveProjectMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.MoveProjectRequest, com.google.longrunning.Operation>
+      getMoveProjectMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "MoveProject",
       requestType = com.google.cloud.resourcemanager.v3.MoveProjectRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.MoveProjectRequest,
-      com.google.longrunning.Operation> getMoveProjectMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.MoveProjectRequest, com.google.longrunning.Operation> getMoveProjectMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.MoveProjectRequest, com.google.longrunning.Operation>
+      getMoveProjectMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.MoveProjectRequest,
+            com.google.longrunning.Operation>
+        getMoveProjectMethod;
     if ((getMoveProjectMethod = ProjectsGrpc.getMoveProjectMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getMoveProjectMethod = ProjectsGrpc.getMoveProjectMethod) == null) {
-          ProjectsGrpc.getMoveProjectMethod = getMoveProjectMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.MoveProjectRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "MoveProject"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.MoveProjectRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("MoveProject"))
-              .build();
+          ProjectsGrpc.getMoveProjectMethod =
+              getMoveProjectMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.MoveProjectRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "MoveProject"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.MoveProjectRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("MoveProject"))
+                      .build();
         }
       }
     }
     return getMoveProjectMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
-      com.google.longrunning.Operation> getDeleteProjectMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
+          com.google.longrunning.Operation>
+      getDeleteProjectMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "DeleteProject",
       requestType = com.google.cloud.resourcemanager.v3.DeleteProjectRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
-      com.google.longrunning.Operation> getDeleteProjectMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.DeleteProjectRequest, com.google.longrunning.Operation> getDeleteProjectMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
+          com.google.longrunning.Operation>
+      getDeleteProjectMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
+            com.google.longrunning.Operation>
+        getDeleteProjectMethod;
     if ((getDeleteProjectMethod = ProjectsGrpc.getDeleteProjectMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getDeleteProjectMethod = ProjectsGrpc.getDeleteProjectMethod) == null) {
-          ProjectsGrpc.getDeleteProjectMethod = getDeleteProjectMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.DeleteProjectRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteProject"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.DeleteProjectRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("DeleteProject"))
-              .build();
+          ProjectsGrpc.getDeleteProjectMethod =
+              getDeleteProjectMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteProject"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.DeleteProjectRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("DeleteProject"))
+                      .build();
         }
       }
     }
     return getDeleteProjectMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
-      com.google.longrunning.Operation> getUndeleteProjectMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
+          com.google.longrunning.Operation>
+      getUndeleteProjectMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "UndeleteProject",
       requestType = com.google.cloud.resourcemanager.v3.UndeleteProjectRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
-      com.google.longrunning.Operation> getUndeleteProjectMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UndeleteProjectRequest, com.google.longrunning.Operation> getUndeleteProjectMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
+          com.google.longrunning.Operation>
+      getUndeleteProjectMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
+            com.google.longrunning.Operation>
+        getUndeleteProjectMethod;
     if ((getUndeleteProjectMethod = ProjectsGrpc.getUndeleteProjectMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getUndeleteProjectMethod = ProjectsGrpc.getUndeleteProjectMethod) == null) {
-          ProjectsGrpc.getUndeleteProjectMethod = getUndeleteProjectMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.UndeleteProjectRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UndeleteProject"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.UndeleteProjectRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("UndeleteProject"))
-              .build();
+          ProjectsGrpc.getUndeleteProjectMethod =
+              getUndeleteProjectMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UndeleteProject"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.UndeleteProjectRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("UndeleteProject"))
+                      .build();
         }
       }
     }
     return getUndeleteProjectMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest,
-      com.google.iam.v1.Policy> getGetIamPolicyMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>
+      getGetIamPolicyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetIamPolicy",
       requestType = com.google.iam.v1.GetIamPolicyRequest.class,
       responseType = com.google.iam.v1.Policy.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest,
-      com.google.iam.v1.Policy> getGetIamPolicyMethod() {
-    io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy> getGetIamPolicyMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>
+      getGetIamPolicyMethod() {
+    io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>
+        getGetIamPolicyMethod;
     if ((getGetIamPolicyMethod = ProjectsGrpc.getGetIamPolicyMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getGetIamPolicyMethod = ProjectsGrpc.getGetIamPolicyMethod) == null) {
-          ProjectsGrpc.getGetIamPolicyMethod = getGetIamPolicyMethod =
-              io.grpc.MethodDescriptor.<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetIamPolicy"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.GetIamPolicyRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.Policy.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("GetIamPolicy"))
-              .build();
+          ProjectsGrpc.getGetIamPolicyMethod =
+              getGetIamPolicyMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetIamPolicy"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.GetIamPolicyRequest.getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.Policy.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("GetIamPolicy"))
+                      .build();
         }
       }
     }
     return getGetIamPolicyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest,
-      com.google.iam.v1.Policy> getSetIamPolicyMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>
+      getSetIamPolicyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "SetIamPolicy",
       requestType = com.google.iam.v1.SetIamPolicyRequest.class,
       responseType = com.google.iam.v1.Policy.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest,
-      com.google.iam.v1.Policy> getSetIamPolicyMethod() {
-    io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy> getSetIamPolicyMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>
+      getSetIamPolicyMethod() {
+    io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>
+        getSetIamPolicyMethod;
     if ((getSetIamPolicyMethod = ProjectsGrpc.getSetIamPolicyMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getSetIamPolicyMethod = ProjectsGrpc.getSetIamPolicyMethod) == null) {
-          ProjectsGrpc.getSetIamPolicyMethod = getSetIamPolicyMethod =
-              io.grpc.MethodDescriptor.<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SetIamPolicy"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.SetIamPolicyRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.Policy.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("SetIamPolicy"))
-              .build();
+          ProjectsGrpc.getSetIamPolicyMethod =
+              getSetIamPolicyMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SetIamPolicy"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.SetIamPolicyRequest.getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.Policy.getDefaultInstance()))
+                      .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("SetIamPolicy"))
+                      .build();
         }
       }
     }
     return getSetIamPolicyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.iam.v1.TestIamPermissionsRequest,
-      com.google.iam.v1.TestIamPermissionsResponse> getTestIamPermissionsMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse>
+      getTestIamPermissionsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "TestIamPermissions",
       requestType = com.google.iam.v1.TestIamPermissionsRequest.class,
       responseType = com.google.iam.v1.TestIamPermissionsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.iam.v1.TestIamPermissionsRequest,
-      com.google.iam.v1.TestIamPermissionsResponse> getTestIamPermissionsMethod() {
-    io.grpc.MethodDescriptor<com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse> getTestIamPermissionsMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse>
+      getTestIamPermissionsMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.iam.v1.TestIamPermissionsRequest,
+            com.google.iam.v1.TestIamPermissionsResponse>
+        getTestIamPermissionsMethod;
     if ((getTestIamPermissionsMethod = ProjectsGrpc.getTestIamPermissionsMethod) == null) {
       synchronized (ProjectsGrpc.class) {
         if ((getTestIamPermissionsMethod = ProjectsGrpc.getTestIamPermissionsMethod) == null) {
-          ProjectsGrpc.getTestIamPermissionsMethod = getTestIamPermissionsMethod =
-              io.grpc.MethodDescriptor.<com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "TestIamPermissions"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.TestIamPermissionsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.TestIamPermissionsResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new ProjectsMethodDescriptorSupplier("TestIamPermissions"))
-              .build();
+          ProjectsGrpc.getTestIamPermissionsMethod =
+              getTestIamPermissionsMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.iam.v1.TestIamPermissionsRequest,
+                          com.google.iam.v1.TestIamPermissionsResponse>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "TestIamPermissions"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.TestIamPermissionsRequest.getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.TestIamPermissionsResponse.getDefaultInstance()))
+                      .setSchemaDescriptor(
+                          new ProjectsMethodDescriptorSupplier("TestIamPermissions"))
+                      .build();
         }
       }
     }
     return getTestIamPermissionsMethod;
   }
 
-  /**
-   * Creates a new async stub that supports all call types for the service
-   */
+  /** Creates a new async stub that supports all call types for the service */
   public static ProjectsStub newStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<ProjectsStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<ProjectsStub>() {
-        @java.lang.Override
-        public ProjectsStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new ProjectsStub(channel, callOptions);
-        }
-      };
+        new io.grpc.stub.AbstractStub.StubFactory<ProjectsStub>() {
+          @java.lang.Override
+          public ProjectsStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+            return new ProjectsStub(channel, callOptions);
+          }
+        };
     return ProjectsStub.newStub(factory, channel);
   }
 
   /**
    * Creates a new blocking-style stub that supports unary and streaming output calls on the service
    */
-  public static ProjectsBlockingStub newBlockingStub(
-      io.grpc.Channel channel) {
+  public static ProjectsBlockingStub newBlockingStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<ProjectsBlockingStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<ProjectsBlockingStub>() {
-        @java.lang.Override
-        public ProjectsBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new ProjectsBlockingStub(channel, callOptions);
-        }
-      };
+        new io.grpc.stub.AbstractStub.StubFactory<ProjectsBlockingStub>() {
+          @java.lang.Override
+          public ProjectsBlockingStub newStub(
+              io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+            return new ProjectsBlockingStub(channel, callOptions);
+          }
+        };
     return ProjectsBlockingStub.newStub(factory, channel);
   }
 
-  /**
-   * Creates a new ListenableFuture-style stub that supports unary calls on the service
-   */
-  public static ProjectsFutureStub newFutureStub(
-      io.grpc.Channel channel) {
+  /** Creates a new ListenableFuture-style stub that supports unary calls on the service */
+  public static ProjectsFutureStub newFutureStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<ProjectsFutureStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<ProjectsFutureStub>() {
-        @java.lang.Override
-        public ProjectsFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new ProjectsFutureStub(channel, callOptions);
-        }
-      };
+        new io.grpc.stub.AbstractStub.StubFactory<ProjectsFutureStub>() {
+          @java.lang.Override
+          public ProjectsFutureStub newStub(
+              io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+            return new ProjectsFutureStub(channel, callOptions);
+          }
+        };
     return ProjectsFutureStub.newStub(factory, channel);
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Google Cloud Projects.
    * </pre>
    */
-  public static abstract class ProjectsImplBase implements io.grpc.BindableService {
+  public abstract static class ProjectsImplBase implements io.grpc.BindableService {
 
     /**
+     *
+     *
      * <pre>
      * Retrieves the project identified by the specified `name` (for example,
      * `projects/415104041262`).
@@ -417,12 +572,15 @@ public final class ProjectsGrpc {
      * for this project.
      * </pre>
      */
-    public void getProject(com.google.cloud.resourcemanager.v3.GetProjectRequest request,
+    public void getProject(
+        com.google.cloud.resourcemanager.v3.GetProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Project> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetProjectMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists projects that are direct children of the specified folder or
      * organization resource. `list()` provides a strongly consistent view of the
@@ -432,12 +590,17 @@ public final class ProjectsGrpc {
      * permission on the identified parent.
      * </pre>
      */
-    public void listProjects(com.google.cloud.resourcemanager.v3.ListProjectsRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListProjectsResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getListProjectsMethod(), responseObserver);
+    public void listProjects(
+        com.google.cloud.resourcemanager.v3.ListProjectsRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+            responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getListProjectsMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for projects that the caller has both `resourcemanager.projects.get`
      * permission on, and also satisfy the specified query.
@@ -449,12 +612,17 @@ public final class ProjectsGrpc {
      * [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject] method.
      * </pre>
      */
-    public void searchProjects(com.google.cloud.resourcemanager.v3.SearchProjectsRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchProjectsResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSearchProjectsMethod(), responseObserver);
+    public void searchProjects(
+        com.google.cloud.resourcemanager.v3.SearchProjectsRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+            responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getSearchProjectsMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Request that a new project be created. The result is an `Operation` which
      * can be used to track the creation process. This process usually takes a few
@@ -463,12 +631,16 @@ public final class ProjectsGrpc {
      * `DeleteOperation`.
      * </pre>
      */
-    public void createProject(com.google.cloud.resourcemanager.v3.CreateProjectRequest request,
+    public void createProject(
+        com.google.cloud.resourcemanager.v3.CreateProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateProjectMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getCreateProjectMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates the `display_name` and labels of the project identified by the
      * specified `name` (for example, `projects/415104041262`). Deleting all
@@ -477,12 +649,16 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public void updateProject(com.google.cloud.resourcemanager.v3.UpdateProjectRequest request,
+    public void updateProject(
+        com.google.cloud.resourcemanager.v3.UpdateProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateProjectMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getUpdateProjectMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Move a project to another place in your resource hierarchy, under a new
      * resource parent.
@@ -495,12 +671,16 @@ public final class ProjectsGrpc {
      * project's current and proposed new parent.
      * </pre>
      */
-    public void moveProject(com.google.cloud.resourcemanager.v3.MoveProjectRequest request,
+    public void moveProject(
+        com.google.cloud.resourcemanager.v3.MoveProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getMoveProjectMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getMoveProjectMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Marks the project identified by the specified
      * `name` (for example, `projects/415104041262`) for deletion.
@@ -530,12 +710,16 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public void deleteProject(com.google.cloud.resourcemanager.v3.DeleteProjectRequest request,
+    public void deleteProject(
+        com.google.cloud.resourcemanager.v3.DeleteProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteProjectMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getDeleteProjectMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Restores the project identified by the specified
      * `name` (for example, `projects/415104041262`).
@@ -547,23 +731,31 @@ public final class ProjectsGrpc {
      * this project.
      * </pre>
      */
-    public void undeleteProject(com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request,
+    public void undeleteProject(
+        com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUndeleteProjectMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getUndeleteProjectMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns the IAM access control policy for the specified project.
      * Permission is denied if the policy or the resource do not exist.
      * </pre>
      */
-    public void getIamPolicy(com.google.iam.v1.GetIamPolicyRequest request,
+    public void getIamPolicy(
+        com.google.iam.v1.GetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetIamPolicyMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getGetIamPolicyMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the IAM access control policy for the specified project.
      * CAUTION: This method will replace the existing policy, and cannot be used
@@ -600,122 +792,124 @@ public final class ProjectsGrpc {
      * + Calling this method requires enabling the App Engine Admin API.
      * </pre>
      */
-    public void setIamPolicy(com.google.iam.v1.SetIamPolicyRequest request,
+    public void setIamPolicy(
+        com.google.iam.v1.SetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSetIamPolicyMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getSetIamPolicyMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified project.
      * </pre>
      */
-    public void testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request,
-        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getTestIamPermissionsMethod(), responseObserver);
+    public void testIamPermissions(
+        com.google.iam.v1.TestIamPermissionsRequest request,
+        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>
+            responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getTestIamPermissionsMethod(), responseObserver);
     }
 
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+    @java.lang.Override
+    public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetProjectMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.GetProjectRequest,
-                com.google.cloud.resourcemanager.v3.Project>(
-                  this, METHODID_GET_PROJECT)))
+              getGetProjectMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.GetProjectRequest,
+                      com.google.cloud.resourcemanager.v3.Project>(this, METHODID_GET_PROJECT)))
           .addMethod(
-            getListProjectsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.ListProjectsRequest,
-                com.google.cloud.resourcemanager.v3.ListProjectsResponse>(
-                  this, METHODID_LIST_PROJECTS)))
+              getListProjectsMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.ListProjectsRequest,
+                      com.google.cloud.resourcemanager.v3.ListProjectsResponse>(
+                      this, METHODID_LIST_PROJECTS)))
           .addMethod(
-            getSearchProjectsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
-                com.google.cloud.resourcemanager.v3.SearchProjectsResponse>(
-                  this, METHODID_SEARCH_PROJECTS)))
+              getSearchProjectsMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.SearchProjectsRequest,
+                      com.google.cloud.resourcemanager.v3.SearchProjectsResponse>(
+                      this, METHODID_SEARCH_PROJECTS)))
           .addMethod(
-            getCreateProjectMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.CreateProjectRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_CREATE_PROJECT)))
+              getCreateProjectMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.CreateProjectRequest,
+                      com.google.longrunning.Operation>(this, METHODID_CREATE_PROJECT)))
           .addMethod(
-            getUpdateProjectMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_UPDATE_PROJECT)))
+              getUpdateProjectMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.UpdateProjectRequest,
+                      com.google.longrunning.Operation>(this, METHODID_UPDATE_PROJECT)))
           .addMethod(
-            getMoveProjectMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.MoveProjectRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_MOVE_PROJECT)))
+              getMoveProjectMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.MoveProjectRequest,
+                      com.google.longrunning.Operation>(this, METHODID_MOVE_PROJECT)))
           .addMethod(
-            getDeleteProjectMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_DELETE_PROJECT)))
+              getDeleteProjectMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.DeleteProjectRequest,
+                      com.google.longrunning.Operation>(this, METHODID_DELETE_PROJECT)))
           .addMethod(
-            getUndeleteProjectMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_UNDELETE_PROJECT)))
+              getUndeleteProjectMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.UndeleteProjectRequest,
+                      com.google.longrunning.Operation>(this, METHODID_UNDELETE_PROJECT)))
           .addMethod(
-            getGetIamPolicyMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.iam.v1.GetIamPolicyRequest,
-                com.google.iam.v1.Policy>(
-                  this, METHODID_GET_IAM_POLICY)))
+              getGetIamPolicyMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>(
+                      this, METHODID_GET_IAM_POLICY)))
           .addMethod(
-            getSetIamPolicyMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.iam.v1.SetIamPolicyRequest,
-                com.google.iam.v1.Policy>(
-                  this, METHODID_SET_IAM_POLICY)))
+              getSetIamPolicyMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>(
+                      this, METHODID_SET_IAM_POLICY)))
           .addMethod(
-            getTestIamPermissionsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.iam.v1.TestIamPermissionsRequest,
-                com.google.iam.v1.TestIamPermissionsResponse>(
-                  this, METHODID_TEST_IAM_PERMISSIONS)))
+              getTestIamPermissionsMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.iam.v1.TestIamPermissionsRequest,
+                      com.google.iam.v1.TestIamPermissionsResponse>(
+                      this, METHODID_TEST_IAM_PERMISSIONS)))
           .build();
     }
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Google Cloud Projects.
    * </pre>
    */
   public static final class ProjectsStub extends io.grpc.stub.AbstractAsyncStub<ProjectsStub> {
-    private ProjectsStub(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    private ProjectsStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected ProjectsStub build(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    protected ProjectsStub build(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new ProjectsStub(channel, callOptions);
     }
 
     /**
+     *
+     *
      * <pre>
      * Retrieves the project identified by the specified `name` (for example,
      * `projects/415104041262`).
@@ -723,13 +917,16 @@ public final class ProjectsGrpc {
      * for this project.
      * </pre>
      */
-    public void getProject(com.google.cloud.resourcemanager.v3.GetProjectRequest request,
+    public void getProject(
+        com.google.cloud.resourcemanager.v3.GetProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Project> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetProjectMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists projects that are direct children of the specified folder or
      * organization resource. `list()` provides a strongly consistent view of the
@@ -739,13 +936,19 @@ public final class ProjectsGrpc {
      * permission on the identified parent.
      * </pre>
      */
-    public void listProjects(com.google.cloud.resourcemanager.v3.ListProjectsRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListProjectsResponse> responseObserver) {
+    public void listProjects(
+        com.google.cloud.resourcemanager.v3.ListProjectsRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+            responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getListProjectsMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getListProjectsMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for projects that the caller has both `resourcemanager.projects.get`
      * permission on, and also satisfy the specified query.
@@ -757,13 +960,19 @@ public final class ProjectsGrpc {
      * [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject] method.
      * </pre>
      */
-    public void searchProjects(com.google.cloud.resourcemanager.v3.SearchProjectsRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchProjectsResponse> responseObserver) {
+    public void searchProjects(
+        com.google.cloud.resourcemanager.v3.SearchProjectsRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+            responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getSearchProjectsMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSearchProjectsMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Request that a new project be created. The result is an `Operation` which
      * can be used to track the creation process. This process usually takes a few
@@ -772,13 +981,18 @@ public final class ProjectsGrpc {
      * `DeleteOperation`.
      * </pre>
      */
-    public void createProject(com.google.cloud.resourcemanager.v3.CreateProjectRequest request,
+    public void createProject(
+        com.google.cloud.resourcemanager.v3.CreateProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getCreateProjectMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getCreateProjectMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates the `display_name` and labels of the project identified by the
      * specified `name` (for example, `projects/415104041262`). Deleting all
@@ -787,13 +1001,18 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public void updateProject(com.google.cloud.resourcemanager.v3.UpdateProjectRequest request,
+    public void updateProject(
+        com.google.cloud.resourcemanager.v3.UpdateProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getUpdateProjectMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getUpdateProjectMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Move a project to another place in your resource hierarchy, under a new
      * resource parent.
@@ -806,13 +1025,18 @@ public final class ProjectsGrpc {
      * project's current and proposed new parent.
      * </pre>
      */
-    public void moveProject(com.google.cloud.resourcemanager.v3.MoveProjectRequest request,
+    public void moveProject(
+        com.google.cloud.resourcemanager.v3.MoveProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getMoveProjectMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getMoveProjectMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Marks the project identified by the specified
      * `name` (for example, `projects/415104041262`) for deletion.
@@ -842,13 +1066,18 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public void deleteProject(com.google.cloud.resourcemanager.v3.DeleteProjectRequest request,
+    public void deleteProject(
+        com.google.cloud.resourcemanager.v3.DeleteProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getDeleteProjectMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getDeleteProjectMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Restores the project identified by the specified
      * `name` (for example, `projects/415104041262`).
@@ -860,25 +1089,35 @@ public final class ProjectsGrpc {
      * this project.
      * </pre>
      */
-    public void undeleteProject(com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request,
+    public void undeleteProject(
+        com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getUndeleteProjectMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getUndeleteProjectMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns the IAM access control policy for the specified project.
      * Permission is denied if the policy or the resource do not exist.
      * </pre>
      */
-    public void getIamPolicy(com.google.iam.v1.GetIamPolicyRequest request,
+    public void getIamPolicy(
+        com.google.iam.v1.GetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getGetIamPolicyMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetIamPolicyMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the IAM access control policy for the specified project.
      * CAUTION: This method will replace the existing policy, and cannot be used
@@ -915,42 +1154,54 @@ public final class ProjectsGrpc {
      * + Calling this method requires enabling the App Engine Admin API.
      * </pre>
      */
-    public void setIamPolicy(com.google.iam.v1.SetIamPolicyRequest request,
+    public void setIamPolicy(
+        com.google.iam.v1.SetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getSetIamPolicyMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSetIamPolicyMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified project.
      * </pre>
      */
-    public void testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request,
-        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse> responseObserver) {
+    public void testIamPermissions(
+        com.google.iam.v1.TestIamPermissionsRequest request,
+        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>
+            responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getTestIamPermissionsMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getTestIamPermissionsMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Google Cloud Projects.
    * </pre>
    */
-  public static final class ProjectsBlockingStub extends io.grpc.stub.AbstractBlockingStub<ProjectsBlockingStub> {
-    private ProjectsBlockingStub(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+  public static final class ProjectsBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<ProjectsBlockingStub> {
+    private ProjectsBlockingStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected ProjectsBlockingStub build(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    protected ProjectsBlockingStub build(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new ProjectsBlockingStub(channel, callOptions);
     }
 
     /**
+     *
+     *
      * <pre>
      * Retrieves the project identified by the specified `name` (for example,
      * `projects/415104041262`).
@@ -958,12 +1209,15 @@ public final class ProjectsGrpc {
      * for this project.
      * </pre>
      */
-    public com.google.cloud.resourcemanager.v3.Project getProject(com.google.cloud.resourcemanager.v3.GetProjectRequest request) {
+    public com.google.cloud.resourcemanager.v3.Project getProject(
+        com.google.cloud.resourcemanager.v3.GetProjectRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetProjectMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists projects that are direct children of the specified folder or
      * organization resource. `list()` provides a strongly consistent view of the
@@ -973,12 +1227,15 @@ public final class ProjectsGrpc {
      * permission on the identified parent.
      * </pre>
      */
-    public com.google.cloud.resourcemanager.v3.ListProjectsResponse listProjects(com.google.cloud.resourcemanager.v3.ListProjectsRequest request) {
+    public com.google.cloud.resourcemanager.v3.ListProjectsResponse listProjects(
+        com.google.cloud.resourcemanager.v3.ListProjectsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getListProjectsMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for projects that the caller has both `resourcemanager.projects.get`
      * permission on, and also satisfy the specified query.
@@ -990,12 +1247,15 @@ public final class ProjectsGrpc {
      * [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject] method.
      * </pre>
      */
-    public com.google.cloud.resourcemanager.v3.SearchProjectsResponse searchProjects(com.google.cloud.resourcemanager.v3.SearchProjectsRequest request) {
+    public com.google.cloud.resourcemanager.v3.SearchProjectsResponse searchProjects(
+        com.google.cloud.resourcemanager.v3.SearchProjectsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getSearchProjectsMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Request that a new project be created. The result is an `Operation` which
      * can be used to track the creation process. This process usually takes a few
@@ -1004,12 +1264,15 @@ public final class ProjectsGrpc {
      * `DeleteOperation`.
      * </pre>
      */
-    public com.google.longrunning.Operation createProject(com.google.cloud.resourcemanager.v3.CreateProjectRequest request) {
+    public com.google.longrunning.Operation createProject(
+        com.google.cloud.resourcemanager.v3.CreateProjectRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateProjectMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates the `display_name` and labels of the project identified by the
      * specified `name` (for example, `projects/415104041262`). Deleting all
@@ -1018,12 +1281,15 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public com.google.longrunning.Operation updateProject(com.google.cloud.resourcemanager.v3.UpdateProjectRequest request) {
+    public com.google.longrunning.Operation updateProject(
+        com.google.cloud.resourcemanager.v3.UpdateProjectRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getUpdateProjectMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Move a project to another place in your resource hierarchy, under a new
      * resource parent.
@@ -1036,12 +1302,15 @@ public final class ProjectsGrpc {
      * project's current and proposed new parent.
      * </pre>
      */
-    public com.google.longrunning.Operation moveProject(com.google.cloud.resourcemanager.v3.MoveProjectRequest request) {
+    public com.google.longrunning.Operation moveProject(
+        com.google.cloud.resourcemanager.v3.MoveProjectRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getMoveProjectMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Marks the project identified by the specified
      * `name` (for example, `projects/415104041262`) for deletion.
@@ -1071,12 +1340,15 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public com.google.longrunning.Operation deleteProject(com.google.cloud.resourcemanager.v3.DeleteProjectRequest request) {
+    public com.google.longrunning.Operation deleteProject(
+        com.google.cloud.resourcemanager.v3.DeleteProjectRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDeleteProjectMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Restores the project identified by the specified
      * `name` (for example, `projects/415104041262`).
@@ -1088,12 +1360,15 @@ public final class ProjectsGrpc {
      * this project.
      * </pre>
      */
-    public com.google.longrunning.Operation undeleteProject(com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request) {
+    public com.google.longrunning.Operation undeleteProject(
+        com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getUndeleteProjectMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns the IAM access control policy for the specified project.
      * Permission is denied if the policy or the resource do not exist.
@@ -1105,6 +1380,8 @@ public final class ProjectsGrpc {
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the IAM access control policy for the specified project.
      * CAUTION: This method will replace the existing policy, and cannot be used
@@ -1147,34 +1424,40 @@ public final class ProjectsGrpc {
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified project.
      * </pre>
      */
-    public com.google.iam.v1.TestIamPermissionsResponse testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request) {
+    public com.google.iam.v1.TestIamPermissionsResponse testIamPermissions(
+        com.google.iam.v1.TestIamPermissionsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getTestIamPermissionsMethod(), getCallOptions(), request);
     }
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Google Cloud Projects.
    * </pre>
    */
-  public static final class ProjectsFutureStub extends io.grpc.stub.AbstractFutureStub<ProjectsFutureStub> {
-    private ProjectsFutureStub(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+  public static final class ProjectsFutureStub
+      extends io.grpc.stub.AbstractFutureStub<ProjectsFutureStub> {
+    private ProjectsFutureStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected ProjectsFutureStub build(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    protected ProjectsFutureStub build(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new ProjectsFutureStub(channel, callOptions);
     }
 
     /**
+     *
+     *
      * <pre>
      * Retrieves the project identified by the specified `name` (for example,
      * `projects/415104041262`).
@@ -1182,13 +1465,16 @@ public final class ProjectsGrpc {
      * for this project.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.cloud.resourcemanager.v3.Project> getProject(
-        com.google.cloud.resourcemanager.v3.GetProjectRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.cloud.resourcemanager.v3.Project>
+        getProject(com.google.cloud.resourcemanager.v3.GetProjectRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetProjectMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists projects that are direct children of the specified folder or
      * organization resource. `list()` provides a strongly consistent view of the
@@ -1198,13 +1484,16 @@ public final class ProjectsGrpc {
      * permission on the identified parent.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.cloud.resourcemanager.v3.ListProjectsResponse> listProjects(
-        com.google.cloud.resourcemanager.v3.ListProjectsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.cloud.resourcemanager.v3.ListProjectsResponse>
+        listProjects(com.google.cloud.resourcemanager.v3.ListProjectsRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getListProjectsMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for projects that the caller has both `resourcemanager.projects.get`
      * permission on, and also satisfy the specified query.
@@ -1216,13 +1505,16 @@ public final class ProjectsGrpc {
      * [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject] method.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.cloud.resourcemanager.v3.SearchProjectsResponse> searchProjects(
-        com.google.cloud.resourcemanager.v3.SearchProjectsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.cloud.resourcemanager.v3.SearchProjectsResponse>
+        searchProjects(com.google.cloud.resourcemanager.v3.SearchProjectsRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getSearchProjectsMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Request that a new project be created. The result is an `Operation` which
      * can be used to track the creation process. This process usually takes a few
@@ -1231,13 +1523,15 @@ public final class ProjectsGrpc {
      * `DeleteOperation`.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> createProject(
-        com.google.cloud.resourcemanager.v3.CreateProjectRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        createProject(com.google.cloud.resourcemanager.v3.CreateProjectRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getCreateProjectMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates the `display_name` and labels of the project identified by the
      * specified `name` (for example, `projects/415104041262`). Deleting all
@@ -1246,13 +1540,15 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> updateProject(
-        com.google.cloud.resourcemanager.v3.UpdateProjectRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        updateProject(com.google.cloud.resourcemanager.v3.UpdateProjectRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getUpdateProjectMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Move a project to another place in your resource hierarchy, under a new
      * resource parent.
@@ -1265,13 +1561,15 @@ public final class ProjectsGrpc {
      * project's current and proposed new parent.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> moveProject(
-        com.google.cloud.resourcemanager.v3.MoveProjectRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        moveProject(com.google.cloud.resourcemanager.v3.MoveProjectRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getMoveProjectMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Marks the project identified by the specified
      * `name` (for example, `projects/415104041262`) for deletion.
@@ -1301,13 +1599,15 @@ public final class ProjectsGrpc {
      * project.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> deleteProject(
-        com.google.cloud.resourcemanager.v3.DeleteProjectRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        deleteProject(com.google.cloud.resourcemanager.v3.DeleteProjectRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteProjectMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Restores the project identified by the specified
      * `name` (for example, `projects/415104041262`).
@@ -1319,25 +1619,29 @@ public final class ProjectsGrpc {
      * this project.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> undeleteProject(
-        com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        undeleteProject(com.google.cloud.resourcemanager.v3.UndeleteProjectRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getUndeleteProjectMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns the IAM access control policy for the specified project.
      * Permission is denied if the policy or the resource do not exist.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy> getIamPolicy(
-        com.google.iam.v1.GetIamPolicyRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy>
+        getIamPolicy(com.google.iam.v1.GetIamPolicyRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetIamPolicyMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the IAM access control policy for the specified project.
      * CAUTION: This method will replace the existing policy, and cannot be used
@@ -1374,19 +1678,22 @@ public final class ProjectsGrpc {
      * + Calling this method requires enabling the App Engine Admin API.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy> setIamPolicy(
-        com.google.iam.v1.SetIamPolicyRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy>
+        setIamPolicy(com.google.iam.v1.SetIamPolicyRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getSetIamPolicyMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified project.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.TestIamPermissionsResponse> testIamPermissions(
-        com.google.iam.v1.TestIamPermissionsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.iam.v1.TestIamPermissionsResponse>
+        testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getTestIamPermissionsMethod(), getCallOptions()), request);
     }
@@ -1404,11 +1711,11 @@ public final class ProjectsGrpc {
   private static final int METHODID_SET_IAM_POLICY = 9;
   private static final int METHODID_TEST_IAM_PERMISSIONS = 10;
 
-  private static final class MethodHandlers<Req, Resp> implements
-      io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
-      io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
-      io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
-      io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
+  private static final class MethodHandlers<Req, Resp>
+      implements io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
+          io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
+          io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
+          io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
     private final ProjectsImplBase serviceImpl;
     private final int methodId;
 
@@ -1422,48 +1729,65 @@ public final class ProjectsGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_GET_PROJECT:
-          serviceImpl.getProject((com.google.cloud.resourcemanager.v3.GetProjectRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Project>) responseObserver);
+          serviceImpl.getProject(
+              (com.google.cloud.resourcemanager.v3.GetProjectRequest) request,
+              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Project>)
+                  responseObserver);
           break;
         case METHODID_LIST_PROJECTS:
-          serviceImpl.listProjects((com.google.cloud.resourcemanager.v3.ListProjectsRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListProjectsResponse>) responseObserver);
+          serviceImpl.listProjects(
+              (com.google.cloud.resourcemanager.v3.ListProjectsRequest) request,
+              (io.grpc.stub.StreamObserver<
+                      com.google.cloud.resourcemanager.v3.ListProjectsResponse>)
+                  responseObserver);
           break;
         case METHODID_SEARCH_PROJECTS:
-          serviceImpl.searchProjects((com.google.cloud.resourcemanager.v3.SearchProjectsRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchProjectsResponse>) responseObserver);
+          serviceImpl.searchProjects(
+              (com.google.cloud.resourcemanager.v3.SearchProjectsRequest) request,
+              (io.grpc.stub.StreamObserver<
+                      com.google.cloud.resourcemanager.v3.SearchProjectsResponse>)
+                  responseObserver);
           break;
         case METHODID_CREATE_PROJECT:
-          serviceImpl.createProject((com.google.cloud.resourcemanager.v3.CreateProjectRequest) request,
+          serviceImpl.createProject(
+              (com.google.cloud.resourcemanager.v3.CreateProjectRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_UPDATE_PROJECT:
-          serviceImpl.updateProject((com.google.cloud.resourcemanager.v3.UpdateProjectRequest) request,
+          serviceImpl.updateProject(
+              (com.google.cloud.resourcemanager.v3.UpdateProjectRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_MOVE_PROJECT:
-          serviceImpl.moveProject((com.google.cloud.resourcemanager.v3.MoveProjectRequest) request,
+          serviceImpl.moveProject(
+              (com.google.cloud.resourcemanager.v3.MoveProjectRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_DELETE_PROJECT:
-          serviceImpl.deleteProject((com.google.cloud.resourcemanager.v3.DeleteProjectRequest) request,
+          serviceImpl.deleteProject(
+              (com.google.cloud.resourcemanager.v3.DeleteProjectRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_UNDELETE_PROJECT:
-          serviceImpl.undeleteProject((com.google.cloud.resourcemanager.v3.UndeleteProjectRequest) request,
+          serviceImpl.undeleteProject(
+              (com.google.cloud.resourcemanager.v3.UndeleteProjectRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_GET_IAM_POLICY:
-          serviceImpl.getIamPolicy((com.google.iam.v1.GetIamPolicyRequest) request,
+          serviceImpl.getIamPolicy(
+              (com.google.iam.v1.GetIamPolicyRequest) request,
               (io.grpc.stub.StreamObserver<com.google.iam.v1.Policy>) responseObserver);
           break;
         case METHODID_SET_IAM_POLICY:
-          serviceImpl.setIamPolicy((com.google.iam.v1.SetIamPolicyRequest) request,
+          serviceImpl.setIamPolicy(
+              (com.google.iam.v1.SetIamPolicyRequest) request,
               (io.grpc.stub.StreamObserver<com.google.iam.v1.Policy>) responseObserver);
           break;
         case METHODID_TEST_IAM_PERMISSIONS:
-          serviceImpl.testIamPermissions((com.google.iam.v1.TestIamPermissionsRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>) responseObserver);
+          serviceImpl.testIamPermissions(
+              (com.google.iam.v1.TestIamPermissionsRequest) request,
+              (io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>)
+                  responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -1481,8 +1805,9 @@ public final class ProjectsGrpc {
     }
   }
 
-  private static abstract class ProjectsBaseDescriptorSupplier
-      implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
+  private abstract static class ProjectsBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoFileDescriptorSupplier,
+          io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     ProjectsBaseDescriptorSupplier() {}
 
     @java.lang.Override
@@ -1496,13 +1821,11 @@ public final class ProjectsGrpc {
     }
   }
 
-  private static final class ProjectsFileDescriptorSupplier
-      extends ProjectsBaseDescriptorSupplier {
+  private static final class ProjectsFileDescriptorSupplier extends ProjectsBaseDescriptorSupplier {
     ProjectsFileDescriptorSupplier() {}
   }
 
-  private static final class ProjectsMethodDescriptorSupplier
-      extends ProjectsBaseDescriptorSupplier
+  private static final class ProjectsMethodDescriptorSupplier extends ProjectsBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
     private final String methodName;
 
@@ -1524,20 +1847,22 @@ public final class ProjectsGrpc {
       synchronized (ProjectsGrpc.class) {
         result = serviceDescriptor;
         if (result == null) {
-          serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
-              .setSchemaDescriptor(new ProjectsFileDescriptorSupplier())
-              .addMethod(getGetProjectMethod())
-              .addMethod(getListProjectsMethod())
-              .addMethod(getSearchProjectsMethod())
-              .addMethod(getCreateProjectMethod())
-              .addMethod(getUpdateProjectMethod())
-              .addMethod(getMoveProjectMethod())
-              .addMethod(getDeleteProjectMethod())
-              .addMethod(getUndeleteProjectMethod())
-              .addMethod(getGetIamPolicyMethod())
-              .addMethod(getSetIamPolicyMethod())
-              .addMethod(getTestIamPermissionsMethod())
-              .build();
+          serviceDescriptor =
+              result =
+                  io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
+                      .setSchemaDescriptor(new ProjectsFileDescriptorSupplier())
+                      .addMethod(getGetProjectMethod())
+                      .addMethod(getListProjectsMethod())
+                      .addMethod(getSearchProjectsMethod())
+                      .addMethod(getCreateProjectMethod())
+                      .addMethod(getUpdateProjectMethod())
+                      .addMethod(getMoveProjectMethod())
+                      .addMethod(getDeleteProjectMethod())
+                      .addMethod(getUndeleteProjectMethod())
+                      .addMethod(getGetIamPolicyMethod())
+                      .addMethod(getSetIamPolicyMethod())
+                      .addMethod(getTestIamPermissionsMethod())
+                      .build();
         }
       }
     }

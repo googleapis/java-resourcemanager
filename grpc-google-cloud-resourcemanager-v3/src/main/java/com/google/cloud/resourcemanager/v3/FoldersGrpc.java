@@ -1,8 +1,25 @@
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.google.cloud.resourcemanager.v3;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
+ *
+ *
  * <pre>
  * Manages Cloud Platform folder resources.
  * Folders can be used to organize the resources under an
@@ -19,401 +36,532 @@ public final class FoldersGrpc {
   public static final String SERVICE_NAME = "google.cloud.resourcemanager.v3.Folders";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.GetFolderRequest,
-      com.google.cloud.resourcemanager.v3.Folder> getGetFolderMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.GetFolderRequest,
+          com.google.cloud.resourcemanager.v3.Folder>
+      getGetFolderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetFolder",
       requestType = com.google.cloud.resourcemanager.v3.GetFolderRequest.class,
       responseType = com.google.cloud.resourcemanager.v3.Folder.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.GetFolderRequest,
-      com.google.cloud.resourcemanager.v3.Folder> getGetFolderMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.GetFolderRequest, com.google.cloud.resourcemanager.v3.Folder> getGetFolderMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.GetFolderRequest,
+          com.google.cloud.resourcemanager.v3.Folder>
+      getGetFolderMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.GetFolderRequest,
+            com.google.cloud.resourcemanager.v3.Folder>
+        getGetFolderMethod;
     if ((getGetFolderMethod = FoldersGrpc.getGetFolderMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getGetFolderMethod = FoldersGrpc.getGetFolderMethod) == null) {
-          FoldersGrpc.getGetFolderMethod = getGetFolderMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.GetFolderRequest, com.google.cloud.resourcemanager.v3.Folder>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetFolder"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.GetFolderRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.Folder.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("GetFolder"))
-              .build();
+          FoldersGrpc.getGetFolderMethod =
+              getGetFolderMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.GetFolderRequest,
+                          com.google.cloud.resourcemanager.v3.Folder>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetFolder"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.GetFolderRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.Folder.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("GetFolder"))
+                      .build();
         }
       }
     }
     return getGetFolderMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.ListFoldersRequest,
-      com.google.cloud.resourcemanager.v3.ListFoldersResponse> getListFoldersMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.ListFoldersRequest,
+          com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+      getListFoldersMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "ListFolders",
       requestType = com.google.cloud.resourcemanager.v3.ListFoldersRequest.class,
       responseType = com.google.cloud.resourcemanager.v3.ListFoldersResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.ListFoldersRequest,
-      com.google.cloud.resourcemanager.v3.ListFoldersResponse> getListFoldersMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.ListFoldersRequest, com.google.cloud.resourcemanager.v3.ListFoldersResponse> getListFoldersMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.ListFoldersRequest,
+          com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+      getListFoldersMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.ListFoldersRequest,
+            com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+        getListFoldersMethod;
     if ((getListFoldersMethod = FoldersGrpc.getListFoldersMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getListFoldersMethod = FoldersGrpc.getListFoldersMethod) == null) {
-          FoldersGrpc.getListFoldersMethod = getListFoldersMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.ListFoldersRequest, com.google.cloud.resourcemanager.v3.ListFoldersResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ListFolders"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.ListFoldersRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.ListFoldersResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("ListFolders"))
-              .build();
+          FoldersGrpc.getListFoldersMethod =
+              getListFoldersMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.ListFoldersRequest,
+                          com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ListFolders"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.ListFoldersRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.ListFoldersResponse
+                                  .getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("ListFolders"))
+                      .build();
         }
       }
     }
     return getListFoldersMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
-      com.google.cloud.resourcemanager.v3.SearchFoldersResponse> getSearchFoldersMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
+          com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+      getSearchFoldersMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "SearchFolders",
       requestType = com.google.cloud.resourcemanager.v3.SearchFoldersRequest.class,
       responseType = com.google.cloud.resourcemanager.v3.SearchFoldersResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
-      com.google.cloud.resourcemanager.v3.SearchFoldersResponse> getSearchFoldersMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.SearchFoldersRequest, com.google.cloud.resourcemanager.v3.SearchFoldersResponse> getSearchFoldersMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
+          com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+      getSearchFoldersMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
+            com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+        getSearchFoldersMethod;
     if ((getSearchFoldersMethod = FoldersGrpc.getSearchFoldersMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getSearchFoldersMethod = FoldersGrpc.getSearchFoldersMethod) == null) {
-          FoldersGrpc.getSearchFoldersMethod = getSearchFoldersMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.SearchFoldersRequest, com.google.cloud.resourcemanager.v3.SearchFoldersResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SearchFolders"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.SearchFoldersRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.SearchFoldersResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("SearchFolders"))
-              .build();
+          FoldersGrpc.getSearchFoldersMethod =
+              getSearchFoldersMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
+                          com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SearchFolders"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.SearchFoldersRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.SearchFoldersResponse
+                                  .getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("SearchFolders"))
+                      .build();
         }
       }
     }
     return getSearchFoldersMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.CreateFolderRequest,
-      com.google.longrunning.Operation> getCreateFolderMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.CreateFolderRequest, com.google.longrunning.Operation>
+      getCreateFolderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "CreateFolder",
       requestType = com.google.cloud.resourcemanager.v3.CreateFolderRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.CreateFolderRequest,
-      com.google.longrunning.Operation> getCreateFolderMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.CreateFolderRequest, com.google.longrunning.Operation> getCreateFolderMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.CreateFolderRequest, com.google.longrunning.Operation>
+      getCreateFolderMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.CreateFolderRequest,
+            com.google.longrunning.Operation>
+        getCreateFolderMethod;
     if ((getCreateFolderMethod = FoldersGrpc.getCreateFolderMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getCreateFolderMethod = FoldersGrpc.getCreateFolderMethod) == null) {
-          FoldersGrpc.getCreateFolderMethod = getCreateFolderMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.CreateFolderRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "CreateFolder"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.CreateFolderRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("CreateFolder"))
-              .build();
+          FoldersGrpc.getCreateFolderMethod =
+              getCreateFolderMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.CreateFolderRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "CreateFolder"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.CreateFolderRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("CreateFolder"))
+                      .build();
         }
       }
     }
     return getCreateFolderMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UpdateFolderRequest,
-      com.google.longrunning.Operation> getUpdateFolderMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UpdateFolderRequest, com.google.longrunning.Operation>
+      getUpdateFolderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "UpdateFolder",
       requestType = com.google.cloud.resourcemanager.v3.UpdateFolderRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UpdateFolderRequest,
-      com.google.longrunning.Operation> getUpdateFolderMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UpdateFolderRequest, com.google.longrunning.Operation> getUpdateFolderMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UpdateFolderRequest, com.google.longrunning.Operation>
+      getUpdateFolderMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.UpdateFolderRequest,
+            com.google.longrunning.Operation>
+        getUpdateFolderMethod;
     if ((getUpdateFolderMethod = FoldersGrpc.getUpdateFolderMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getUpdateFolderMethod = FoldersGrpc.getUpdateFolderMethod) == null) {
-          FoldersGrpc.getUpdateFolderMethod = getUpdateFolderMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.UpdateFolderRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UpdateFolder"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.UpdateFolderRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("UpdateFolder"))
-              .build();
+          FoldersGrpc.getUpdateFolderMethod =
+              getUpdateFolderMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.UpdateFolderRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UpdateFolder"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.UpdateFolderRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("UpdateFolder"))
+                      .build();
         }
       }
     }
     return getUpdateFolderMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.MoveFolderRequest,
-      com.google.longrunning.Operation> getMoveFolderMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.MoveFolderRequest, com.google.longrunning.Operation>
+      getMoveFolderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "MoveFolder",
       requestType = com.google.cloud.resourcemanager.v3.MoveFolderRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.MoveFolderRequest,
-      com.google.longrunning.Operation> getMoveFolderMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.MoveFolderRequest, com.google.longrunning.Operation> getMoveFolderMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.MoveFolderRequest, com.google.longrunning.Operation>
+      getMoveFolderMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.MoveFolderRequest, com.google.longrunning.Operation>
+        getMoveFolderMethod;
     if ((getMoveFolderMethod = FoldersGrpc.getMoveFolderMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getMoveFolderMethod = FoldersGrpc.getMoveFolderMethod) == null) {
-          FoldersGrpc.getMoveFolderMethod = getMoveFolderMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.MoveFolderRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "MoveFolder"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.MoveFolderRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("MoveFolder"))
-              .build();
+          FoldersGrpc.getMoveFolderMethod =
+              getMoveFolderMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.MoveFolderRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "MoveFolder"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.MoveFolderRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("MoveFolder"))
+                      .build();
         }
       }
     }
     return getMoveFolderMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.DeleteFolderRequest,
-      com.google.longrunning.Operation> getDeleteFolderMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.DeleteFolderRequest, com.google.longrunning.Operation>
+      getDeleteFolderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "DeleteFolder",
       requestType = com.google.cloud.resourcemanager.v3.DeleteFolderRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.DeleteFolderRequest,
-      com.google.longrunning.Operation> getDeleteFolderMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.DeleteFolderRequest, com.google.longrunning.Operation> getDeleteFolderMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.DeleteFolderRequest, com.google.longrunning.Operation>
+      getDeleteFolderMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.DeleteFolderRequest,
+            com.google.longrunning.Operation>
+        getDeleteFolderMethod;
     if ((getDeleteFolderMethod = FoldersGrpc.getDeleteFolderMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getDeleteFolderMethod = FoldersGrpc.getDeleteFolderMethod) == null) {
-          FoldersGrpc.getDeleteFolderMethod = getDeleteFolderMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.DeleteFolderRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteFolder"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.DeleteFolderRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("DeleteFolder"))
-              .build();
+          FoldersGrpc.getDeleteFolderMethod =
+              getDeleteFolderMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.DeleteFolderRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteFolder"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.DeleteFolderRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("DeleteFolder"))
+                      .build();
         }
       }
     }
     return getDeleteFolderMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
-      com.google.longrunning.Operation> getUndeleteFolderMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
+          com.google.longrunning.Operation>
+      getUndeleteFolderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "UndeleteFolder",
       requestType = com.google.cloud.resourcemanager.v3.UndeleteFolderRequest.class,
       responseType = com.google.longrunning.Operation.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
-      com.google.longrunning.Operation> getUndeleteFolderMethod() {
-    io.grpc.MethodDescriptor<com.google.cloud.resourcemanager.v3.UndeleteFolderRequest, com.google.longrunning.Operation> getUndeleteFolderMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
+          com.google.longrunning.Operation>
+      getUndeleteFolderMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
+            com.google.longrunning.Operation>
+        getUndeleteFolderMethod;
     if ((getUndeleteFolderMethod = FoldersGrpc.getUndeleteFolderMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getUndeleteFolderMethod = FoldersGrpc.getUndeleteFolderMethod) == null) {
-          FoldersGrpc.getUndeleteFolderMethod = getUndeleteFolderMethod =
-              io.grpc.MethodDescriptor.<com.google.cloud.resourcemanager.v3.UndeleteFolderRequest, com.google.longrunning.Operation>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UndeleteFolder"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.cloud.resourcemanager.v3.UndeleteFolderRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.longrunning.Operation.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("UndeleteFolder"))
-              .build();
+          FoldersGrpc.getUndeleteFolderMethod =
+              getUndeleteFolderMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
+                          com.google.longrunning.Operation>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "UndeleteFolder"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.cloud.resourcemanager.v3.UndeleteFolderRequest
+                                  .getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.longrunning.Operation.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("UndeleteFolder"))
+                      .build();
         }
       }
     }
     return getUndeleteFolderMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest,
-      com.google.iam.v1.Policy> getGetIamPolicyMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>
+      getGetIamPolicyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetIamPolicy",
       requestType = com.google.iam.v1.GetIamPolicyRequest.class,
       responseType = com.google.iam.v1.Policy.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest,
-      com.google.iam.v1.Policy> getGetIamPolicyMethod() {
-    io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy> getGetIamPolicyMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>
+      getGetIamPolicyMethod() {
+    io.grpc.MethodDescriptor<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>
+        getGetIamPolicyMethod;
     if ((getGetIamPolicyMethod = FoldersGrpc.getGetIamPolicyMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getGetIamPolicyMethod = FoldersGrpc.getGetIamPolicyMethod) == null) {
-          FoldersGrpc.getGetIamPolicyMethod = getGetIamPolicyMethod =
-              io.grpc.MethodDescriptor.<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetIamPolicy"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.GetIamPolicyRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.Policy.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("GetIamPolicy"))
-              .build();
+          FoldersGrpc.getGetIamPolicyMethod =
+              getGetIamPolicyMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetIamPolicy"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.GetIamPolicyRequest.getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.Policy.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("GetIamPolicy"))
+                      .build();
         }
       }
     }
     return getGetIamPolicyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest,
-      com.google.iam.v1.Policy> getSetIamPolicyMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>
+      getSetIamPolicyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "SetIamPolicy",
       requestType = com.google.iam.v1.SetIamPolicyRequest.class,
       responseType = com.google.iam.v1.Policy.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest,
-      com.google.iam.v1.Policy> getSetIamPolicyMethod() {
-    io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy> getSetIamPolicyMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>
+      getSetIamPolicyMethod() {
+    io.grpc.MethodDescriptor<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>
+        getSetIamPolicyMethod;
     if ((getSetIamPolicyMethod = FoldersGrpc.getSetIamPolicyMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getSetIamPolicyMethod = FoldersGrpc.getSetIamPolicyMethod) == null) {
-          FoldersGrpc.getSetIamPolicyMethod = getSetIamPolicyMethod =
-              io.grpc.MethodDescriptor.<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SetIamPolicy"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.SetIamPolicyRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.Policy.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("SetIamPolicy"))
-              .build();
+          FoldersGrpc.getSetIamPolicyMethod =
+              getSetIamPolicyMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SetIamPolicy"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.SetIamPolicyRequest.getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.Policy.getDefaultInstance()))
+                      .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("SetIamPolicy"))
+                      .build();
         }
       }
     }
     return getSetIamPolicyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.google.iam.v1.TestIamPermissionsRequest,
-      com.google.iam.v1.TestIamPermissionsResponse> getTestIamPermissionsMethod;
+  private static volatile io.grpc.MethodDescriptor<
+          com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse>
+      getTestIamPermissionsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "TestIamPermissions",
       requestType = com.google.iam.v1.TestIamPermissionsRequest.class,
       responseType = com.google.iam.v1.TestIamPermissionsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.google.iam.v1.TestIamPermissionsRequest,
-      com.google.iam.v1.TestIamPermissionsResponse> getTestIamPermissionsMethod() {
-    io.grpc.MethodDescriptor<com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse> getTestIamPermissionsMethod;
+  public static io.grpc.MethodDescriptor<
+          com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse>
+      getTestIamPermissionsMethod() {
+    io.grpc.MethodDescriptor<
+            com.google.iam.v1.TestIamPermissionsRequest,
+            com.google.iam.v1.TestIamPermissionsResponse>
+        getTestIamPermissionsMethod;
     if ((getTestIamPermissionsMethod = FoldersGrpc.getTestIamPermissionsMethod) == null) {
       synchronized (FoldersGrpc.class) {
         if ((getTestIamPermissionsMethod = FoldersGrpc.getTestIamPermissionsMethod) == null) {
-          FoldersGrpc.getTestIamPermissionsMethod = getTestIamPermissionsMethod =
-              io.grpc.MethodDescriptor.<com.google.iam.v1.TestIamPermissionsRequest, com.google.iam.v1.TestIamPermissionsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "TestIamPermissions"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.TestIamPermissionsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.iam.v1.TestIamPermissionsResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new FoldersMethodDescriptorSupplier("TestIamPermissions"))
-              .build();
+          FoldersGrpc.getTestIamPermissionsMethod =
+              getTestIamPermissionsMethod =
+                  io.grpc.MethodDescriptor
+                      .<com.google.iam.v1.TestIamPermissionsRequest,
+                          com.google.iam.v1.TestIamPermissionsResponse>
+                          newBuilder()
+                      .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+                      .setFullMethodName(generateFullMethodName(SERVICE_NAME, "TestIamPermissions"))
+                      .setSampledToLocalTracing(true)
+                      .setRequestMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.TestIamPermissionsRequest.getDefaultInstance()))
+                      .setResponseMarshaller(
+                          io.grpc.protobuf.ProtoUtils.marshaller(
+                              com.google.iam.v1.TestIamPermissionsResponse.getDefaultInstance()))
+                      .setSchemaDescriptor(
+                          new FoldersMethodDescriptorSupplier("TestIamPermissions"))
+                      .build();
         }
       }
     }
     return getTestIamPermissionsMethod;
   }
 
-  /**
-   * Creates a new async stub that supports all call types for the service
-   */
+  /** Creates a new async stub that supports all call types for the service */
   public static FoldersStub newStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<FoldersStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<FoldersStub>() {
-        @java.lang.Override
-        public FoldersStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new FoldersStub(channel, callOptions);
-        }
-      };
+        new io.grpc.stub.AbstractStub.StubFactory<FoldersStub>() {
+          @java.lang.Override
+          public FoldersStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+            return new FoldersStub(channel, callOptions);
+          }
+        };
     return FoldersStub.newStub(factory, channel);
   }
 
   /**
    * Creates a new blocking-style stub that supports unary and streaming output calls on the service
    */
-  public static FoldersBlockingStub newBlockingStub(
-      io.grpc.Channel channel) {
+  public static FoldersBlockingStub newBlockingStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<FoldersBlockingStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<FoldersBlockingStub>() {
-        @java.lang.Override
-        public FoldersBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new FoldersBlockingStub(channel, callOptions);
-        }
-      };
+        new io.grpc.stub.AbstractStub.StubFactory<FoldersBlockingStub>() {
+          @java.lang.Override
+          public FoldersBlockingStub newStub(
+              io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+            return new FoldersBlockingStub(channel, callOptions);
+          }
+        };
     return FoldersBlockingStub.newStub(factory, channel);
   }
 
-  /**
-   * Creates a new ListenableFuture-style stub that supports unary calls on the service
-   */
-  public static FoldersFutureStub newFutureStub(
-      io.grpc.Channel channel) {
+  /** Creates a new ListenableFuture-style stub that supports unary calls on the service */
+  public static FoldersFutureStub newFutureStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<FoldersFutureStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<FoldersFutureStub>() {
-        @java.lang.Override
-        public FoldersFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new FoldersFutureStub(channel, callOptions);
-        }
-      };
+        new io.grpc.stub.AbstractStub.StubFactory<FoldersFutureStub>() {
+          @java.lang.Override
+          public FoldersFutureStub newStub(
+              io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+            return new FoldersFutureStub(channel, callOptions);
+          }
+        };
     return FoldersFutureStub.newStub(factory, channel);
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Cloud Platform folder resources.
    * Folders can be used to organize the resources under an
    * organization and to control the policies applied to groups of resources.
    * </pre>
    */
-  public static abstract class FoldersImplBase implements io.grpc.BindableService {
+  public abstract static class FoldersImplBase implements io.grpc.BindableService {
 
     /**
+     *
+     *
      * <pre>
      * Retrieves a folder identified by the supplied resource name.
      * Valid folder resource names have the format `folders/{folder_id}`
@@ -422,12 +570,15 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public void getFolder(com.google.cloud.resourcemanager.v3.GetFolderRequest request,
+    public void getFolder(
+        com.google.cloud.resourcemanager.v3.GetFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Folder> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetFolderMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists the folders that are direct descendants of supplied parent resource.
      * `list()` provides a strongly consistent view of the folders underneath
@@ -438,12 +589,17 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public void listFolders(com.google.cloud.resourcemanager.v3.ListFoldersRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListFoldersResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getListFoldersMethod(), responseObserver);
+    public void listFolders(
+        com.google.cloud.resourcemanager.v3.ListFoldersRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+            responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getListFoldersMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for folders that match specific filter criteria.
      * `search()` provides an eventually consistent view of the folders a user has
@@ -452,12 +608,17 @@ public final class FoldersGrpc {
      * permission `resourcemanager.folders.get`.
      * </pre>
      */
-    public void searchFolders(com.google.cloud.resourcemanager.v3.SearchFoldersRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchFoldersResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSearchFoldersMethod(), responseObserver);
+    public void searchFolders(
+        com.google.cloud.resourcemanager.v3.SearchFoldersRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+            responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getSearchFoldersMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Creates a folder in the resource hierarchy.
      * Returns an `Operation` which can be used to track the progress of the
@@ -484,12 +645,16 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public void createFolder(com.google.cloud.resourcemanager.v3.CreateFolderRequest request,
+    public void createFolder(
+        com.google.cloud.resourcemanager.v3.CreateFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateFolderMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getCreateFolderMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates a folder, changing its `display_name`.
      * Changes to the folder `display_name` will be rejected if they violate
@@ -506,12 +671,16 @@ public final class FoldersGrpc {
      * in the Status.details field.
      * </pre>
      */
-    public void updateFolder(com.google.cloud.resourcemanager.v3.UpdateFolderRequest request,
+    public void updateFolder(
+        com.google.cloud.resourcemanager.v3.UpdateFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateFolderMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getUpdateFolderMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Moves a folder under a new resource parent.
      * Returns an `Operation` which can be used to track the progress of the
@@ -532,12 +701,15 @@ public final class FoldersGrpc {
      * folder's current and proposed new parent.
      * </pre>
      */
-    public void moveFolder(com.google.cloud.resourcemanager.v3.MoveFolderRequest request,
+    public void moveFolder(
+        com.google.cloud.resourcemanager.v3.MoveFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getMoveFolderMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Requests deletion of a folder. The folder is moved into the
      * [DELETE_REQUESTED][google.cloud.resourcemanager.v3.Folder.State.DELETE_REQUESTED] state
@@ -550,12 +722,16 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public void deleteFolder(com.google.cloud.resourcemanager.v3.DeleteFolderRequest request,
+    public void deleteFolder(
+        com.google.cloud.resourcemanager.v3.DeleteFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteFolderMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getDeleteFolderMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Cancels the deletion request for a folder. This method may be called on a
      * folder in any state. If the folder is in the [ACTIVE][google.cloud.resourcemanager.v3.Folder.State.ACTIVE]
@@ -568,12 +744,16 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public void undeleteFolder(com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request,
+    public void undeleteFolder(
+        com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUndeleteFolderMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getUndeleteFolderMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Gets the access control policy for a folder. The returned policy may be
      * empty if no such policy or resource exists. The `resource` field should
@@ -582,12 +762,16 @@ public final class FoldersGrpc {
      * on the identified folder.
      * </pre>
      */
-    public void getIamPolicy(com.google.iam.v1.GetIamPolicyRequest request,
+    public void getIamPolicy(
+        com.google.iam.v1.GetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetIamPolicyMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getGetIamPolicyMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the access control policy on a folder, replacing any existing policy.
      * The `resource` field should be the folder's resource name, for example:
@@ -596,12 +780,16 @@ public final class FoldersGrpc {
      * on the identified folder.
      * </pre>
      */
-    public void setIamPolicy(com.google.iam.v1.SetIamPolicyRequest request,
+    public void setIamPolicy(
+        com.google.iam.v1.SetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSetIamPolicyMethod(), responseObserver);
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getSetIamPolicyMethod(), responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified folder.
      * The `resource` field should be the folder's resource name,
@@ -609,95 +797,93 @@ public final class FoldersGrpc {
      * There are no permissions required for making this API call.
      * </pre>
      */
-    public void testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request,
-        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getTestIamPermissionsMethod(), responseObserver);
+    public void testIamPermissions(
+        com.google.iam.v1.TestIamPermissionsRequest request,
+        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>
+            responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(
+          getTestIamPermissionsMethod(), responseObserver);
     }
 
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+    @java.lang.Override
+    public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetFolderMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.GetFolderRequest,
-                com.google.cloud.resourcemanager.v3.Folder>(
-                  this, METHODID_GET_FOLDER)))
+              getGetFolderMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.GetFolderRequest,
+                      com.google.cloud.resourcemanager.v3.Folder>(this, METHODID_GET_FOLDER)))
           .addMethod(
-            getListFoldersMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.ListFoldersRequest,
-                com.google.cloud.resourcemanager.v3.ListFoldersResponse>(
-                  this, METHODID_LIST_FOLDERS)))
+              getListFoldersMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.ListFoldersRequest,
+                      com.google.cloud.resourcemanager.v3.ListFoldersResponse>(
+                      this, METHODID_LIST_FOLDERS)))
           .addMethod(
-            getSearchFoldersMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
-                com.google.cloud.resourcemanager.v3.SearchFoldersResponse>(
-                  this, METHODID_SEARCH_FOLDERS)))
+              getSearchFoldersMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.SearchFoldersRequest,
+                      com.google.cloud.resourcemanager.v3.SearchFoldersResponse>(
+                      this, METHODID_SEARCH_FOLDERS)))
           .addMethod(
-            getCreateFolderMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.CreateFolderRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_CREATE_FOLDER)))
+              getCreateFolderMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.CreateFolderRequest,
+                      com.google.longrunning.Operation>(this, METHODID_CREATE_FOLDER)))
           .addMethod(
-            getUpdateFolderMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.UpdateFolderRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_UPDATE_FOLDER)))
+              getUpdateFolderMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.UpdateFolderRequest,
+                      com.google.longrunning.Operation>(this, METHODID_UPDATE_FOLDER)))
           .addMethod(
-            getMoveFolderMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.MoveFolderRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_MOVE_FOLDER)))
+              getMoveFolderMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.MoveFolderRequest,
+                      com.google.longrunning.Operation>(this, METHODID_MOVE_FOLDER)))
           .addMethod(
-            getDeleteFolderMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.DeleteFolderRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_DELETE_FOLDER)))
+              getDeleteFolderMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.DeleteFolderRequest,
+                      com.google.longrunning.Operation>(this, METHODID_DELETE_FOLDER)))
           .addMethod(
-            getUndeleteFolderMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
-                com.google.longrunning.Operation>(
-                  this, METHODID_UNDELETE_FOLDER)))
+              getUndeleteFolderMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.cloud.resourcemanager.v3.UndeleteFolderRequest,
+                      com.google.longrunning.Operation>(this, METHODID_UNDELETE_FOLDER)))
           .addMethod(
-            getGetIamPolicyMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.iam.v1.GetIamPolicyRequest,
-                com.google.iam.v1.Policy>(
-                  this, METHODID_GET_IAM_POLICY)))
+              getGetIamPolicyMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.iam.v1.GetIamPolicyRequest, com.google.iam.v1.Policy>(
+                      this, METHODID_GET_IAM_POLICY)))
           .addMethod(
-            getSetIamPolicyMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.iam.v1.SetIamPolicyRequest,
-                com.google.iam.v1.Policy>(
-                  this, METHODID_SET_IAM_POLICY)))
+              getSetIamPolicyMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.iam.v1.SetIamPolicyRequest, com.google.iam.v1.Policy>(
+                      this, METHODID_SET_IAM_POLICY)))
           .addMethod(
-            getTestIamPermissionsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                com.google.iam.v1.TestIamPermissionsRequest,
-                com.google.iam.v1.TestIamPermissionsResponse>(
-                  this, METHODID_TEST_IAM_PERMISSIONS)))
+              getTestIamPermissionsMethod(),
+              io.grpc.stub.ServerCalls.asyncUnaryCall(
+                  new MethodHandlers<
+                      com.google.iam.v1.TestIamPermissionsRequest,
+                      com.google.iam.v1.TestIamPermissionsResponse>(
+                      this, METHODID_TEST_IAM_PERMISSIONS)))
           .build();
     }
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Cloud Platform folder resources.
    * Folders can be used to organize the resources under an
@@ -705,18 +891,18 @@ public final class FoldersGrpc {
    * </pre>
    */
   public static final class FoldersStub extends io.grpc.stub.AbstractAsyncStub<FoldersStub> {
-    private FoldersStub(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    private FoldersStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected FoldersStub build(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    protected FoldersStub build(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new FoldersStub(channel, callOptions);
     }
 
     /**
+     *
+     *
      * <pre>
      * Retrieves a folder identified by the supplied resource name.
      * Valid folder resource names have the format `folders/{folder_id}`
@@ -725,13 +911,16 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public void getFolder(com.google.cloud.resourcemanager.v3.GetFolderRequest request,
+    public void getFolder(
+        com.google.cloud.resourcemanager.v3.GetFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Folder> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetFolderMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists the folders that are direct descendants of supplied parent resource.
      * `list()` provides a strongly consistent view of the folders underneath
@@ -742,13 +931,19 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public void listFolders(com.google.cloud.resourcemanager.v3.ListFoldersRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListFoldersResponse> responseObserver) {
+    public void listFolders(
+        com.google.cloud.resourcemanager.v3.ListFoldersRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+            responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getListFoldersMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getListFoldersMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for folders that match specific filter criteria.
      * `search()` provides an eventually consistent view of the folders a user has
@@ -757,13 +952,19 @@ public final class FoldersGrpc {
      * permission `resourcemanager.folders.get`.
      * </pre>
      */
-    public void searchFolders(com.google.cloud.resourcemanager.v3.SearchFoldersRequest request,
-        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchFoldersResponse> responseObserver) {
+    public void searchFolders(
+        com.google.cloud.resourcemanager.v3.SearchFoldersRequest request,
+        io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+            responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getSearchFoldersMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSearchFoldersMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Creates a folder in the resource hierarchy.
      * Returns an `Operation` which can be used to track the progress of the
@@ -790,13 +991,18 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public void createFolder(com.google.cloud.resourcemanager.v3.CreateFolderRequest request,
+    public void createFolder(
+        com.google.cloud.resourcemanager.v3.CreateFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getCreateFolderMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getCreateFolderMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates a folder, changing its `display_name`.
      * Changes to the folder `display_name` will be rejected if they violate
@@ -813,13 +1019,18 @@ public final class FoldersGrpc {
      * in the Status.details field.
      * </pre>
      */
-    public void updateFolder(com.google.cloud.resourcemanager.v3.UpdateFolderRequest request,
+    public void updateFolder(
+        com.google.cloud.resourcemanager.v3.UpdateFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getUpdateFolderMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getUpdateFolderMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Moves a folder under a new resource parent.
      * Returns an `Operation` which can be used to track the progress of the
@@ -840,13 +1051,16 @@ public final class FoldersGrpc {
      * folder's current and proposed new parent.
      * </pre>
      */
-    public void moveFolder(com.google.cloud.resourcemanager.v3.MoveFolderRequest request,
+    public void moveFolder(
+        com.google.cloud.resourcemanager.v3.MoveFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getMoveFolderMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Requests deletion of a folder. The folder is moved into the
      * [DELETE_REQUESTED][google.cloud.resourcemanager.v3.Folder.State.DELETE_REQUESTED] state
@@ -859,13 +1073,18 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public void deleteFolder(com.google.cloud.resourcemanager.v3.DeleteFolderRequest request,
+    public void deleteFolder(
+        com.google.cloud.resourcemanager.v3.DeleteFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getDeleteFolderMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getDeleteFolderMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Cancels the deletion request for a folder. This method may be called on a
      * folder in any state. If the folder is in the [ACTIVE][google.cloud.resourcemanager.v3.Folder.State.ACTIVE]
@@ -878,13 +1097,18 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public void undeleteFolder(com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request,
+    public void undeleteFolder(
+        com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request,
         io.grpc.stub.StreamObserver<com.google.longrunning.Operation> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getUndeleteFolderMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getUndeleteFolderMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Gets the access control policy for a folder. The returned policy may be
      * empty if no such policy or resource exists. The `resource` field should
@@ -893,13 +1117,18 @@ public final class FoldersGrpc {
      * on the identified folder.
      * </pre>
      */
-    public void getIamPolicy(com.google.iam.v1.GetIamPolicyRequest request,
+    public void getIamPolicy(
+        com.google.iam.v1.GetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getGetIamPolicyMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetIamPolicyMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the access control policy on a folder, replacing any existing policy.
      * The `resource` field should be the folder's resource name, for example:
@@ -908,13 +1137,18 @@ public final class FoldersGrpc {
      * on the identified folder.
      * </pre>
      */
-    public void setIamPolicy(com.google.iam.v1.SetIamPolicyRequest request,
+    public void setIamPolicy(
+        com.google.iam.v1.SetIamPolicyRequest request,
         io.grpc.stub.StreamObserver<com.google.iam.v1.Policy> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getSetIamPolicyMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSetIamPolicyMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified folder.
      * The `resource` field should be the folder's resource name,
@@ -922,33 +1156,40 @@ public final class FoldersGrpc {
      * There are no permissions required for making this API call.
      * </pre>
      */
-    public void testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request,
-        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse> responseObserver) {
+    public void testIamPermissions(
+        com.google.iam.v1.TestIamPermissionsRequest request,
+        io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>
+            responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getTestIamPermissionsMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getTestIamPermissionsMethod(), getCallOptions()),
+          request,
+          responseObserver);
     }
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Cloud Platform folder resources.
    * Folders can be used to organize the resources under an
    * organization and to control the policies applied to groups of resources.
    * </pre>
    */
-  public static final class FoldersBlockingStub extends io.grpc.stub.AbstractBlockingStub<FoldersBlockingStub> {
-    private FoldersBlockingStub(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+  public static final class FoldersBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<FoldersBlockingStub> {
+    private FoldersBlockingStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected FoldersBlockingStub build(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    protected FoldersBlockingStub build(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new FoldersBlockingStub(channel, callOptions);
     }
 
     /**
+     *
+     *
      * <pre>
      * Retrieves a folder identified by the supplied resource name.
      * Valid folder resource names have the format `folders/{folder_id}`
@@ -957,12 +1198,15 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public com.google.cloud.resourcemanager.v3.Folder getFolder(com.google.cloud.resourcemanager.v3.GetFolderRequest request) {
+    public com.google.cloud.resourcemanager.v3.Folder getFolder(
+        com.google.cloud.resourcemanager.v3.GetFolderRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetFolderMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists the folders that are direct descendants of supplied parent resource.
      * `list()` provides a strongly consistent view of the folders underneath
@@ -973,12 +1217,15 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public com.google.cloud.resourcemanager.v3.ListFoldersResponse listFolders(com.google.cloud.resourcemanager.v3.ListFoldersRequest request) {
+    public com.google.cloud.resourcemanager.v3.ListFoldersResponse listFolders(
+        com.google.cloud.resourcemanager.v3.ListFoldersRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getListFoldersMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for folders that match specific filter criteria.
      * `search()` provides an eventually consistent view of the folders a user has
@@ -987,12 +1234,15 @@ public final class FoldersGrpc {
      * permission `resourcemanager.folders.get`.
      * </pre>
      */
-    public com.google.cloud.resourcemanager.v3.SearchFoldersResponse searchFolders(com.google.cloud.resourcemanager.v3.SearchFoldersRequest request) {
+    public com.google.cloud.resourcemanager.v3.SearchFoldersResponse searchFolders(
+        com.google.cloud.resourcemanager.v3.SearchFoldersRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getSearchFoldersMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Creates a folder in the resource hierarchy.
      * Returns an `Operation` which can be used to track the progress of the
@@ -1019,12 +1269,15 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public com.google.longrunning.Operation createFolder(com.google.cloud.resourcemanager.v3.CreateFolderRequest request) {
+    public com.google.longrunning.Operation createFolder(
+        com.google.cloud.resourcemanager.v3.CreateFolderRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateFolderMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates a folder, changing its `display_name`.
      * Changes to the folder `display_name` will be rejected if they violate
@@ -1041,12 +1294,15 @@ public final class FoldersGrpc {
      * in the Status.details field.
      * </pre>
      */
-    public com.google.longrunning.Operation updateFolder(com.google.cloud.resourcemanager.v3.UpdateFolderRequest request) {
+    public com.google.longrunning.Operation updateFolder(
+        com.google.cloud.resourcemanager.v3.UpdateFolderRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getUpdateFolderMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Moves a folder under a new resource parent.
      * Returns an `Operation` which can be used to track the progress of the
@@ -1067,12 +1323,15 @@ public final class FoldersGrpc {
      * folder's current and proposed new parent.
      * </pre>
      */
-    public com.google.longrunning.Operation moveFolder(com.google.cloud.resourcemanager.v3.MoveFolderRequest request) {
+    public com.google.longrunning.Operation moveFolder(
+        com.google.cloud.resourcemanager.v3.MoveFolderRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getMoveFolderMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Requests deletion of a folder. The folder is moved into the
      * [DELETE_REQUESTED][google.cloud.resourcemanager.v3.Folder.State.DELETE_REQUESTED] state
@@ -1085,12 +1344,15 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public com.google.longrunning.Operation deleteFolder(com.google.cloud.resourcemanager.v3.DeleteFolderRequest request) {
+    public com.google.longrunning.Operation deleteFolder(
+        com.google.cloud.resourcemanager.v3.DeleteFolderRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDeleteFolderMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Cancels the deletion request for a folder. This method may be called on a
      * folder in any state. If the folder is in the [ACTIVE][google.cloud.resourcemanager.v3.Folder.State.ACTIVE]
@@ -1103,12 +1365,15 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public com.google.longrunning.Operation undeleteFolder(com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request) {
+    public com.google.longrunning.Operation undeleteFolder(
+        com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getUndeleteFolderMethod(), getCallOptions(), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Gets the access control policy for a folder. The returned policy may be
      * empty if no such policy or resource exists. The `resource` field should
@@ -1123,6 +1388,8 @@ public final class FoldersGrpc {
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the access control policy on a folder, replacing any existing policy.
      * The `resource` field should be the folder's resource name, for example:
@@ -1137,6 +1404,8 @@ public final class FoldersGrpc {
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified folder.
      * The `resource` field should be the folder's resource name,
@@ -1144,32 +1413,36 @@ public final class FoldersGrpc {
      * There are no permissions required for making this API call.
      * </pre>
      */
-    public com.google.iam.v1.TestIamPermissionsResponse testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request) {
+    public com.google.iam.v1.TestIamPermissionsResponse testIamPermissions(
+        com.google.iam.v1.TestIamPermissionsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getTestIamPermissionsMethod(), getCallOptions(), request);
     }
   }
 
   /**
+   *
+   *
    * <pre>
    * Manages Cloud Platform folder resources.
    * Folders can be used to organize the resources under an
    * organization and to control the policies applied to groups of resources.
    * </pre>
    */
-  public static final class FoldersFutureStub extends io.grpc.stub.AbstractFutureStub<FoldersFutureStub> {
-    private FoldersFutureStub(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+  public static final class FoldersFutureStub
+      extends io.grpc.stub.AbstractFutureStub<FoldersFutureStub> {
+    private FoldersFutureStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected FoldersFutureStub build(
-        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+    protected FoldersFutureStub build(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new FoldersFutureStub(channel, callOptions);
     }
 
     /**
+     *
+     *
      * <pre>
      * Retrieves a folder identified by the supplied resource name.
      * Valid folder resource names have the format `folders/{folder_id}`
@@ -1178,13 +1451,16 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.cloud.resourcemanager.v3.Folder> getFolder(
-        com.google.cloud.resourcemanager.v3.GetFolderRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.cloud.resourcemanager.v3.Folder>
+        getFolder(com.google.cloud.resourcemanager.v3.GetFolderRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetFolderMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Lists the folders that are direct descendants of supplied parent resource.
      * `list()` provides a strongly consistent view of the folders underneath
@@ -1195,13 +1471,16 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.cloud.resourcemanager.v3.ListFoldersResponse> listFolders(
-        com.google.cloud.resourcemanager.v3.ListFoldersRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.cloud.resourcemanager.v3.ListFoldersResponse>
+        listFolders(com.google.cloud.resourcemanager.v3.ListFoldersRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getListFoldersMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Search for folders that match specific filter criteria.
      * `search()` provides an eventually consistent view of the folders a user has
@@ -1210,13 +1489,16 @@ public final class FoldersGrpc {
      * permission `resourcemanager.folders.get`.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.cloud.resourcemanager.v3.SearchFoldersResponse> searchFolders(
-        com.google.cloud.resourcemanager.v3.SearchFoldersRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.cloud.resourcemanager.v3.SearchFoldersResponse>
+        searchFolders(com.google.cloud.resourcemanager.v3.SearchFoldersRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getSearchFoldersMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Creates a folder in the resource hierarchy.
      * Returns an `Operation` which can be used to track the progress of the
@@ -1243,13 +1525,15 @@ public final class FoldersGrpc {
      * identified parent.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> createFolder(
-        com.google.cloud.resourcemanager.v3.CreateFolderRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        createFolder(com.google.cloud.resourcemanager.v3.CreateFolderRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getCreateFolderMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Updates a folder, changing its `display_name`.
      * Changes to the folder `display_name` will be rejected if they violate
@@ -1266,13 +1550,15 @@ public final class FoldersGrpc {
      * in the Status.details field.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> updateFolder(
-        com.google.cloud.resourcemanager.v3.UpdateFolderRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        updateFolder(com.google.cloud.resourcemanager.v3.UpdateFolderRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getUpdateFolderMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Moves a folder under a new resource parent.
      * Returns an `Operation` which can be used to track the progress of the
@@ -1293,13 +1579,15 @@ public final class FoldersGrpc {
      * folder's current and proposed new parent.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> moveFolder(
-        com.google.cloud.resourcemanager.v3.MoveFolderRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        moveFolder(com.google.cloud.resourcemanager.v3.MoveFolderRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getMoveFolderMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Requests deletion of a folder. The folder is moved into the
      * [DELETE_REQUESTED][google.cloud.resourcemanager.v3.Folder.State.DELETE_REQUESTED] state
@@ -1312,13 +1600,15 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> deleteFolder(
-        com.google.cloud.resourcemanager.v3.DeleteFolderRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        deleteFolder(com.google.cloud.resourcemanager.v3.DeleteFolderRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteFolderMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Cancels the deletion request for a folder. This method may be called on a
      * folder in any state. If the folder is in the [ACTIVE][google.cloud.resourcemanager.v3.Folder.State.ACTIVE]
@@ -1331,13 +1621,15 @@ public final class FoldersGrpc {
      * identified folder.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation> undeleteFolder(
-        com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.longrunning.Operation>
+        undeleteFolder(com.google.cloud.resourcemanager.v3.UndeleteFolderRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getUndeleteFolderMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Gets the access control policy for a folder. The returned policy may be
      * empty if no such policy or resource exists. The `resource` field should
@@ -1346,13 +1638,15 @@ public final class FoldersGrpc {
      * on the identified folder.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy> getIamPolicy(
-        com.google.iam.v1.GetIamPolicyRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy>
+        getIamPolicy(com.google.iam.v1.GetIamPolicyRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetIamPolicyMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Sets the access control policy on a folder, replacing any existing policy.
      * The `resource` field should be the folder's resource name, for example:
@@ -1361,13 +1655,15 @@ public final class FoldersGrpc {
      * on the identified folder.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy> setIamPolicy(
-        com.google.iam.v1.SetIamPolicyRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.Policy>
+        setIamPolicy(com.google.iam.v1.SetIamPolicyRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getSetIamPolicyMethod(), getCallOptions()), request);
     }
 
     /**
+     *
+     *
      * <pre>
      * Returns permissions that a caller has on the specified folder.
      * The `resource` field should be the folder's resource name,
@@ -1375,8 +1671,9 @@ public final class FoldersGrpc {
      * There are no permissions required for making this API call.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.iam.v1.TestIamPermissionsResponse> testIamPermissions(
-        com.google.iam.v1.TestIamPermissionsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<
+            com.google.iam.v1.TestIamPermissionsResponse>
+        testIamPermissions(com.google.iam.v1.TestIamPermissionsRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getTestIamPermissionsMethod(), getCallOptions()), request);
     }
@@ -1394,11 +1691,11 @@ public final class FoldersGrpc {
   private static final int METHODID_SET_IAM_POLICY = 9;
   private static final int METHODID_TEST_IAM_PERMISSIONS = 10;
 
-  private static final class MethodHandlers<Req, Resp> implements
-      io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
-      io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
-      io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
-      io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
+  private static final class MethodHandlers<Req, Resp>
+      implements io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
+          io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
+          io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
+          io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
     private final FoldersImplBase serviceImpl;
     private final int methodId;
 
@@ -1412,48 +1709,64 @@ public final class FoldersGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_GET_FOLDER:
-          serviceImpl.getFolder((com.google.cloud.resourcemanager.v3.GetFolderRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Folder>) responseObserver);
+          serviceImpl.getFolder(
+              (com.google.cloud.resourcemanager.v3.GetFolderRequest) request,
+              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.Folder>)
+                  responseObserver);
           break;
         case METHODID_LIST_FOLDERS:
-          serviceImpl.listFolders((com.google.cloud.resourcemanager.v3.ListFoldersRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListFoldersResponse>) responseObserver);
+          serviceImpl.listFolders(
+              (com.google.cloud.resourcemanager.v3.ListFoldersRequest) request,
+              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.ListFoldersResponse>)
+                  responseObserver);
           break;
         case METHODID_SEARCH_FOLDERS:
-          serviceImpl.searchFolders((com.google.cloud.resourcemanager.v3.SearchFoldersRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.cloud.resourcemanager.v3.SearchFoldersResponse>) responseObserver);
+          serviceImpl.searchFolders(
+              (com.google.cloud.resourcemanager.v3.SearchFoldersRequest) request,
+              (io.grpc.stub.StreamObserver<
+                      com.google.cloud.resourcemanager.v3.SearchFoldersResponse>)
+                  responseObserver);
           break;
         case METHODID_CREATE_FOLDER:
-          serviceImpl.createFolder((com.google.cloud.resourcemanager.v3.CreateFolderRequest) request,
+          serviceImpl.createFolder(
+              (com.google.cloud.resourcemanager.v3.CreateFolderRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_UPDATE_FOLDER:
-          serviceImpl.updateFolder((com.google.cloud.resourcemanager.v3.UpdateFolderRequest) request,
+          serviceImpl.updateFolder(
+              (com.google.cloud.resourcemanager.v3.UpdateFolderRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_MOVE_FOLDER:
-          serviceImpl.moveFolder((com.google.cloud.resourcemanager.v3.MoveFolderRequest) request,
+          serviceImpl.moveFolder(
+              (com.google.cloud.resourcemanager.v3.MoveFolderRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_DELETE_FOLDER:
-          serviceImpl.deleteFolder((com.google.cloud.resourcemanager.v3.DeleteFolderRequest) request,
+          serviceImpl.deleteFolder(
+              (com.google.cloud.resourcemanager.v3.DeleteFolderRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_UNDELETE_FOLDER:
-          serviceImpl.undeleteFolder((com.google.cloud.resourcemanager.v3.UndeleteFolderRequest) request,
+          serviceImpl.undeleteFolder(
+              (com.google.cloud.resourcemanager.v3.UndeleteFolderRequest) request,
               (io.grpc.stub.StreamObserver<com.google.longrunning.Operation>) responseObserver);
           break;
         case METHODID_GET_IAM_POLICY:
-          serviceImpl.getIamPolicy((com.google.iam.v1.GetIamPolicyRequest) request,
+          serviceImpl.getIamPolicy(
+              (com.google.iam.v1.GetIamPolicyRequest) request,
               (io.grpc.stub.StreamObserver<com.google.iam.v1.Policy>) responseObserver);
           break;
         case METHODID_SET_IAM_POLICY:
-          serviceImpl.setIamPolicy((com.google.iam.v1.SetIamPolicyRequest) request,
+          serviceImpl.setIamPolicy(
+              (com.google.iam.v1.SetIamPolicyRequest) request,
               (io.grpc.stub.StreamObserver<com.google.iam.v1.Policy>) responseObserver);
           break;
         case METHODID_TEST_IAM_PERMISSIONS:
-          serviceImpl.testIamPermissions((com.google.iam.v1.TestIamPermissionsRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>) responseObserver);
+          serviceImpl.testIamPermissions(
+              (com.google.iam.v1.TestIamPermissionsRequest) request,
+              (io.grpc.stub.StreamObserver<com.google.iam.v1.TestIamPermissionsResponse>)
+                  responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -1471,8 +1784,9 @@ public final class FoldersGrpc {
     }
   }
 
-  private static abstract class FoldersBaseDescriptorSupplier
-      implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
+  private abstract static class FoldersBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoFileDescriptorSupplier,
+          io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     FoldersBaseDescriptorSupplier() {}
 
     @java.lang.Override
@@ -1486,13 +1800,11 @@ public final class FoldersGrpc {
     }
   }
 
-  private static final class FoldersFileDescriptorSupplier
-      extends FoldersBaseDescriptorSupplier {
+  private static final class FoldersFileDescriptorSupplier extends FoldersBaseDescriptorSupplier {
     FoldersFileDescriptorSupplier() {}
   }
 
-  private static final class FoldersMethodDescriptorSupplier
-      extends FoldersBaseDescriptorSupplier
+  private static final class FoldersMethodDescriptorSupplier extends FoldersBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
     private final String methodName;
 
@@ -1514,20 +1826,22 @@ public final class FoldersGrpc {
       synchronized (FoldersGrpc.class) {
         result = serviceDescriptor;
         if (result == null) {
-          serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
-              .setSchemaDescriptor(new FoldersFileDescriptorSupplier())
-              .addMethod(getGetFolderMethod())
-              .addMethod(getListFoldersMethod())
-              .addMethod(getSearchFoldersMethod())
-              .addMethod(getCreateFolderMethod())
-              .addMethod(getUpdateFolderMethod())
-              .addMethod(getMoveFolderMethod())
-              .addMethod(getDeleteFolderMethod())
-              .addMethod(getUndeleteFolderMethod())
-              .addMethod(getGetIamPolicyMethod())
-              .addMethod(getSetIamPolicyMethod())
-              .addMethod(getTestIamPermissionsMethod())
-              .build();
+          serviceDescriptor =
+              result =
+                  io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
+                      .setSchemaDescriptor(new FoldersFileDescriptorSupplier())
+                      .addMethod(getGetFolderMethod())
+                      .addMethod(getListFoldersMethod())
+                      .addMethod(getSearchFoldersMethod())
+                      .addMethod(getCreateFolderMethod())
+                      .addMethod(getUpdateFolderMethod())
+                      .addMethod(getMoveFolderMethod())
+                      .addMethod(getDeleteFolderMethod())
+                      .addMethod(getUndeleteFolderMethod())
+                      .addMethod(getGetIamPolicyMethod())
+                      .addMethod(getSetIamPolicyMethod())
+                      .addMethod(getTestIamPermissionsMethod())
+                      .build();
         }
       }
     }
