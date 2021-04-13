@@ -30,7 +30,9 @@ import java.util.Map;
  * An interface for Google Cloud Resource Manager.
  *
  * @see <a href="https://cloud.google.com/resource-manager/">Google Cloud Resource Manager</a>
+ * @deprecated v3 GAPIC client of ResourceManager is now available
  */
+@Deprecated
 public interface ResourceManager extends Service<ResourceManagerOptions> {
 
   String DEFAULT_CONTENT_TYPE = "application/octet-stream";

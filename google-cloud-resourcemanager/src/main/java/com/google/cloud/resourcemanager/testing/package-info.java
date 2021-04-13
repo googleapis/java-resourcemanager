@@ -31,4 +31,5 @@
  * resourceManagerHelper.stop();
  * }</pre>
  */
+@Deprecated
 package com.google.cloud.resourcemanager.testing;
