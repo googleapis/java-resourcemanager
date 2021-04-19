@@ -89,9 +89,13 @@ import org.threeten.bp.format.DateTimeFormatter;
  *   <li>The messages in the error responses given by this mock do not necessarily match the
  *       messages given by the actual service.
  * </ul>
+ *
+ * @deprecated v3 GAPIC client of ResourceManager is now available
  */
+@Deprecated
 @SuppressWarnings("restriction")
 public class LocalResourceManagerHelper {
+
   private static final Logger log = Logger.getLogger(LocalResourceManagerHelper.class.getName());
   private static final JsonFactory jsonFactory =
       new com.google.api.client.json.jackson2.JacksonFactory();
@@ -105,6 +109,9 @@ public class LocalResourceManagerHelper {
   private static final Pattern LIST_FIELDS_PATTERN =
       Pattern.compile("(.*?)projects\\((.*?)\\)(.*?)");
   private static final String[] NO_FIELDS = {};
+  // see https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects
+  private static final Set<Character> PERMISSIBLE_PROJECT_NAME_PUNCTUATION =
+      ImmutableSet.of('-', '\'', '"', ' ', '!');
 
   static {
     try {
@@ -115,186 +122,19 @@ public class LocalResourceManagerHelper {
     }
   }
 
-  // see https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects
-  private static final Set<Character> PERMISSIBLE_PROJECT_NAME_PUNCTUATION =
-      ImmutableSet.of('-', '\'', '"', ' ', '!');
-
   private final HttpServer server;
   private final ConcurrentSkipListMap<String, Project> projects = new ConcurrentSkipListMap<>();
   private final Map<String, Policy> policies = new HashMap<>();
   private final int port;
 
-  private static class Response {
-    private final int code;
-    private final String body;
-
-    Response(int code, String body) {
-      this.code = code;
-      this.body = body;
-    }
-
-    int code() {
-      return code;
-    }
-
-    String body() {
-      return body;
-    }
-  }
-
-  private enum Error {
-    ABORTED(409, "global", "aborted", "ABORTED"),
-    ALREADY_EXISTS(409, "global", "alreadyExists", "ALREADY_EXISTS"),
-    PERMISSION_DENIED(403, "global", "forbidden", "PERMISSION_DENIED"),
-    FAILED_PRECONDITION(400, "global", "failedPrecondition", "FAILED_PRECONDITION"),
-    INVALID_ARGUMENT(400, "global", "badRequest", "INVALID_ARGUMENT"),
-    BAD_REQUEST(400, "global", "badRequest", "BAD_REQUEST"),
-    INTERNAL_ERROR(500, "global", "internalError", "INTERNAL_ERROR");
-
-    private final int code;
-    private final String domain;
-    private final String reason;
-    private final String status;
-
-    Error(int code, String domain, String reason, String status) {
-      this.code = code;
-      this.domain = domain;
-      this.reason = reason;
-      this.status = status;
-    }
-
-    Response response(String message) {
-      try {
-        return new Response(code, toJson(message));
-      } catch (IOException e) {
-        return Error.INTERNAL_ERROR.response("Error when generating JSON error response");
-      }
-    }
-
-    private String toJson(String message) throws IOException {
-      Map<String, Object> errors = new HashMap<>();
-      errors.put("domain", domain);
-      errors.put("message", message);
-      errors.put("reason", reason);
-      Map<String, Object> args = new HashMap<>();
-      args.put("errors", ImmutableList.of(errors));
-      args.put("code", code);
-      args.put("message", message);
-      args.put("status", status);
-      return jsonFactory.toString(ImmutableMap.of("error", args));
-    }
-  }
-
-  private class RequestHandler implements HttpHandler {
-    @Override
-    public void handle(HttpExchange exchange) {
-      // see https://cloud.google.com/resource-manager/reference/rest/
-      Response response;
-      String path = BASE_CONTEXT.relativize(exchange.getRequestURI()).getPath();
-      String requestMethod = exchange.getRequestMethod();
-      try {
-        switch (requestMethod) {
-          case "POST":
-            response = handlePost(exchange, path);
-            break;
-          case "DELETE":
-            response = delete(projectIdFromUri(path));
-            break;
-          case "GET":
-            if (!path.isEmpty()) {
-              response =
-                  get(projectIdFromUri(path), parseFields(exchange.getRequestURI().getQuery()));
-            } else {
-              response = list(parseListOptions(exchange.getRequestURI().getQuery()));
-            }
-            break;
-          case "PUT":
-            String requestBody =
-                decodeContent(exchange.getRequestHeaders(), exchange.getRequestBody());
-            response =
-                replace(projectIdFromUri(path), jsonFactory.fromString(requestBody, Project.class));
-            break;
-          default:
-            response =
-                Error.BAD_REQUEST.response(
-                    "The server could not understand the following request URI: "
-                        + requestMethod
-                        + " "
-                        + path);
-        }
-      } catch (IOException e) {
-        response = Error.BAD_REQUEST.response(e.getMessage());
-      }
-      writeResponse(exchange, response);
-    }
-  }
-
-  private Response handlePost(HttpExchange exchange, String path) throws IOException {
-    String requestBody = decodeContent(exchange.getRequestHeaders(), exchange.getRequestBody());
-    if (!path.contains(":")) {
-      return create(jsonFactory.fromString(requestBody, Project.class));
-    } else {
-      switch (path.split(":", 2)[1]) {
-        case "undelete":
-          return undelete(projectIdFromUri(path));
-        case "getIamPolicy":
-          return getPolicy(projectIdFromUri(path));
-        case "setIamPolicy":
-          return replacePolicy(
-              projectIdFromUri(path),
-              jsonFactory.fromString(requestBody, SetIamPolicyRequest.class).getPolicy());
-        case "testIamPermissions":
-          return testPermissions(
-              projectIdFromUri(path),
-              jsonFactory
-                  .fromString(requestBody, TestIamPermissionsRequest.class)
-                  .getPermissions());
-        default:
-          return Error.BAD_REQUEST.response(
-              "The server could not understand the following request URI: POST " + path);
-      }
-    }
-  }
-
-  private class OperationRequestHandler implements HttpHandler {
-    @Override
-    public void handle(HttpExchange exchange) {
-      // see https://cloud.google.com/resource-manager/reference/rest/
-      String projectId;
-      try {
-        projectId = new URI(OPERATION_CONTEXT).relativize(exchange.getRequestURI()).getPath();
-      } catch (URISyntaxException e) {
-        throw new IllegalStateException(e);
-      }
-      Response response;
-      String requestMethod = exchange.getRequestMethod();
-      switch (requestMethod) {
-        case "GET":
-          Project project = projects.get(projectId);
-          if (project == null) {
-            response = Error.PERMISSION_DENIED.response("Project " + projectId + " not found.");
-            break;
-          }
-          try {
-            response =
-                new Response(
-                    HTTP_OK,
-                    jsonFactory.toString(new Operation().setDone(true).setResponse(project)));
-          } catch (IOException e) {
-            response =
-                Error.INTERNAL_ERROR.response(
-                    "Error when serializing project " + project.getProjectId());
-          }
-          break;
-        default:
-          response =
-              Error.BAD_REQUEST.response(
-                  "The server could not understand the following request URI: "
-                      + requestMethod
-                      + " "
-                      + projectId);
-      }
-      writeResponse(exchange, response);
+  private LocalResourceManagerHelper() {
+    try {
+      server = HttpServer.create(new InetSocketAddress(0), 0);
+      port = server.getAddress().getPort();
+      server.createContext(CONTEXT, new RequestHandler());
+      server.createContext(OPERATION_CONTEXT, new OperationRequestHandler());
+    } catch (IOException e) {
+      throw new RuntimeException("Could not bind the mock Resource Manager server.", e);
     }
   }
 
@@ -438,6 +278,119 @@ public class LocalResourceManagerHelper {
     return value.length() >= minLength && value.length() <= maxLength;
   }
 
+  private static boolean isValidFilter(String[] filters) {
+    for (String filter : filters) {
+      String field = filter.toLowerCase().split(":")[0];
+      if (!("id".equals(field) || "name".equals(field) || field.startsWith("labels."))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private static boolean includeProject(Project project, String[] filters) {
+    if (filters == null) {
+      return true;
+    }
+    for (String filter : filters) {
+      String[] filterEntry = filter.toLowerCase().split(":");
+      String filterType = filterEntry[0];
+      if ("id".equals(filterType)) {
+        if (!satisfiesFilter(project.getProjectId(), filterEntry[1])) {
+          return false;
+        }
+      } else if ("name".equals(filterType)) {
+        if (!satisfiesFilter(project.getName(), filterEntry[1])) {
+          return false;
+        }
+      } else if (filterType.startsWith("labels.")) {
+        String labelKey = filterType.substring("labels.".length());
+        if (project.getLabels() != null) {
+          String labelValue = project.getLabels().get(labelKey);
+          if (!satisfiesFilter(labelValue, filterEntry[1])) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  private static boolean satisfiesFilter(String projectValue, String filterValue) {
+    if (projectValue == null) {
+      return false;
+    }
+    return "*".equals(filterValue) || filterValue.equals(projectValue.toLowerCase());
+  }
+
+  private static Project extractFields(Project fullProject, String[] fields) {
+    if (fields == null) {
+      return fullProject;
+    }
+    Project project = new Project();
+    for (String field : fields) {
+      switch (field) {
+        case "createTime":
+          project.setCreateTime(fullProject.getCreateTime());
+          break;
+        case "labels":
+          project.setLabels(fullProject.getLabels());
+          break;
+        case "lifecycleState":
+          project.setLifecycleState(fullProject.getLifecycleState());
+          break;
+        case "name":
+          project.setName(fullProject.getName());
+          break;
+        case "parent":
+          project.setParent(fullProject.getParent());
+          break;
+        case "projectId":
+          project.setProjectId(fullProject.getProjectId());
+          break;
+        case "projectNumber":
+          project.setProjectNumber(fullProject.getProjectNumber());
+          break;
+      }
+    }
+    return project;
+  }
+
+  /**
+   * Creates a {@code LocalResourceManagerHelper} object that listens to requests on the local
+   * machine.
+   */
+  public static LocalResourceManagerHelper create() {
+    return new LocalResourceManagerHelper();
+  }
+
+  private Response handlePost(HttpExchange exchange, String path) throws IOException {
+    String requestBody = decodeContent(exchange.getRequestHeaders(), exchange.getRequestBody());
+    if (!path.contains(":")) {
+      return create(jsonFactory.fromString(requestBody, Project.class));
+    } else {
+      switch (path.split(":", 2)[1]) {
+        case "undelete":
+          return undelete(projectIdFromUri(path));
+        case "getIamPolicy":
+          return getPolicy(projectIdFromUri(path));
+        case "setIamPolicy":
+          return replacePolicy(
+              projectIdFromUri(path),
+              jsonFactory.fromString(requestBody, SetIamPolicyRequest.class).getPolicy());
+        case "testIamPermissions":
+          return testPermissions(
+              projectIdFromUri(path),
+              jsonFactory
+                  .fromString(requestBody, TestIamPermissionsRequest.class)
+                  .getPermissions());
+        default:
+          return Error.BAD_REQUEST.response(
+              "The server could not understand the following request URI: POST " + path);
+      }
+    }
+  }
+
   synchronized Response create(Project project) {
     String customErrorMessage = checkForProjectErrors(project);
     if (customErrorMessage != null) {
@@ -553,84 +506,6 @@ public class LocalResourceManagerHelper {
     return new Response(HTTP_OK, responseBody.toString());
   }
 
-  private static boolean isValidFilter(String[] filters) {
-    for (String filter : filters) {
-      String field = filter.toLowerCase().split(":")[0];
-      if (!("id".equals(field) || "name".equals(field) || field.startsWith("labels."))) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private static boolean includeProject(Project project, String[] filters) {
-    if (filters == null) {
-      return true;
-    }
-    for (String filter : filters) {
-      String[] filterEntry = filter.toLowerCase().split(":");
-      String filterType = filterEntry[0];
-      if ("id".equals(filterType)) {
-        if (!satisfiesFilter(project.getProjectId(), filterEntry[1])) {
-          return false;
-        }
-      } else if ("name".equals(filterType)) {
-        if (!satisfiesFilter(project.getName(), filterEntry[1])) {
-          return false;
-        }
-      } else if (filterType.startsWith("labels.")) {
-        String labelKey = filterType.substring("labels.".length());
-        if (project.getLabels() != null) {
-          String labelValue = project.getLabels().get(labelKey);
-          if (!satisfiesFilter(labelValue, filterEntry[1])) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-
-  private static boolean satisfiesFilter(String projectValue, String filterValue) {
-    if (projectValue == null) {
-      return false;
-    }
-    return "*".equals(filterValue) || filterValue.equals(projectValue.toLowerCase());
-  }
-
-  private static Project extractFields(Project fullProject, String[] fields) {
-    if (fields == null) {
-      return fullProject;
-    }
-    Project project = new Project();
-    for (String field : fields) {
-      switch (field) {
-        case "createTime":
-          project.setCreateTime(fullProject.getCreateTime());
-          break;
-        case "labels":
-          project.setLabels(fullProject.getLabels());
-          break;
-        case "lifecycleState":
-          project.setLifecycleState(fullProject.getLifecycleState());
-          break;
-        case "name":
-          project.setName(fullProject.getName());
-          break;
-        case "parent":
-          project.setParent(fullProject.getParent());
-          break;
-        case "projectId":
-          project.setProjectId(fullProject.getProjectId());
-          break;
-        case "projectNumber":
-          project.setProjectNumber(fullProject.getProjectNumber());
-          break;
-      }
-    }
-    return project;
-  }
-
   synchronized Response replace(String projectId, Project project) {
     Project originalProject = projects.get(projectId);
     if (originalProject == null) {
@@ -729,25 +604,6 @@ public class LocalResourceManagerHelper {
     }
   }
 
-  private LocalResourceManagerHelper() {
-    try {
-      server = HttpServer.create(new InetSocketAddress(0), 0);
-      port = server.getAddress().getPort();
-      server.createContext(CONTEXT, new RequestHandler());
-      server.createContext(OPERATION_CONTEXT, new OperationRequestHandler());
-    } catch (IOException e) {
-      throw new RuntimeException("Could not bind the mock Resource Manager server.", e);
-    }
-  }
-
-  /**
-   * Creates a {@code LocalResourceManagerHelper} object that listens to requests on the local
-   * machine.
-   */
-  public static LocalResourceManagerHelper create() {
-    return new LocalResourceManagerHelper();
-  }
-
   /**
    * Returns a {@link ResourceManagerOptions} instance that sets the host to use the mock server.
    */
@@ -800,5 +656,155 @@ public class LocalResourceManagerHelper {
     // should not fail if that code is also synchronized.
     policies.remove(checkNotNull(projectId));
     return projects.remove(projectId) != null;
+  }
+
+  private enum Error {
+    ABORTED(409, "global", "aborted", "ABORTED"),
+    ALREADY_EXISTS(409, "global", "alreadyExists", "ALREADY_EXISTS"),
+    PERMISSION_DENIED(403, "global", "forbidden", "PERMISSION_DENIED"),
+    FAILED_PRECONDITION(400, "global", "failedPrecondition", "FAILED_PRECONDITION"),
+    INVALID_ARGUMENT(400, "global", "badRequest", "INVALID_ARGUMENT"),
+    BAD_REQUEST(400, "global", "badRequest", "BAD_REQUEST"),
+    INTERNAL_ERROR(500, "global", "internalError", "INTERNAL_ERROR");
+
+    private final int code;
+    private final String domain;
+    private final String reason;
+    private final String status;
+
+    Error(int code, String domain, String reason, String status) {
+      this.code = code;
+      this.domain = domain;
+      this.reason = reason;
+      this.status = status;
+    }
+
+    Response response(String message) {
+      try {
+        return new Response(code, toJson(message));
+      } catch (IOException e) {
+        return Error.INTERNAL_ERROR.response("Error when generating JSON error response");
+      }
+    }
+
+    private String toJson(String message) throws IOException {
+      Map<String, Object> errors = new HashMap<>();
+      errors.put("domain", domain);
+      errors.put("message", message);
+      errors.put("reason", reason);
+      Map<String, Object> args = new HashMap<>();
+      args.put("errors", ImmutableList.of(errors));
+      args.put("code", code);
+      args.put("message", message);
+      args.put("status", status);
+      return jsonFactory.toString(ImmutableMap.of("error", args));
+    }
+  }
+
+  private static class Response {
+
+    private final int code;
+    private final String body;
+
+    Response(int code, String body) {
+      this.code = code;
+      this.body = body;
+    }
+
+    int code() {
+      return code;
+    }
+
+    String body() {
+      return body;
+    }
+  }
+
+  private class RequestHandler implements HttpHandler {
+
+    @Override
+    public void handle(HttpExchange exchange) {
+      // see https://cloud.google.com/resource-manager/reference/rest/
+      Response response;
+      String path = BASE_CONTEXT.relativize(exchange.getRequestURI()).getPath();
+      String requestMethod = exchange.getRequestMethod();
+      try {
+        switch (requestMethod) {
+          case "POST":
+            response = handlePost(exchange, path);
+            break;
+          case "DELETE":
+            response = delete(projectIdFromUri(path));
+            break;
+          case "GET":
+            if (!path.isEmpty()) {
+              response =
+                  get(projectIdFromUri(path), parseFields(exchange.getRequestURI().getQuery()));
+            } else {
+              response = list(parseListOptions(exchange.getRequestURI().getQuery()));
+            }
+            break;
+          case "PUT":
+            String requestBody =
+                decodeContent(exchange.getRequestHeaders(), exchange.getRequestBody());
+            response =
+                replace(projectIdFromUri(path), jsonFactory.fromString(requestBody, Project.class));
+            break;
+          default:
+            response =
+                Error.BAD_REQUEST.response(
+                    "The server could not understand the following request URI: "
+                        + requestMethod
+                        + " "
+                        + path);
+        }
+      } catch (IOException e) {
+        response = Error.BAD_REQUEST.response(e.getMessage());
+      }
+      writeResponse(exchange, response);
+    }
+  }
+
+  private class OperationRequestHandler implements HttpHandler {
+
+    @Override
+    public void handle(HttpExchange exchange) {
+      // see https://cloud.google.com/resource-manager/reference/rest/
+      String projectId;
+      try {
+        projectId = new URI(OPERATION_CONTEXT).relativize(exchange.getRequestURI()).getPath();
+      } catch (URISyntaxException e) {
+        throw new IllegalStateException(e);
+      }
+      Response response;
+      String requestMethod = exchange.getRequestMethod();
+      switch (requestMethod) {
+        case "GET":
+          Project project = projects.get(projectId);
+          if (project == null) {
+            response = Error.PERMISSION_DENIED.response("Project " + projectId + " not found.");
+            break;
+          }
+          try {
+            response =
+                new Response(
+                    HTTP_OK,
+                    jsonFactory.toString(new Operation().setDone(true).setResponse(project)));
+          } catch (IOException e) {
+            response =
+                Error.INTERNAL_ERROR.response(
+                    "Error when serializing project " + project.getProjectId());
+          }
+          break;
+        default:
+          response =
+              Error.BAD_REQUEST.response(
+                  "The server could not understand the following request URI: "
+                      + requestMethod
+                      + " "
+                      + projectId);
+      }
+      writeResponse(exchange, response);
+    }
   }
 }
