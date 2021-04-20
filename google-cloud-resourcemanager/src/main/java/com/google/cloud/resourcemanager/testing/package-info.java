@@ -30,5 +30,7 @@
  * <pre>{@code
  * resourceManagerHelper.stop();
  * }</pre>
+ * @deprecated v3 GAPIC client of ResourceManager is now available
  */
+@Deprecated
 package com.google.cloud.resourcemanager.testing;
