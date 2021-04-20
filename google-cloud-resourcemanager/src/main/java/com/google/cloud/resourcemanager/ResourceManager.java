@@ -186,7 +186,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create">Cloud
    *     Resource Manager create</a>
-   * @deprecated {@link com.google.cloud.resourcemanager.v3.ProjectsClient#create(ProjectsSettings)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#create(ProjectsSettings)} instead
    */
   @Deprecated
   Project create(ProjectInfo project);
@@ -214,8 +215,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete">Cloud
    *     Resource Manager delete</a>
-   * @deprecated {@link
-   *     com.google.cloud.resourcemanager.v3.ProjectsClient#deleteProjectAsync(ProjectName)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#deleteProjectAsync(ProjectName)} instead
    */
   @Deprecated
   void delete(String projectId);
@@ -229,8 +230,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @throws ResourceManagerException upon failure
    * @see <a href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get">
    *     Cloud Resource Manager get</a>
-   * @deprecated {@link
-   *     com.google.cloud.resourcemanager.v3.ProjectsClient#getProject(GetProjectRequest)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#getProject(GetProjectRequest)} instead
    */
   @Deprecated
   Project get(String projectId, ProjectGetOption... options);
@@ -247,8 +248,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list">Cloud
    *     Resource Manager list</a>
-   * @deprecated {@link
-   *     com.google.cloud.resourcemanager.v3.ProjectsClient#listProjects(ListProjectsRequest)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#listProjects(ListProjectsRequest)} instead
    */
   @Deprecated
   Page<Project> list(ProjectListOption... options);
@@ -263,8 +264,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update">Cloud
    *     Resource Manager update</a>
-   * @deprecated {@link
-   *     com.google.cloud.resourcemanager.v3.ProjectsClient#updateProjectAsync(UpdateProjectRequest)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#updateProjectAsync(UpdateProjectRequest)} instead
    */
   @Deprecated
   Project replace(ProjectInfo newProject);
@@ -281,8 +282,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete">Cloud
    *     Resource Manager undelete</a>
-   * @deprecated {@link
-   *     com.google.cloud.resourcemanager.v3.ProjectsClient#undeleteProjectAsync(UndeleteProjectRequest)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#undeleteProjectAsync(UndeleteProjectRequest)} instead
    */
   @Deprecated
   void undelete(String projectId);
@@ -296,8 +297,8 @@ public interface ResourceManager extends Service<ResourceManagerOptions> {
    * @see <a href=
    *     "https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/getIamPolicy">
    *     Resource Manager getIamPolicy</a>
-   * @deprecated {@link
-   *     com.google.cloud.resourcemanager.v3.ProjectsClient#getIamPolicy(GetIamPolicyRequest)}
+   * @deprecated
+   * Please use {@link com.google.cloud.resourcemanager.v3.ProjectsClient#getIamPolicy(GetIamPolicyRequest)} instead
    */
   @Deprecated
   Policy getPolicy(String projectId);
