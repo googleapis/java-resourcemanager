@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.0](https://www.github.com/googleapis/java-resourcemanager/compare/v0.119.9...v0.120.0) (2021-08-04)
+
+
+### Features
+
+* configure initial sp version ([#575](https://www.github.com/googleapis/java-resourcemanager/issues/575)) ([ce83a1b](https://www.github.com/googleapis/java-resourcemanager/commit/ce83a1b62a76910156058fac244c879e0f2c3aa6))
+
 ### [0.119.9](https://www.github.com/googleapis/java-resourcemanager/compare/v0.119.8...v0.119.9) (2021-07-28)
 
 
