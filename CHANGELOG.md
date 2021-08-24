@@ -1,5 +1,26 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/googleapis/java-resourcemanager/compare/v1.0.2...v1.0.3) (2021-08-23)
+
+
+### Dependencies
+
+* update dependency com.google.errorprone:error_prone_annotations to v2.9.0 ([#602](https://www.github.com/googleapis/java-resourcemanager/issues/602)) ([5bce206](https://www.github.com/googleapis/java-resourcemanager/commit/5bce206ee561254af5314c09857b8212f64b2024))
+
+### [1.0.2](https://www.github.com/googleapis/java-resourcemanager/compare/v1.0.1...v1.0.2) (2021-08-19)
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-cloudresourcemanager to v1-rev20210815-1.32.1 ([#596](https://www.github.com/googleapis/java-resourcemanager/issues/596)) ([95173f7](https://www.github.com/googleapis/java-resourcemanager/commit/95173f72e2469f9f449e4318ba00678233bd7b88))
+
+### [1.0.1](https://www.github.com/googleapis/java-resourcemanager/compare/v1.0.0...v1.0.1) (2021-08-12)
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v2.0.1 ([#590](https://www.github.com/googleapis/java-resourcemanager/issues/590)) ([f897d15](https://www.github.com/googleapis/java-resourcemanager/commit/f897d1524fd77dccc1c64b711c0086e804f66dea))
+
 ## [1.0.0](https://www.github.com/googleapis/java-resourcemanager/compare/v0.119.9...v1.0.0) (2021-08-10)
 
 
