@@ -96,20 +96,21 @@ to add `google-cloud-resourcemanager` as a dependency in your code.
 See the [Resource Manager API client library docs][javadocs] to learn how to
 use this Resource Manager API Client Library.
 
+```
+#### ProjectsClient
+This class provides the ability to make remote calls to the backing service through method calls that map to API methods.
+This class can be customized by passing in a custom instance of ProjectsSettings to create(). For example:
 
-#### Creating an authorized service object
-To make authenticated requests to Google Cloud Resource Manager, you must create a service object
-with Google Cloud SDK credentials. You can then make API calls by calling methods on the Resource
-Manager service object. The simplest way to authenticate is to use
-[Application Default Credentials](https://developers.google.com/identity/protocols/application-default-credentials).
-These credentials are automatically inferred from your environment, so you only need the following
-code to create your service object:
-
+To customize credentials:
 ```java
-import com.google.cloud.resourcemanager.ResourceManager;
-import com.google.cloud.resourcemanager.ResourceManagerOptions;
+ProjectsSettings projectsSettings = ProjectsSettings.newBuilder().setCredentialsProvider(FixedCredentialsProvider.create(myCredentials)).build();
+ProjectsClient projectsClient = ProjectsClient.create(projectsSettings);
+```
 
-ResourceManager resourceManager = ResourceManagerOptions.getDefaultInstance().getService();
+To customize the endpoint:
+```java
+ProjectsSettings projectsSettings = ProjectsSettings.newBuilder().setEndpoint(myEndpoint).build();
+ProjectsClient projectsClient = ProjectsClient.create(projectsSettings);
 ```
 
 #### Getting a specific project
@@ -117,15 +118,21 @@ You can load a project if you know its project ID and have read permissions to t
 To get a project, add the following import at the top of your file:
 
 ```java
-import com.google.cloud.resourcemanager.Project;
+import com.google.cloud.resourcemanager.v3.Project;
+import com.google.cloud.resourcemanager.v3.ProjectName;
+import com.google.cloud.resourcemanager.v3.ProjectsClient;
 ```
-
 Then use the following code to get the project:
 
 ```java
 String projectId = "my-globally-unique-project-id"; // Change to a unique project ID
-Project project = resourceManager.get(projectId);
+try (ProjectsClient projectsClient = ProjectsClient.create()) {
+    ProjectName name = ProjectName.of(projectId);
+    Project response = projectsClient.getProject(name);
+    // doSomething(response)
+}
 ```
+Note: close() needs to be called on the ProjectsClient object to clean up resources such as threads. In the example above, try-with-resources is used, which automatically calls close().
 
 #### Creating a project
 All you need to create a project is a globally unique project ID. You can also optionally attach a
@@ -134,8 +141,8 @@ names, and labels [here](https://cloud.google.com/resource-manager/reference/res
 To create a project, add the following imports at the top of your file:
 
 ```java
-import com.google.cloud.resourcemanager.Project;
-import com.google.cloud.resourcemanager.ProjectInfo;
+import com.google.cloud.resourcemanager.v3.Project;
+import com.google.cloud.resourcemanager.v3.ProjectsClient;
 ```
 
 Then add the following code to create a project (be sure to change `projectId` to your own unique
@@ -143,49 +150,60 @@ project ID).
 
 ```java
 String projectId = "my-globally-unique-project-id"; // Change to a unique project ID
-Project project = resourceManager.create(ProjectInfo.newBuilder(projectId).build());
+try (ProjectsClient projectsClient = ProjectsClient.create()) {
+    Project project = Project.newBuilder()
+        .setProjectId(projectId)
+        .build();
+    Project response = projectsClient.createProjectAsync(project).get();
+    // doThingsWith(response);
+}
 ```
 
-Note that the return value from `create` is a `Project` that includes additional read-only
+Note that the return value from `createProjectAsync` is a `Project` that includes additional read-only
 information, like creation time, project number, and lifecycle state. Read more about these fields
-on the [Projects page](https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects).
-`Project`, a subclass of `ProjectInfo`, adds a layer of service-related functionality over
-`ProjectInfo`.
+on the [Projects page](https://cloud.google.com/resource-manager/reference/rest/v3/projects).
+`Project`.
 
-#### Editing a project
-To edit a project, create a new `ProjectInfo` object and pass it in to the `Project.replace` method.
-For example, to add a label to a project to denote that it's launch status is "in development", add
-the following code:
+#### Updating a project
+To updating a project, create a new `project` object and `FieldMask (optional):An update mask to selectively update fields` and pass it in to the `ProjectClient.UpdateProjectAsync` method.
+add the following code:
 
 ```java
-Project newProject = project.toBuilder()
-    .addLabel("launch-status", "in-development")
-    .build()
-    .replace();
+  try (ProjectsClient projectsClient = ProjectsClient.create()) {
+        Project project = Project.newBuilder().build();
+        FieldMask updateMask = FieldMask.newBuilder().build();
+        Project response = projectsClient.updateProjectAsync(project, updateMask).get();
+}
 ```
 
-Note that the values of the project you pass in to `replace` overwrite the server's values for
+Note that the values of the project you pass in to `updateProjectAsync` overwrite the server's values for
 non-read-only fields, namely `projectName` and `labels`. For example, if you create a project with
 `projectName` "some-project-name" and subsequently call replace using a `ProjectInfo` object that
 didn't set the `projectName`, then the server will unset the project's name. The server ignores any
 attempted changes to the read-only fields `projectNumber`, `lifecycleState`, and `createTime`.
 The `projectId` cannot change.
 
+The caller must have `resourcemanager.projects.update` permission for this project to update.
+
 #### Listing all projects
-Suppose that we want a list of all projects for which we have read permissions. Add the following
+Suppose that we want a list of all projects under a folder, Add the following
 import:
 
 ```java
-import java.util.Iterator;
+import com.google.api.resourcenames.ResourceName;
+import com.google.cloud.resourcemanager.v3.FolderName;
+import com.google.cloud.resourcemanager.v3.Project;
+import com.google.cloud.resourcemanager.v3.ProjectsClient;
 ```
 
-Then add the following code to print a list of projects you can view:
+Then add the following code to print a list of projects under a folder:
 
 ```java
-Iterator<Project> projectIterator = resourceManager.list().iterateAll().iterator();
-System.out.println("Projects I can view:");
-while (projectIterator.hasNext()) {
-  System.out.println(projectIterator.next().getProjectId());
+    try (ProjectsClient projectsClient = ProjectsClient.create()) {
+        ResourceName parent = FolderName.of("[FOLDER]");
+        for (Project element : projectsClient.listProjects(parent).iterateAll()) {
+            // doThingsWith(element);
+        }
 }
 ```
 
