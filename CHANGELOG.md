@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.12](https://github.com/googleapis/java-resourcemanager/compare/v1.2.11...v1.2.12) (2022-10-12)
+
+
+### Dependencies
+
+* Regenerating with new Protobuf (1.2.x) ([#873](https://github.com/googleapis/java-resourcemanager/issues/873)) ([16ab549](https://github.com/googleapis/java-resourcemanager/commit/16ab54941bf0c3782afb1d827b252cacdc8d4dfc))
+
 ### [1.2.11](https://github.com/googleapis/java-resourcemanager/compare/v1.2.10...v1.2.11) (2022-04-18)
 
 
