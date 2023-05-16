@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.13](https://github.com/googleapis/java-resourcemanager/compare/v1.2.12...v1.2.13) (2023-05-16)
+
+
+### Documentation
+
+* README.md update for new location ([#915](https://github.com/googleapis/java-resourcemanager/issues/915)) ([bfab827](https://github.com/googleapis/java-resourcemanager/commit/bfab82711f3dea8e74437631a75f01f2a6d7dfae))
+
 ## [1.2.12](https://github.com/googleapis/java-resourcemanager/compare/v1.2.11...v1.2.12) (2022-10-12)
 
 
