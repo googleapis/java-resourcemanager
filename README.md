@@ -2,6 +2,13 @@
 
 Java idiomatic client for [Resource Manager API][product-docs].
 
+:bus: In October 2022, this library has moved to
+[google-cloud-java/java-resourcemanager](
+https://github.com/googleapis/google-cloud-java/tree/main/java-resourcemanager).
+This repository will be archived in the future.
+Future releases will appear in the new repository (https://github.com/googleapis/google-cloud-java/releases).
+The Maven artifact coordinates (`com.google.cloud:google-cloud-resourcemanager`) remain the same.
+
 [![Maven][maven-version-image]][maven-version-link]
 ![Stability][stability-image]
 
